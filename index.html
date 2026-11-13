@@ -4,7 +4,30 @@
 <meta name="theme-color" content="#0f0a2e">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* My Business (v12) */
+<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* v13 */
+.dayplan{display:grid;gap:8px;padding:16px;border-radius:24px;background:linear-gradient(160deg,#1f7a5c,#16523f);border:1px solid var(--line);margin:0 0 18px}
+.dayrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;padding:10px 14px;border-radius:18px;background:rgba(0,0,0,.22);border:2px solid var(--line)}
+.dayrow.done{border-color:var(--mint);opacity:.85}.dayrow.locked{opacity:.55}
+.dayrow .ar{display:block}
+.dayn{width:38px;height:38px;border-radius:50%;background:var(--star);color:#2a1a00;display:grid;place-items:center;font-weight:800;font-size:1.2rem}
+.dayrow.done .dayn{background:none}
+.cashitems{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.cashit{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 16px;border-radius:20px;background:#fffaf0;color:#2a1a4a;min-width:120px}
+.cashit span{font-size:2.6rem}.cashit em{font-style:normal;font-weight:800;font-size:1.4rem;color:#b06a00}.cashit.pay{background:#e9fff5}
+.cashans{font-size:2rem;min-width:90px;justify-content:center}
+.site{display:grid;gap:8px;background:#fffaf0;border-radius:16px;padding:8px;color:#2a1a4a;min-height:200px}
+.sb-h{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;color:#fff;font-family:var(--display);font-weight:800;font-size:1.2rem}
+.sb-h span{width:34px;height:34px;border-radius:50%;background:#fffaf0;display:grid;place-items:center}
+.sb-p{border-radius:12px;overflow:hidden;aspect-ratio:4/3;cursor:pointer}.sb-p svg{width:100%;height:100%;display:block}
+.sb-a{margin:0;font-weight:800;text-align:center}
+.sb-l{margin:0;padding:0;list-style:none;display:grid;gap:4px}.sb-l li{display:flex;justify-content:space-between;padding:6px 10px;border-radius:10px;background:#f1e6d4}
+.sb-b{padding:12px;border-radius:99px;text-align:center;color:#fff;font-weight:800}
+.code{display:grid;gap:2px;padding:10px;border-radius:14px;background:#0b0820;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem;max-height:340px;overflow:auto}
+.cl{all:unset;display:block;padding:3px 8px;border-radius:6px;color:#9fe8ff;white-space:pre-wrap;word-break:break-all;cursor:pointer}
+.cl.hot{background:#ffd44733;color:#ffe58a}.cl.no{background:#ff8a7a33;color:#ffb3a7}
+.bzsub{position:absolute;left:10%;right:10%;text-align:center;font-weight:800;font-size:clamp(.8rem,3.4vw,1.1rem);background:rgba(255,255,255,.85);color:#2a1a4a;border-radius:99px;padding:2px 8px}
+.bzsub.top{top:14%}.bzsub.bottom{bottom:14%}.bzpost.small .bzsub{font-size:.55rem}
+/* My Business (v12) */
 .bizworld{height:max(320px,calc(100vh - 290px))}
 .bzspots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
 .bzspots .tile,.tile small.ar,.tile small{display:inline-flex}
@@ -852,7 +875,7 @@ const sfx = { ok:()=>tone([660,880,1320]), no:()=>tone([300,220],.16), win:()=>t
 const playedSec = () => S.play[today()]||0;
 const allowedMin = () => S.limitMin + (S.extra.date===today()?S.extra.min:0);
 const timeUp = () => S.limitMin>0 && playedSec() >= allowedMin()*60;
-setInterval(()=>{ if((view.name==="game"||(view.name==="shop"&&(SG||LS))||(view.name==="biz"&&BZ.screen!=="map")) && !document.hidden){ S.play[today()] = playedSec()+15; save(); } }, 15000);
+setInterval(()=>{ if((view.name==="game"||(view.name==="shop"&&(SG||LS))||(view.name==="biz"&&BZ.screen!=="map")) && !document.hidden){ S.play[today()] = playedSec()+15; if(view.name==="biz"||view.name==="shop") dayRec().bizSec+=15; save(); } }, 15000);
 
 /* ---------------- Progress model ---------------- */
 function sk(id){ return S.skills[id] ||= {level:1, best:[0,0,0], correct:0, attempts:0, last:0}; }
@@ -923,6 +946,7 @@ function vHome(){
   return `${navTabs("home")}
   <div class="hello">${S.child.photo?`<span style="width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid var(--star);display:block;flex:none">${faceHTML()}</span>`:""}<div><h1>Hi ${esc(S.child.name)}! ✨</h1><p>${subj.id==="shop"?"Welcome to your Star Shop!":"Pick a planet to explore today."}</p></div></div>
   ${cheer}
+  ${dayPlanHTML()}
   ${schoolBlock()}
   ${subj.id==="shop"?"":smartBlock()}
   <div class="subjects" role="list">${SUBJECTS.map(s=>`<button class="subj ${s.soon?"soon":""}" data-subject="${s.id}" aria-current="${s.id===subj.id}" role="listitem"><span class="dot" style="background:${s.color}"></span>${s.name}${s.soon?" <small>soon</small>":""}</button>`).join("")}</div>
@@ -953,6 +977,7 @@ function reportText(){
   shopReportLines().forEach(x=>L.push(x));
   L.push(`Homework done: ${S.homework.filter(h=>h.done).length} of ${S.homework.length}`);
   S.school.slice(-5).forEach(l=>L.push(`School ${l.date} ${l.subject}: ${l.topic} ${l.done?"(done)":"(to do)"}`));
+  L.push(...bizReportLines());
   return L.join("\n");
 }
 function findUnit(id){ for(const s of SUBJECTS) for(const u of s.units) if(u.id===id) return u; }
@@ -1126,6 +1151,7 @@ function finishRound(){
   else if(score<=2 && k.level>1) k.level--;
   let bonus = 0;
   if(game.lesson){ const l = S.school.find(x=>x.id===game.lesson); if(l && !l.done){ l.done = true; l.doneDate = today(); l.stars = stars; bonus = 2; } else if(l){ l.doneDate = today(); } }
+  markDay("school");
   const newStickers = addStars(stars + bonus);
   game.out = {score, stars, newStickers, bonus, levelUp:k.level>prevLevel, perfect:score===(game.rounds||ROUND)};
   save(); sfx.win();
@@ -1259,6 +1285,7 @@ function finishMode(score, stars){
     bonus = (score>=2 && !S.explore.done[game.unit]) ? 1 : 0;
     if(score>=2) S.explore.done[game.unit] = true;
   }
+  markDay("school");
   const newStickers = addStars(stars+bonus);
   game.out = {score, stars, newStickers, bonus, levelUp:false, mode:game.mode, rounds, det, perfect:score===rounds, chal:game.chal, pass:chalPass};
   save(); sfx.win(); go({name:"result"});
@@ -1361,7 +1388,7 @@ function vParent(){
       <label>Photo of the page (optional)<input type="file" id="lsPhoto" accept="image/*" capture="environment"></label>
       ${SAMPLE?`<label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="lsAI" checked style="width:24px;height:24px"> Let Claude write extra questions (needs internet, then saved for offline)</label>`:``}
       <button class="btn" data-act="addlesson" id="lsBtn">Make today's mission</button>
-      ${S.school.length?`<div class="tbl"><table><thead><tr><th>Date</th><th>Subject</th><th>Topic</th><th>Questions</th><th>Status</th><th></th></tr></thead><tbody>${[...S.school].reverse().slice(0,12).map(l=>`<tr><td>${esc(l.date)}</td><td>${esc(l.subject)}</td><td>${esc(l.topic)}</td><td>${l.words.length+l.pairs.length+l.cards.length+l.skills.length} sets</td><td>${l.done?`<span class="done">✓ ${l.stars||""}★</span>`:"to do"}</td><td><button class="btn sm alt" data-lessondel="${l.id}">Delete</button></td></tr>`).join("")}</tbody></table></div>`:""}
+      ${S.school.length?`<div class="tbl"><table><thead><tr><th>Date</th><th>Subject</th><th>Topic</th><th>Questions</th><th>Status</th><th></th></tr></thead><tbody>${[...S.school].reverse().slice(0,12).map(l=>`<tr><td>${esc(l.date)}</td><td>${esc(l.subject)}</td><td>${esc(l.topic)}</td><td>${(l.words||[]).length+(l.pairs||[]).length+(l.cards||[]).length+(l.skills||[]).length} sets</td><td>${l.done?`<span class="done">✓ ${l.stars||""}★</span>`:"to do"}</td><td><button class="btn sm alt" data-lessondel="${l.id}">Delete</button></td></tr>`).join("")}</tbody></table></div>`:""}
     </div>
     <div class="card"><h2>📷 Add homework</h2>
       <p class="hint">Take a photo of the homework sheet or the book page. ${name} will see it in Homework missions.</p>
@@ -1593,6 +1620,7 @@ function lsReset(){
 }
 function startLesson(id){
   if(timeUp()) return go({name:"rest"});
+  if(bizGate()){ BZ={screen:"world", w:"salon"}; return go({name:"biz"}); }
   const d=lessonDefs()[id]; SG=null; LS={id,i:0,steps:d.steps,first:0,total:0,done:false}; lsReset(); go({name:"shop",subject:"shop"});
 }
 function lsGuide(en,ar){ return `<div class="guide"><span class="gface" aria-hidden="true">${shopTheme().guide}</span><div class="bubble"><button class="say" data-sx="lsay" aria-label="Read it aloud">🔈</button><div><b>${esc(en)}</b>${ar?`<span class="ar" dir="rtl" lang="ar">${esc(ar)}</span>`:""}</div></div></div>`; }
@@ -1675,6 +1703,7 @@ function classroomRow(){
 
 function startShop(n){
   if(timeUp()) return go({name:"rest"});
+  if(bizGate()){ BZ={screen:"world", w:"salon"}; return go({name:"biz"}); }
   const g = SHOP_GAMES.find(x=>x.n===n);
   if(!g.ready){ sfx.tap(); speak(`${g.t} is coming soon!`); return toast("Coming soon ✨"); }
   if(n>1 && !(S.shop.games||{})[n-1]){ sfx.no(); speak(`First, play game ${n-1}!`); return toast(`Play game ${n-1} first`); }
@@ -2058,6 +2087,7 @@ function shopFinish(stars){
   if(SG.g===1){ Object.assign(S.shop, {type:SG.o.type, name:SG.o.name, color:SG.o.color, logo:SG.o.logo}); }
   if(SG.g===2) S.shop.photo = true;
   if(SG.g===3) S.shop.post = {text:SG.o.text, logo:SG.o.logo, pos:SG.o.pos, photo:"good"};
+  markDay("biz");
   SG.out = {stars, first:SG.first, total:SG.total, newStickers:addStars(stars), perfect:SG.total>0&&SG.first===SG.total};
   SG.step="done"; save(); sfx.win(); render(); window.scrollTo(0,0);
   winSpeak(SG.out.perfect, stars>=2, SG.first, SG.total, stars);
@@ -2331,8 +2361,10 @@ const TRACKS = [
     proj:["Finish the ads games","خلّصي ألعاب الإعلانات"]},
   {id:"ops", e:"📦", en:"Customers", ar:"العملاء والشحن", items:[{k:"sg",n:8}],
     proj:["Answer customers nicely","ردّي على العملاء بلطف"]},
-  {id:"web", e:"💻", en:"Websites", ar:"المواقع", soon:"Next update", soonAr:"في التحديث الجاي"},
-  {id:"money", e:"💰", en:"Money", ar:"الحسابات والمرتبات", soon:"Coming soon", soonAr:"قريب"},
+  {id:"web", e:"💻", en:"Websites", ar:"المواقع", items:[{k:"site",w:"salon"},{k:"code"}],
+    proj:["Build a website with 4 blocks and a button, and find the button in the code","اعملي موقع فيه 4 بلوكات وزرار، ولاقي الزرار في الكود"]},
+  {id:"money", e:"💰", en:"Money", ar:"الحسابات والمرتبات", items:[{k:"cash"}],
+    proj:["Get 3 stars at the cashier","خدي 3 نجوم في الكاشير"], need:()=>(bizS().cash||{}).best>=3},
   {id:"video", e:"🎬", en:"Video & Character", ar:"الفيديو والكاركتر", soon:"Coming soon", soonAr:"قريب"},
   {id:"grow", e:"🌱", en:"Grow the Business", ar:"تطوير البيزنس", soon:"Coming soon", soonAr:"قريب"},
 ];
@@ -2353,6 +2385,9 @@ function itemInfo(it){
   if(it.k==="brand") return {e:BIZ_WORLDS[it.w].e, en:`Brand ${BIZ_WORLDS[it.w].en.replace("My ","my ")}`, ar:"اعملي البراند بتاع "+BIZ_WORLDS[it.w].ar, done:!!(B[it.w].name&&B[it.w].usp), act:`data-bz="brand" data-v="${it.w}"`};
   if(it.k==="studio") return {e:"🎨", en:"Post Studio: make a post", ar:"استوديو البوستات: اعملي بوست", done:B.gallery.length>0, act:`data-bz="studio"`};
   if(it.k==="hlesson") return {e:"🤖", en:"Meet the smart helper", ar:"اتعرفي على المساعد الذكي", done:B.helper.lesson, act:`data-bz="hlesson"`};
+  if(it.k==="site") return {e:"💻", en:"Build my website", ar:"اعملي موقعك", done:!!siteOf(it.w).rewarded, act:`data-bz="site" data-v="${it.w}"`};
+  if(it.k==="code") return {e:"🔍", en:"Find the button in the code", ar:"لاقي الزرار في الكود", done:!!siteOf("salon").found, act:`data-bz="site" data-v="salon"`};
+  if(it.k==="cash") return {e:"🧾", en:"Cashier: prices and change", ar:"الكاشير: الأسعار والباقي", done:!!(B.cash&&B.cash.best>0), lock:cashLevel().add?"":"Play the Addition chapter in Learn first", act:`data-bz="cash" data-v="salon"`};
   if(it.k==="helper") return {e:"💬", en:"Ask the helper", ar:"اطلبي من المساعد", done:B.helper.good>0, act:`data-bz="helper"`};
 }
 function trackState(T){
@@ -2364,7 +2399,8 @@ function trackState(T){
 /* ---------- Views ---------- */
 function vBiz(){
   bizS();
-  const f = {map:bizMapView, world:bizWorldView, track:bizTrackView, brand:bizBrandView, studio:studioView, gallery:galleryView, helper:helperView, hlesson:hLessonView}[BZ.screen] || bizMapView;
+  const g=bizGate(); if(g && BZ.screen!=="map") return gateView(g);
+  const f = {cash:cashView, site:siteView, map:bizMapView, world:bizWorldView, track:bizTrackView, brand:bizBrandView, studio:studioView, gallery:galleryView, helper:helperView, hlesson:hLessonView}[BZ.screen] || bizMapView;
   return f();
 }
 function bizBack(to, label){ return `<button class="back" data-bz="${to||"map"}">← ${label||"Map"}</button>`; }
@@ -2374,7 +2410,8 @@ function bizMapView(){
   return `${navTabs("biz")}
   <div class="hello"><div><h1>My Business 💼</h1><p>Walk to a place to go inside. <span class="ar" dir="rtl" lang="ar" style="display:inline">امشي لأي مكان عشان تدخليه.</span></p></div></div>
   <canvas id="bizmap" class="world bizworld" aria-label="Business town map: walk to a building"></canvas>
-  <div class="bzspots">${spots.map(([k,e,en,ar])=>{ const lock=k==="coffee"&&!B.open.coffee; return `<button class="tile sm" data-bz="${lock?"lockedw":k==="salon"||k==="coffee"?"world":k}" data-v="${k}">${e} ${en}${lock?" 🔒":""}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`; }).join("")}</div>`;
+  <div class="bzspots">${spots.map(([k,e,en,ar])=>{ const lock=k==="coffee"&&!B.open.coffee; return `<button class="tile sm" data-bz="${lock?"lockedw":k==="salon"||k==="coffee"?"world":k}" data-v="${k}">${e} ${en}${lock?" 🔒":""}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`; }).join("")}</div>
+  <div style="margin-top:16px">${dayPlanHTML()}</div>`;
 }
 function bizWorldView(){
   const w=BZ.w||"salon", W=BIZ_WORLDS[w], br=brandOf(w);
@@ -2389,7 +2426,7 @@ function bizWorldView(){
     <div class="bzsign"><span class="bzlogo">${br.logo}</span><b>${esc(br.name)}</b></div>
     <div style="min-width:0">${bi(W.en+" "+W.e, W.ar, true)}<p class="hint" style="margin:6px 0 0">${esc(W.like)}<span class="ar" dir="rtl" lang="ar">${esc(W.likeAr)}</span></p>
       ${br.usp?`<p style="margin:8px 0 0">⭐ Why people come: <b>${esc(br.usp)}</b></p>`:""}
-      <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="btn sm" data-bz="brand" data-v="${w}">${br.set?"✏️ Change my brand":"🎨 Make my brand"}</button><button class="btn sm alt" data-bz="studio" data-v="${w}">🖼️ Make a post</button></div></div>
+      <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="btn sm" data-bz="brand" data-v="${w}">${br.set?"✏️ Change my brand":"🎨 Make my brand"}</button><button class="btn sm alt" data-bz="studio" data-v="${w}">🖼️ Make a post</button><button class="btn sm alt" data-bz="cash" data-v="${w}">🧾 Cashier${cashLevel().add?"":" 🔒"}</button><button class="btn sm alt" data-bz="site" data-v="${w}">💻 My website</button></div></div>
   </div>
   <h2 style="font-size:1.6rem;margin:14px 0 4px">What I learn here</h2><p class="hint" style="margin:0 0 10px">Every track has 5 stages. Finish a stage, send the project to Baba, and the next stage opens! <span class="ar" dir="rtl" lang="ar" style="display:inline">كل مسار فيه 5 مراحل. خلّصي المرحلة وابعتي المشروع لبابا، والمرحلة الجاية تتفتح!</span></p>
   <div class="planets">${tracks}</div>`;
@@ -2453,6 +2490,7 @@ function bizPost(o, small){
   return `<div class="bzpost ${o.size==="story"?"story":""} ${small?"small":""}" style="background:${o.bg||"#fffaf0"}">
     <div class="bzph">${o.photo?bizPhoto(o.photo,o.w):`<div class="bzempty">📷</div>`}</div>
     ${o.text?`<div class="bztx ${o.pos||"top"}" style="font-family:${FONTS[o.font||"round"][1]};color:${dark?"#fff":"#2a1a4a"}">${esc(o.text)}</div>`:""}
+    ${o.sub&&o.sub.length?`<div class="bzsub ${o.pos==="bottom"?"top":"bottom"}">${o.sub.map(esc).join(" · ")}</div>`:""}
     ${o.logo?`<div class="bzbadge ${o.logo}" style="background:${br.color}"><span>${br.logo}</span><b>${esc(br.name)}</b></div>`:""}${st}</div>`;
 }
 function studioNew(w){ return {w, size:"sq", bg:"#fffaf0", photo:"", text:"", pos:"top", font:"round", logo:"", st:[], tab:"photo"}; }
@@ -2466,11 +2504,12 @@ function studioView(){
     <div class="tiles"><button class="tile sm" data-bz="ssize" data-v="sq" aria-pressed="${o.size==="sq"}">⬛ Square post</button><button class="tile sm" data-bz="ssize" data-v="story" aria-pressed="${o.size==="story"}">📱 Tall story</button></div>`;
   if(o.tab==="words") panel=`${saved.length?`<p style="margin:0">🤖 From your helper <span class="ar" dir="rtl" lang="ar" style="display:inline">من المساعد</span></p><div class="tiles">${saved.map(x=>`<button class="tile sm" data-bz="stext" data-v="${esc(x.en)}" aria-pressed="${o.text===x.en}">🤖 ${esc(x.en)}</button>`).join("")}</div>`:""}
     <div class="tiles">${STUDIO_TEXT[o.w].map(([en,ar])=>`<button class="tile sm" data-bz="stext" data-v="${esc(en)}" aria-pressed="${o.text===en}">${esc(en)}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`).join("")}</div>
+    ${schoolWords().length?`<p style="margin:0">📚 My school words (up to 3) <span class="ar" dir="rtl" lang="ar" style="display:inline">كلمات المدرسة (لحد 3)</span></p><div class="tiles">${schoolWords().map(x=>`<button class="tile sm" data-bz="sword" data-v="${esc(x)}" aria-pressed="${(o.sub||[]).includes(x)}">${esc(x)}</button>`).join("")}</div>`:`<p class="hint" style="margin:0">📚 Words from school show up here when Mama adds today's lesson. <span class="ar" dir="rtl" lang="ar" style="display:inline">كلمات المدرسة هتظهر هنا لما ماما تضيف درس النهارده.</span></p>`}
     <div class="tiles"><button class="tile sm" data-bz="spos" data-v="top" aria-pressed="${o.pos==="top"}">⬆️ Words on top</button><button class="tile sm" data-bz="spos" data-v="bottom" aria-pressed="${o.pos==="bottom"}">⬇️ Words at the bottom</button></div>
     <div class="tiles">${Object.entries(FONTS).map(([k,f])=>`<button class="tile sm" data-bz="sfont" data-v="${k}" aria-pressed="${o.font===k}" style="font-family:${f[1]}">${f[0]}</button>`).join("")}</div>`;
   if(o.tab==="look") panel=`<div class="tiles">${STUDIO_BG.map(c=>`<button class="tile sm" data-bz="sbg" data-v="${c}" aria-pressed="${o.bg===c}"><span class="paint" style="background:${c}"></span></button>`).join("")}</div>`;
   if(o.tab==="logo") panel=`<p class="hint" style="margin:0">Put your logo in a corner, so people know it's yours! <span class="ar" dir="rtl" lang="ar" style="display:inline">حطي اللوجو في ركن عشان الناس تعرف إنه بتاعك!</span></p><div class="tiles">${[["tl","↖️ Top left"],["tr","↗️ Top right"],["bl","↙️ Bottom left"],["br","↘️ Bottom right"],["","🚫 No logo"]].map(([k,l])=>`<button class="tile sm" data-bz="slogo" data-v="${k}" aria-pressed="${o.logo===k}">${l}</button>`).join("")}</div>`;
-  if(o.tab==="fun") panel=`<p class="hint" style="margin:0">Up to 3 stickers. Not too many! <span class="ar" dir="rtl" lang="ar" style="display:inline">لحد 3 بس، مش كتير!</span></p><div class="tiles">${STUDIO_STICK.map(e=>`<button class="tile emo" data-bz="sst" data-v="${e}" aria-pressed="${o.st.includes(e)}">${e}</button>`).join("")}</div>`;
+  if(o.tab==="fun") panel=`<p class="hint" style="margin:0">Up to 3 stickers. Not too many! <span class="ar" dir="rtl" lang="ar" style="display:inline">لحد 3 بس، مش كتير!</span></p>${schoolDone()?`<p style="margin:0">🎁 New stickers from school! <span class="ar" dir="rtl" lang="ar" style="display:inline">ستيكرز جديدة من المذاكرة!</span></p>`:""}<div class="tiles">${[...STUDIO_STICK,...(schoolDone()?["🦄","🌈","🍀","🎈"]:[])].map(e=>`<button class="tile emo" data-bz="sst" data-v="${e}" aria-pressed="${o.st.includes(e)}">${e}</button>`).join("")}</div>`;
   return `${navTabs("biz")}${bizBack(BZ.from||"map", BZ.from==="world"?W.en:"Map")}
   <div class="hello"><div><h1>Post Studio 🎨</h1><p>${bi("Make a post for "+brandOf(o.w).name+"!","اعملي بوست لـ"+brandOf(o.w).name+"!")}</p></div></div>
   ${worlds.length>1?`<div class="tiles" style="margin-bottom:10px">${worlds.map(k=>`<button class="tile sm" data-bz="sworld" data-v="${k}" aria-pressed="${o.w===k}">${BIZ_WORLDS[k].e} ${esc(brandOf(k).name)}</button>`).join("")}</div>`:""}
@@ -2558,7 +2597,7 @@ function hPick(i){
   const H=BZ.h, B=bizS(), o=H.opts[i];
   B.helper.log.push({t:Date.now(), q:H.req, a:o.en, ok:o.ok?1:0}); if(B.helper.log.length>80) B.helper.log=B.helper.log.slice(-80);
   if(!o.ok){ H.msgs.push({r:"n", en:o.why, ar:o.whyAr}); H.opts=H.opts.filter(x=>x!==o); sfx.no(); save(); render(); return; }
-  B.helper.good++; H.msgs.push({r:"u", en:"I choose: "+o.en});
+  B.helper.good++; markDay("biz"); H.msgs.push({r:"u", en:"I choose: "+o.en});
   let extra="";
   if(H.what==="headline"){ B.helper.saved.push({w:H.about, en:o.en, ar:o.ar}); if(B.helper.saved.length>20) B.helper.saved.shift(); extra=" I saved it in your Post Studio! 🎨"; }
   H.msgs.push({r:"n", en:"Great choice!"+extra, ar:"اختيار حلو!"+(extra?" حفظته في استوديو البوستات!":"")});
@@ -2643,6 +2682,7 @@ function bizOpen(k){
 
 /* ---------- Clicks ---------- */
 function bizClick(d, t){
+  if(b13Click(d,t)) return true;
   const B=bizS(), v=d.v;
   switch(d.bz){
     case "map": BZ={screen:"map"}; sfx.tap(); return go({name:"biz"}), true;
@@ -2653,7 +2693,7 @@ function bizClick(d, t){
     case "brand": { sfx.tap(); const w=v||BZ.w||"salon", b=B[w]; BZ={screen:"brand", w, o:{name:b.name,color:b.color,logo:b.logo,usp:b.usp}}; go({name:"biz"}); return true; }
     case "bname": case "bcolor": case "blogo": case "busp": BZ.o[{bname:"name",bcolor:"color",blogo:"logo",busp:"usp"}[d.bz]]=v; sfx.ok(); render(); return true;
     case "bnameown": { const n=($("#bzName")||{}).value; const x=String(n||"").replace(/[<>]/g,"").trim().slice(0,18); if(x){ BZ.o.name=x; sfx.ok(); render(); } return true; }
-    case "bsave": { const w=BZ.w, first=!B[w].name; Object.assign(B[w], BZ.o); const ns=first?addStars(2):[]; save(); sfx.win();
+    case "bsave": { markDay("biz"); const w=BZ.w, first=!B[w].name; Object.assign(B[w], BZ.o); const ns=first?addStars(2):[]; save(); sfx.win();
       toast(`${BZ.o.name} has a brand! ⭐`+(ns.length?" "+ns.join(" "):"")); speak(`${BZ.o.name} has a brand!`,true); BZ={screen:"world", w}; go({name:"biz"}); return true; }
     case "studio": { if(timeUp()) return go({name:"rest"}), true; sfx.tap(); const w=(v&&B.open[v])?v:(BZ.w&&B.open[BZ.w]?BZ.w:"salon"); BZ={screen:"studio", from:BZ.screen==="world"?"world":"map", w:BZ.w||w, o:studioNew(w)}; go({name:"biz"}); return true; }
     case "stab": BZ.o.tab=v; sfx.tap(); render(); return true;
@@ -2670,7 +2710,7 @@ function bizClick(d, t){
     case "ssave": { const p=studioCheck(BZ.o);
       if(p){ sfx.no(); cheer(p[0]+"  "+p[1],true); speak(p[0],true); return true; }
       const o=Object.assign({}, BZ.o, {id:uid(), t:Date.now()}); delete o.tab; B.gallery.push(o); if(B.gallery.length>60) B.gallery.shift();
-      if(B.daily.date!==today()) B.daily={date:today(),posts:0}; B.daily.posts++;
+      if(B.daily.date!==today()) B.daily={date:today(),posts:0}; B.daily.posts++; markDay("biz");
       const ns = B.daily.posts<=3 ? addStars(1) : []; save(); sfx.win();
       BZ={screen:"gallery", big:o.id}; go({name:"biz"}); toast("Saved in your gallery! ⭐ اتحفظ في المعرض"+(ns.length?" "+ns.join(" "):""));
       speak(`Super duper, ${S.child.name}! Your post is in your gallery!`,true); return true; }
@@ -2699,6 +2739,163 @@ function bizClick(d, t){
   return false;
 }
 
+/* ---------------- v13: school and business together ----------------
+   Daily plan: a school task first (can't be skipped), then a business task, then play.
+   Business time is capped so school gets at least S.biz.share of the daily play time.
+   Cashier uses numbers from the math chapters she has played; website builder with "under the hood" code. */
+function dayRec(){ const B=bizS(); B.day ||= {}; if(B.day.date!==today()) B.day={date:today(), school:false, biz:false, play:false, bizSec:0}; return B.day; }
+function markDay(k){ const d=dayRec(); if(!d[k]){ d[k]=true; if(d.school&&d.biz&&d.play&&!d.bonus){ d.bonus=true; const ns=addStars(2); S.cheers.push("You finished today's plan! +2 stars 🌟 خلّصتي خطة النهارده!"+(ns.length?" "+ns.join(" "):"")); } save(); } }
+const unitPlayed = id => { const u=findUnit(id); return !!u && u.skills.some(s=>Math.max(...sk(s).best)>0); };
+function bizTimeLeft(){ const B=bizS(), d=dayRec(); if(!(S.limitMin>0)) return Infinity; return Math.max(0, allowedMin()*60*(1-(B.share??.5)) - d.bizSec); }
+function bizGate(){ const B=bizS(), d=dayRec();
+  if(B.gate!==false && !d.school) return "school";
+  if(bizTimeLeft()<=0) return "time";
+  return ""; }
+function schoolTask(){
+  const l=S.school.find(x=>!x.done);
+  return l ? {en:`School: ${l.subject} · ${l.topic}`, ar:"مهمة المدرسة", act:`data-lesson="${l.id}"`} : {en:"School: Daily Mix (6 math questions)", ar:"مهمة المدرسة: 6 أسئلة رياضة", act:`data-mode="mix"`};
+}
+function bizTask(){
+  for(const T of TRACKS){ const s=trackState(T); if(s.soon||s.stage>1) continue; const i=s.infos.find(x=>!x.done&&!x.lock); if(i) return {en:"Business: "+i.en, ar:"مهمة البيزنس: "+i.ar, act:i.act, e:i.e}; }
+  return {en:"Business: make a post", ar:"مهمة البيزنس: اعملي بوست", act:`data-bz="studio"`, e:"🎨"};
+}
+function dayPlanHTML(){
+  const d=dayRec(), st=schoolTask(), bt=bizTask(), gate=bizGate();
+  const row=(n,done,e,en,ar,act,lock)=>`<button class="dayrow ${done?"done":""} ${lock?"locked":""}" ${lock?`data-bz="gatebtn"`:act}><span class="dayn">${done?"✅":n}</span><span style="min-width:0">${bi(en,ar)}</span><span class="bzie">${lock?"🔒":e}</span></button>`;
+  return `<div class="dayplan"><h2 style="margin:0;font-size:1.5rem">Today's plan 🗓️ <span class="ar" dir="rtl" lang="ar" style="display:inline;font-size:1.1rem">خطة النهارده</span></h2>
+    ${row(1,d.school,"📚",st.en,st.ar+" (الأول دايمًا)",st.act)}
+    ${row(2,d.biz,bt.e||"💼",bt.en,bt.ar,bt.act,gate==="school")}
+    ${row(3,d.play,"🎈","Play: dress up, my home or explore","لعب: لبس، بيتي، أو استكشاف",`data-go="dress"`)}
+    ${gate==="time"?`<p class="hint" style="margin:0">⏰ Business time is finished for today. Let's study! <span class="ar" dir="rtl" lang="ar" style="display:inline">وقت البيزنس خلص النهارده. يلا نذاكر!</span></p>`:""}</div>`;
+}
+function gateView(why){
+  const st=schoolTask();
+  return `${navTabs("biz")}<div class="sheet"><div style="font-size:4rem">${why==="time"?"⏰":"📚"}</div>
+    ${why==="time"?bi("Business time is finished for today. Let's study school things!","وقت البيزنس خلص النهارده. يلا نذاكر حاجات المدرسة!",true)
+      :bi("School first! Finish today's school mission, then your business opens.","المدرسة الأول! خلّصي مهمة المدرسة، وبعدين البيزنس يتفتح.",true)}
+    <button class="btn" ${st.act}>📚 ${esc(st.en)}</button><button class="btn alt sm" data-go="home">🪐 Learn</button></div>`;
+}
+
+/* ---------- Cashier: prices and change with the numbers from her math book ---------- */
+const CATALOG = {
+  salon:[["Haircut","قصة شعر","💇‍♂️",5],["Hair wash","غسيل شعر","🚿",2],["Beard trim","تهذيب دقن","🧔",3],["Kids cut","قصة أطفال","👦",4],["Hair gel","جل شعر","🧴",1]],
+  coffee:[["Small bag","عبوة صغيرة","🫘",3],["Big bag","عبوة كبيرة","🛍️",6],["Gift bag","عبوة هدية","🎁",5],["Delivery","توصيل","🚚",2],["Cup","فنجان","☕",1]],
+};
+function cashLevel(){ return {add:unitPlayed("u3"), sub:unitPlayed("u4"), big:unitPlayed("u7")}; }
+function cashRound(){
+  const C=BZ.c, L=cashLevel(), cat=CATALOG[C.w].map(x=>({en:x[0],ar:x[1],e:x[2],p:L.big?x[3]*2:x[3]}));
+  const max=L.big?20:10, types=["total"]; if(L.sub) types.push("change","change");
+  const t=pick(types); let q;
+  if(t==="total"){ let a,b,g=0; do{ a=pick(cat); b=pick(cat); }while(a.p+b.p>max && g++<50); if(a.p+b.p>max){ a=cat[4]; b=cat[1]; }
+    q={t, items:[a,b], ans:a.p+b.p, en:`The customer wants ${a.en} and ${b.en}. How much altogether?`, ar:`الزبون عايز ${a.ar} و${b.ar}. كام الحساب كله؟`}; }
+  else { const pay=max, a=pick(cat.filter(x=>x.p<pay));
+    q={t, items:[a], pay, ans:pay-a.p, en:`${a.en} costs ${a.p}. The customer pays ${pay}. How much change?`, ar:`${a.ar} بـ${a.p}. الزبون دفع ${pay}. نرجعله كام باقي؟`}; }
+  q.ch=numChoices(q.ans,0,max); C.q=q; C.tried=false;
+}
+function cashStart(w){ if(!cashLevel().add){ sfx.no(); toast("🔒 Play the Addition chapter in Learn first · العبي فصل الجمع الأول"); return; }
+  BZ={screen:"cash", w, from:BZ.screen, c:{w, i:0, n:6, first:0}}; cashRound(); go({name:"biz"}); }
+function cashView(){
+  const C=BZ.c, q=C.q, br=brandOf(C.w);
+  if(C.done) return `<div class="sheet"><h2>🧾 Cashier done!</h2>${C.first===C.n?`<div class="duper">🌟 Super duper, ${esc(S.child.name)}! 🌟</div>`:""}<div class="bigstars">${"★".repeat(C.stars)}<span class="e">${"★".repeat(3-C.stars)}</span></div>
+    <p style="margin:0;font-size:1.15rem">${C.first} of ${C.n} right the first time. You used your math to run ${esc(br.name)}!<span class="ar" dir="rtl" lang="ar">استخدمتي الرياضة عشان تشغّلي المحل!</span></p>
+    <div class="row"><button class="btn" data-bz="cash" data-v="${C.w}">Play again</button><button class="btn alt" data-bz="world" data-v="${C.w}">${esc(br.name)}</button></div></div>`;
+  const dots=Array.from({length:C.n},(_,k)=>`<i class="${k<C.i?"ok":""} ${k===C.i?"now":""}"></i>`).join("");
+  return `<div class="game shopgame"><div class="gtop"><button class="back" style="margin:0" data-bz="world" data-v="${C.w}">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">🧾 ${esc(br.name)} cashier</b><div class="dots">${dots}</div></div>
+  <div class="sheet" style="max-width:760px">
+    <div class="cashitems">${q.items.map(it=>`<div class="cashit"><span>${it.e}</span><b>${esc(it.en)}</b><small dir="rtl" lang="ar">${esc(it.ar)}</small><em>🪙 ${it.p}</em></div>`).join("")}${q.pay?`<div class="cashit pay"><span>💵</span><b>Pays</b><small dir="rtl" lang="ar">دفع</small><em>🪙 ${q.pay}</em></div>`:""}</div>
+    ${bi(q.en,q.ar,true)}<button class="say" data-bz="csay" aria-label="Read it aloud">🔈</button>
+    <div class="tiles">${q.ch.map(c=>`<button class="tile cashans" data-bz="cans" data-v="${c.value}">${c.value}</button>`).join("")}</div>
+    <div class="cheer" id="cheer" aria-live="polite"></div></div></div>`;
+}
+function cashAnswer(v, t){
+  const C=BZ.c, ok=+v===C.q.ans;
+  if(!C.tried){ if(ok) C.first++; } C.tried=true;
+  if(!ok){ t.classList.add("wrong"); t.disabled=true; sfx.no(); cheer(C.q.t==="change"?"Count up from the price to what they paid! Try again 💫  عدّي من التمن لحد اللي دفعه":"Add the two prices. Try again 💫  اجمعي التمنين",true); return; }
+  t.classList.add("right"); sfx.ok(); cheer("Yes! "+C.q.ans+" ⭐ صح!");
+  setTimeout(()=>{ if(BZ.screen!=="cash"||BZ.c!==C) return; C.i++; if(C.i>=C.n){ const r=C.first/C.n; C.stars=r>=.85?3:r>=.6?2:1; C.done=true;
+      const B=bizS(); B.cash ||= {plays:0,best:0}; B.cash.plays++; B.cash.best=Math.max(B.cash.best,C.stars); B.cash.last=Date.now(); addStars(C.stars); markDay("biz"); save(); sfx.win(); render(); winSpeak(C.first===C.n, C.stars>=2, C.first, C.n, C.stars); }
+    else { cashRound(); render(); } }, 1100);
+}
+
+/* ---------- Website builder with "under the hood" ---------- */
+const SITE_BLOCKS = {
+  header:["🏷️","Name and logo","الاسم واللوجو"], photo:["📷","Photo","صورة"], about:["⭐","Why choose us","ليه تختارونا"],
+  prices:["🧾","Prices","الأسعار"], button:["🔘","Button","زرار"], hours:["🕒","Open hours","مواعيد الفتح"],
+};
+function siteOf(w){ const B=bizS(); B.site ||= {}; return B.site[w] ||= {blocks:[], photo:BIZ_WORLDS[w].photos[0], last:-1, found:false}; }
+function siteHTMLLines(w){
+  const s=siteOf(w), br=brandOf(w), btn=w==="salon"?"Book now":"Order now";
+  return s.blocks.map((b,i)=>{ let L;
+    if(b==="header") L=[`<header style="background:${br.color}">`,`  ${br.logo} ${br.name}`,`</header>`];
+    if(b==="photo") L=[`<img src="${s.photo}.png">`];
+    if(b==="about") L=[`<p>⭐ ${br.usp||"We love our customers"}</p>`];
+    if(b==="prices") L=[`<ul>`,...CATALOG[w].slice(0,3).map(x=>`  <li>${x[0]}: ${x[3]}</li>`),`</ul>`];
+    if(b==="button") L=[`<button>${btn}</button>`];
+    if(b==="hours") L=[`<p>Open every day, 12 to 10</p>`];
+    return {i,b,L}; });
+}
+function siteView(){
+  const w=BZ.w, s=siteOf(w), br=brandOf(w), btn=w==="salon"?"Book now · احجز":"Order now · اطلب";
+  const blocks=s.blocks.map((b,i)=>{
+    if(b==="header") return `<div class="sb-h" style="background:${br.color}"><span>${br.logo}</span>${esc(br.name)}</div>`;
+    if(b==="photo") return `<div class="sb-p" data-bz="wphoto">${bizPhoto(s.photo,w)}</div>`;
+    if(b==="about") return `<p class="sb-a">⭐ ${esc(br.usp||"We love our customers")}</p>`;
+    if(b==="prices") return `<ul class="sb-l">${CATALOG[w].slice(0,3).map(x=>`<li><span>${x[2]} ${esc(x[0])}</span><b>🪙 ${x[3]}</b></li>`).join("")}</ul>`;
+    if(b==="button") return `<div class="sb-b" style="background:${br.color}">${btn}</div>`;
+    if(b==="hours") return `<p class="sb-a">🕒 Open every day, 12 to 10</p>`; }).join("");
+  const code=siteHTMLLines(w);
+  const codeHTML=code.map(c=>c.L.map(l=>`<button class="cl ${c.i===s.last?"hot":""} ${BZ.find&&BZ.wrongL&&BZ.wrongL.includes(c.i)?"no":""}" data-bz="wline" data-v="${c.i}">${esc(l)}</button>`).join("")).join("");
+  return `${navTabs("biz")}${bizBack("world", BIZ_WORLDS[w].en)}
+  <div class="hello"><div><h1>Build my website 💻</h1><p>${bi("Add blocks to make a website for "+br.name+"!","ضيفي بلوكات واعملي موقع لـ"+br.name+"!")}</p></div></div>
+  <div class="studio"><div class="studiopv"><div class="phone"><div class="who"><i>🌐</i>${esc(br.name.toLowerCase().replace(/\s+/g,""))}.com</div><div class="site">${blocks||`<div class="bzempty" style="height:200px">+</div>`}</div></div>
+    <div class="cheer" id="cheer" aria-live="polite"></div></div>
+  <div class="studioctl">
+    <div class="card" style="gap:8px"><b>Add a block · ضيفي بلوك</b><div class="tiles">${Object.entries(SITE_BLOCKS).map(([k,v])=>`<button class="tile sm" data-bz="wadd" data-v="${k}" ${s.blocks.includes(k)?"disabled":""}>${v[0]} ${v[1]}<small class="ar" dir="rtl" lang="ar">${v[2]}</small></button>`).join("")}</div></div>
+    ${s.blocks.length?`<div class="card" style="gap:6px"><b>My blocks · البلوكات بتاعتي</b>${s.blocks.map((b,i)=>`<div class="bzprow"><span>${SITE_BLOCKS[b][0]} ${SITE_BLOCKS[b][1]}</span><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm alt" data-bz="wup" data-v="${i}" aria-label="Move up">⬆️</button><button class="btn sm alt" data-bz="wdown" data-v="${i}" aria-label="Move down">⬇️</button><button class="btn sm danger" data-bz="wdel" data-v="${i}" aria-label="Remove">✕</button></span></div>`).join("")}</div>`:""}
+    <div class="row"><button class="btn ${BZ.code?"alt":""}" data-bz="wcode">${BZ.code?"🙈 Hide the code":"🔍 Look under the hood"}</button></div>
+    ${BZ.code?`<div class="card" style="gap:8px">${bi("This is CODE. The computer reads it to draw your website. Every block is a few lines. The yellow lines are the block you just changed.","ده الكود. الكمبيوتر بيقراه عشان يرسم موقعك. كل بلوك عبارة عن كام سطر. السطور الصفرا هي آخر بلوك غيرتيه.")}
+      <div class="code">${codeHTML||`<span class="hint">No code yet. Add a block!</span>`}</div>
+      ${s.blocks.includes("button")?(BZ.find?`<p style="margin:0;font-weight:800">👆 Tap the line that makes the BUTTON. <span class="ar" dir="rtl" lang="ar" style="display:inline">دوسي على السطر اللي بيعمل الزرار.</span></p>`:`<button class="btn sm" data-bz="wfind">🎯 Challenge: find the button line</button>`):""}</div>`:""}
+  </div></div>`;
+}
+function siteSave(w, idx){ const s=siteOf(w); s.last=idx; if(s.blocks.length>=4 && s.blocks.includes("button") && !s.rewarded){ s.rewarded=true; const ns=addStars(3); toast(`Your website is ready! +3 ⭐ موقعك جاهز`+(ns.length?" "+ns.join(" "):"")); markDay("biz"); } save(); }
+
+/* ---------- Clicks for v13 ---------- */
+function b13Click(d, t){
+  const v=d.v;
+  switch(d.bz){
+    case "gatebtn": sfx.no(); toast("📚 School first! · المدرسة الأول"); return true;
+    case "cash": sfx.tap(); cashStart(v||BZ.w||"salon"); return true;
+    case "cans": cashAnswer(v, t); return true;
+    case "csay": speak(BZ.c.q.en,true); return true;
+    case "site": sfx.tap(); BZ={screen:"site", w:v||BZ.w||"salon"}; siteOf(BZ.w); go({name:"biz"}); return true;
+    case "wadd": { const s=siteOf(BZ.w); if(!s.blocks.includes(v)) s.blocks.push(v); sfx.ok(); siteSave(BZ.w, s.blocks.length-1); render(); return true; }
+    case "wdel": { const s=siteOf(BZ.w); s.blocks.splice(+v,1); sfx.tap(); siteSave(BZ.w,-1); render(); return true; }
+    case "wup": case "wdown": { const s=siteOf(BZ.w), i=+v, j=d.bz==="wup"?i-1:i+1; if(j<0||j>=s.blocks.length) return true; [s.blocks[i],s.blocks[j]]=[s.blocks[j],s.blocks[i]]; sfx.tap(); siteSave(BZ.w,j); render(); return true; }
+    case "wphoto": { const s=siteOf(BZ.w), P=BIZ_WORLDS[BZ.w].photos; s.photo=P[(P.indexOf(s.photo)+1)%P.length]; s.last=s.blocks.indexOf("photo"); sfx.tap(); save(); render(); return true; }
+    case "wcode": BZ.code=!BZ.code; BZ.find=false; sfx.tap(); render(); return true;
+    case "wfind": BZ.find=true; BZ.wrongL=[]; sfx.tap(); render(); return true;
+    case "wline": { if(!BZ.find) return true; const s=siteOf(BZ.w), b=s.blocks[+v];
+      if(b==="button"){ BZ.find=false; s.last=+v; const first=!s.found; s.found=true; const ns=first?addStars(2):[]; markDay("biz"); save(); sfx.win(); render(); cheer("Yes! That line makes the button ⭐ صح! السطر ده بيعمل الزرار"); if(ns.length) toast("New sticker! "+ns.join(" ")); }
+      else { BZ.wrongL.push(+v); sfx.no(); render(); cheer(`That line makes the ${SITE_BLOCKS[b][1].toLowerCase()}. Look for <button>! Try again 💫`,true); } return true; }
+    case "sword": { const o=BZ.o; o.sub ||= []; if(o.sub.includes(v)) o.sub=o.sub.filter(x=>x!==v); else if(o.sub.length<3) o.sub.push(v); else { sfx.no(); cheer("3 words is enough 🙂 كفاية 3 كلمات",true); return true; } sfx.tap(); render(); return true; }
+    case "pshare": bizS().share=+v; save(); render(); return true;
+    case "pgate": bizS().gate = bizS().gate===false; save(); render(); return true;
+  }
+  return false;
+}
+function schoolWords(){ const W=[]; S.school.slice().reverse().forEach(l=>(l.words||[]).forEach(w=>{ if(W.length<12 && !W.includes(w)) W.push(w); })); (S.school||[]).slice().reverse().forEach(l=>(l.pairs||[]).forEach(p=>{ if(W.length<12 && !W.includes(p[0])) W.push(p[0]); })); return W; }
+const schoolDone = () => S.school.filter(l=>l.done).length;
+function bizReportLines(){
+  const B=bizS(), L=["", "My Business:"];
+  ["salon","coffee"].forEach(w=>{ const b=B[w]; if(b.name) L.push(`  ${BIZ_WORLDS[w].en}: ${b.name} (${b.usp||"no reason yet"})${B.open[w]?"":" [locked]"}`); });
+  TRACKS.forEach(T=>{ const s=trackState(T); if(!s.soon) L.push(`  ${T.en}: stage ${s.stage}, ${s.done}/${s.total} done${s.pending?", waiting for your approval":""}`); });
+  L.push(`  Posts in gallery: ${B.gallery.length}. Helper: ${B.helper.good} good picks of ${B.helper.asks} requests.`);
+  if(B.cash) L.push(`  Cashier: best ${B.cash.best}/3 stars, played ${B.cash.plays} times.`);
+  const d=dayRec(); L.push(`  Today: school ${d.school?"done":"not yet"}, business ${d.biz?"done":"not yet"}, play ${d.play?"done":"not yet"}; business minutes ${Math.round(d.bizSec/60)}.`);
+  return L;
+}
+
 /* ---------- Grown-ups card ---------- */
 function bizParentCard(){
   const B=bizS(), name=esc(S.child.name);
@@ -2708,6 +2905,10 @@ function bizParentCard(){
     ${pend.length?pend.map(id=>{ const T=TRACKS.find(x=>x.id===id); return `<div class="bzpend"><b>✉️ ${T.e} ${T.en}: ${esc(T.proj[0])}</b><span dir="rtl" lang="ar">${esc(T.proj[1])}</span>
       <div class="row" style="justify-content:flex-start"><button class="btn sm" data-bz="papprove" data-v="${id}">✅ Approve · موافق</button><button class="btn sm alt" data-bz="pnotyet" data-v="${id}">Not yet · لسه</button></div></div>`; }).join("")
       :`<p class="hint" style="margin:0">No projects waiting. · مفيش مشاريع مستنية.</p>`}
+    <div class="bzpend" style="border-color:var(--mint)"><b>🗓️ Today: school ${dayRec().school?"✅":"⏳"} · business ${dayRec().biz?"✅":"⏳"} · play ${dayRec().play?"✅":"⏳"}</b>
+      <span dir="rtl" lang="ar">المدرسة الأول، وبعدين البيزنس. أقل نسبة للمدرسة من وقت اللعب:</span>
+      <div class="row" style="justify-content:flex-start">${[[.3,"30%"],[.5,"50%"],[.7,"70%"]].map(([x,l])=>`<button class="btn sm ${(B.share??.5)===x?"":"alt"}" data-bz="pshare" data-v="${x}">${l}</button>`).join("")}
+      <button class="btn sm alt" data-bz="pgate">${B.gate===false?"🔓 School-first is OFF · شغّل":"🔒 School-first is ON · اقفل"}</button></div></div>
     <details><summary style="cursor:pointer;font-weight:800">Tracks and stages · المسارات والمراحل</summary><div style="display:grid;gap:6px;margin-top:8px">
       ${TRACKS.map(T=>{ const s=trackState(T), sg=stageOf(T.id); return `<div class="bzprow"><span>${T.e} ${T.en}${T.soon?" (soon)":` · ${s.done}/${s.total}`}</span><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm alt" data-bz="pstage" data-v="${T.id}:-1" aria-label="Lower stage">−</button><b>${STAGES[sg-1][0]} ${sg}</b><button class="btn sm alt" data-bz="pstage" data-v="${T.id}:1" aria-label="Raise stage">+</button></span></div>`; }).join("")}</div></details>
     <button class="btn sm ${B.open.coffee?"alt":""}" style="align-self:flex-start" data-bz="popen" data-v="coffee">${B.open.coffee?"☕ Coffee-beans shop is OPEN · tap to close (متجر البن مفتوح)":"☕ Open the coffee-beans shop now · افتح متجر البن"}</button>
@@ -2722,7 +2923,7 @@ document.addEventListener("click", e=>{
   const d = t.dataset;
   if(d.nv && novaClick(d)) return;
   if(d.bz && bizClick(d,t)) return;
-  if(d.go){ FROM_BIZ = false; if(d.go==="biz") BZ={screen:"map"}; }
+  if(d.go){ FROM_BIZ = false; if(d.go==="biz") BZ={screen:"map"}; if(["dress","base","explore"].includes(d.go)) markDay("play"); }
   if((d.sg||d.ls) && view.name==="biz") FROM_BIZ = true;
   if((d.sg||d.sx||d.drag||d.ls) && shopClick(t,d)) return;
   if(d.go){ sfx.tap(); return go({name:d.go, subject:view.subject||"math"}); }
