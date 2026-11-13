@@ -4,7 +4,38 @@
 <meta name="theme-color" content="#0f0a2e">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* v13 */
+<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* v14 */
+.ojsheet,.beansheet{max-width:780px}
+.ojroad{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%;padding-bottom:26px}
+.ojstep{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid var(--line);opacity:.6;font-size:.85rem;text-align:center}
+.ojstep span{font-size:1.5rem}.ojstep small{font-size:.75rem}.ojstep.done{opacity:1;border-color:var(--mint)}.ojstep.now{opacity:1;border-color:var(--star);background:rgba(255,212,71,.15)}
+.ojtruck{position:absolute;bottom:0;left:calc(var(--p)*(100% - 30px));font-style:normal;font-size:1.5rem;transition:left .8s ease}
+@media (prefers-reduced-motion: reduce){.ojtruck{transition:none}}
+.ojline{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:100%}
+.ojslot{min-height:84px;border-radius:14px;border:2px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.85rem;text-align:center;padding:4px}
+.ojslot span{font-size:1.5rem}.ojslot.done{border-style:solid;border-color:var(--mint);background:rgba(94,242,200,.12)}
+.ojmsg{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:10px 14px;border-radius:18px 18px 18px 4px;background:#e9fff5;color:#123a2c}
+.ojmsg .ar{color:inherit;opacity:.85}.ojsheet .hopts{width:100%}.ojsheet .hopts .tile{flex-direction:column;align-items:flex-start;gap:2px;width:100%}.ojsheet .hopts .tile .ar{color:#5a4a7a;margin:0}
+.bzpend label{display:inline-flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.ojmsg.prob{background:#ffe6e1;color:#4a1a12}.ojmsg p{margin:2px 0;font-weight:800;font-size:1.1rem}.ojmsg small{opacity:.7}
+.ojav{flex:none;width:40px;height:40px;border-radius:50%;background:#4f9dff;color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.2rem}
+.ojbox{width:100%;max-width:460px;padding:12px;border-radius:16px;background:#c8955f;color:#3b2410;box-shadow:inset 0 -8px 0 rgba(0,0,0,.15)}
+.ojin{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:64px;margin-top:8px;padding:8px;border-radius:12px;background:#f3d9b5}
+.ojbag{font-size:2.2rem;padding:4px 6px;border-radius:12px;background:#fffaf0}
+.ojbook{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;width:100%}
+.ojslotb{display:flex;flex-direction:column;gap:4px;padding:14px;border-radius:18px;background:#e9fff5;color:#123a2c;border:3px solid transparent;font-size:1.1rem}
+.ojslotb.taken{background:#e6e1f5;color:#5a5470}.ojslotb.wrong,.tile.wrong{border-color:var(--bad);animation:shake .35s}
+.ojcard.wrong{background:#6a2a3a}
+.bvis{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800}
+.bvis>span{padding:8px 12px;border-radius:16px;background:rgba(255,255,255,.08)}
+.bcoins{display:inline-flex;flex-wrap:wrap;gap:2px;vertical-align:middle}.bcoins i{font-style:normal;font-size:1.3rem}.bcoins i.cost{filter:sepia(1) saturate(2) hue-rotate(-20deg) brightness(.7)}.bcoins i.gain{filter:drop-shadow(0 0 4px #ffd447)}
+.bdefs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;width:100%}
+.bdefs>div{padding:12px;border-radius:18px;background:rgba(255,255,255,.07);display:flex;flex-direction:column;gap:2px}.bdefs p{margin:2px 0}
+.bprice{display:flex;align-items:center;gap:14px}.btag{padding:10px 22px;border-radius:14px 30px 30px 14px;background:var(--bc);color:#fff;font-family:var(--display);font-size:2rem}
+.tasklist{display:grid;gap:10px}.taskc.done{border-color:var(--mint)}.taskc.wait{border-color:var(--star)}
+.bzpend input[type=text],.bzpend input[type=number]{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:rgba(0,0,0,.25);color:var(--ink)}
+@media (max-width:700px){.ojroad,.ojline{grid-template-columns:repeat(3,1fr)}.ojroad{padding-bottom:0}.ojtruck{display:none}}
+
 .dayplan{display:grid;gap:8px;padding:16px;border-radius:24px;background:linear-gradient(160deg,#1f7a5c,#16523f);border:1px solid var(--line);margin:0 0 18px}
 .dayrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;padding:10px 14px;border-radius:18px;background:rgba(0,0,0,.22);border:2px solid var(--line)}
 .dayrow.done{border-color:var(--mint);opacity:.85}.dayrow.locked{opacity:.55}
@@ -2359,11 +2390,11 @@ const TRACKS = [
     proj:["Ask the helper clearly 3 times and pick a good answer","اطلبي من المساعد بوضوح 3 مرات واختاري إجابة صح"], need:()=>bizS().helper.good>=3},
   {id:"ads", e:"📣", en:"Ads", ar:"الإعلانات", items:[{k:"ls",id:"ads"},{k:"sg",n:6},{k:"sg",n:7},{k:"sg",n:9}],
     proj:["Finish the ads games","خلّصي ألعاب الإعلانات"]},
-  {id:"ops", e:"📦", en:"Customers", ar:"العملاء والشحن", items:[{k:"sg",n:8}],
-    proj:["Answer customers nicely","ردّي على العملاء بلطف"]},
+  {id:"ops", e:"📦", en:"Customers", ar:"العملاء والشحن", items:[{k:"sg",n:8},{k:"oj"}],
+    proj:["Answer customers nicely and run orders from message to delivery (2 stars or more)","ردّي على العملاء بلطف ومشّي الطلبات من الرسالة للتسليم (نجمتين أو أكتر)"], need:()=>(bizS().oj||{}).best>=2},
   {id:"web", e:"💻", en:"Websites", ar:"المواقع", items:[{k:"site",w:"salon"},{k:"code"}],
     proj:["Build a website with 4 blocks and a button, and find the button in the code","اعملي موقع فيه 4 بلوكات وزرار، ولاقي الزرار في الكود"]},
-  {id:"money", e:"💰", en:"Money", ar:"الحسابات والمرتبات", items:[{k:"cash"}],
+  {id:"money", e:"💰", en:"Money", ar:"الحسابات والمرتبات", items:[{k:"cash"},{k:"beans"}],
     proj:["Get 3 stars at the cashier","خدي 3 نجوم في الكاشير"], need:()=>(bizS().cash||{}).best>=3},
   {id:"video", e:"🎬", en:"Video & Character", ar:"الفيديو والكاركتر", soon:"Coming soon", soonAr:"قريب"},
   {id:"grow", e:"🌱", en:"Grow the Business", ar:"تطوير البيزنس", soon:"Coming soon", soonAr:"قريب"},
@@ -2388,25 +2419,27 @@ function itemInfo(it){
   if(it.k==="site") return {e:"💻", en:"Build my website", ar:"اعملي موقعك", done:!!siteOf(it.w).rewarded, act:`data-bz="site" data-v="${it.w}"`};
   if(it.k==="code") return {e:"🔍", en:"Find the button in the code", ar:"لاقي الزرار في الكود", done:!!siteOf("salon").found, act:`data-bz="site" data-v="salon"`};
   if(it.k==="cash") return {e:"🧾", en:"Cashier: prices and change", ar:"الكاشير: الأسعار والباقي", done:!!(B.cash&&B.cash.best>0), lock:cashLevel().add?"":"Play the Addition chapter in Learn first", act:`data-bz="cash" data-v="salon"`};
+  if(it.k==="oj") return {e:"📦", en:"Order journey: from message to delivery", ar:"رحلة الطلب: من الرسالة للتسليم", done:!!(B.oj&&B.oj.best>0), act:`data-bz="oj"`};
+  if(it.k==="beans") return {e:"🫘", en:"Bean math: cost, price and profit", ar:"حساب البن: التكلفة والسعر والمكسب", done:!!(B.beans&&B.beans.best>0), wlock:!B.open.coffee, lock:!B.open.coffee?"Baba opens the coffee shop first":cashLevel().add?"":"Play the Addition chapter in Learn first", act:`data-bz="beans"`};
   if(it.k==="helper") return {e:"💬", en:"Ask the helper", ar:"اطلبي من المساعد", done:B.helper.good>0, act:`data-bz="helper"`};
 }
 function trackState(T){
   if(T.soon) return {soon:true};
-  const infos=T.items.map(itemInfo), done=infos.filter(i=>i.done).length, all=done===infos.length && (!T.need || T.need());
-  return {infos, done, total:infos.length, ready:all, pending:!!bizS().pending[T.id], stage:stageOf(T.id)};
+  const infos=T.items.map(itemInfo), req=infos.filter(i=>!i.wlock), done=req.filter(i=>i.done).length, all=done===req.length && (!T.need || T.need());
+  return {infos, done, total:req.length, ready:all, pending:!!bizS().pending[T.id], stage:stageOf(T.id)};
 }
 
 /* ---------- Views ---------- */
 function vBiz(){
   bizS();
   const g=bizGate(); if(g && BZ.screen!=="map") return gateView(g);
-  const f = {cash:cashView, site:siteView, map:bizMapView, world:bizWorldView, track:bizTrackView, brand:bizBrandView, studio:studioView, gallery:galleryView, helper:helperView, hlesson:hLessonView}[BZ.screen] || bizMapView;
+  const f = {oj:ojView, beans:beansView, tasks:tasksView, cash:cashView, site:siteView, map:bizMapView, world:bizWorldView, track:bizTrackView, brand:bizBrandView, studio:studioView, gallery:galleryView, helper:helperView, hlesson:hLessonView}[BZ.screen] || bizMapView;
   return f();
 }
 function bizBack(to, label){ return `<button class="back" data-bz="${to||"map"}">← ${label||"Map"}</button>`; }
 function bizMapView(){
   const B=bizS();
-  const spots=[["salon","💈","My Salon","الصالون"],["coffee","☕","Coffee Beans","متجر البن"],["studio","🎨","Post Studio","استوديو البوستات"],["gallery","🖼️","My Gallery","المعرض"],["helper","🤖","Smart Helper","المساعد الذكي"]];
+  const spots=[["salon","💈","My Salon","الصالون"],["coffee","☕","Coffee Beans","متجر البن"],["studio","🎨","Post Studio","استوديو البوستات"],["gallery","🖼️","My Gallery","المعرض"],["helper","🤖","Smart Helper","المساعد الذكي"],["tasks","📋","Baba's Tasks"+(openTasks().length?` (${openTasks().length})`:""),"مهام بابا"]];
   return `${navTabs("biz")}
   <div class="hello"><div><h1>My Business 💼</h1><p>Walk to a place to go inside. <span class="ar" dir="rtl" lang="ar" style="display:inline">امشي لأي مكان عشان تدخليه.</span></p></div></div>
   <canvas id="bizmap" class="world bizworld" aria-label="Business town map: walk to a building"></canvas>
@@ -2426,7 +2459,7 @@ function bizWorldView(){
     <div class="bzsign"><span class="bzlogo">${br.logo}</span><b>${esc(br.name)}</b></div>
     <div style="min-width:0">${bi(W.en+" "+W.e, W.ar, true)}<p class="hint" style="margin:6px 0 0">${esc(W.like)}<span class="ar" dir="rtl" lang="ar">${esc(W.likeAr)}</span></p>
       ${br.usp?`<p style="margin:8px 0 0">⭐ Why people come: <b>${esc(br.usp)}</b></p>`:""}
-      <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="btn sm" data-bz="brand" data-v="${w}">${br.set?"✏️ Change my brand":"🎨 Make my brand"}</button><button class="btn sm alt" data-bz="studio" data-v="${w}">🖼️ Make a post</button><button class="btn sm alt" data-bz="cash" data-v="${w}">🧾 Cashier${cashLevel().add?"":" 🔒"}</button><button class="btn sm alt" data-bz="site" data-v="${w}">💻 My website</button></div></div>
+      <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="btn sm" data-bz="brand" data-v="${w}">${br.set?"✏️ Change my brand":"🎨 Make my brand"}</button><button class="btn sm alt" data-bz="studio" data-v="${w}">🖼️ Make a post</button><button class="btn sm alt" data-bz="cash" data-v="${w}">🧾 Cashier${cashLevel().add?"":" 🔒"}</button><button class="btn sm alt" data-bz="site" data-v="${w}">💻 My website</button><button class="btn sm alt" data-bz="oj" data-v="${w}">📦 ${w==="coffee"?"Orders":"Customers"}</button>${w==="coffee"?`<button class="btn sm alt" data-bz="beans">🫘 Bean math</button>`:""}<button class="btn sm alt" data-bz="tasks">📋 Baba's tasks${openTasks().length?` (${openTasks().length})`:""}</button></div></div>
   </div>
   <h2 style="font-size:1.6rem;margin:14px 0 4px">What I learn here</h2><p class="hint" style="margin:0 0 10px">Every track has 5 stages. Finish a stage, send the project to Baba, and the next stage opens! <span class="ar" dir="rtl" lang="ar" style="display:inline">كل مسار فيه 5 مراحل. خلّصي المرحلة وابعتي المشروع لبابا، والمرحلة الجاية تتفتح!</span></p>
   <div class="planets">${tracks}</div>`;
@@ -2683,6 +2716,7 @@ function bizOpen(k){
 /* ---------- Clicks ---------- */
 function bizClick(d, t){
   if(b13Click(d,t)) return true;
+  if(b14Click(d,t)) return true;
   const B=bizS(), v=d.v;
   switch(d.bz){
     case "map": BZ={screen:"map"}; sfx.tap(); return go({name:"biz"}), true;
@@ -2765,6 +2799,7 @@ function dayPlanHTML(){
   return `<div class="dayplan"><h2 style="margin:0;font-size:1.5rem">Today's plan 🗓️ <span class="ar" dir="rtl" lang="ar" style="display:inline;font-size:1.1rem">خطة النهارده</span></h2>
     ${row(1,d.school,"📚",st.en,st.ar+" (الأول دايمًا)",st.act)}
     ${row(2,d.biz,bt.e||"💼",bt.en,bt.ar,bt.act,gate==="school")}
+    ${(()=>{ const ot=openTasks()[0]; return ot?row("⭐",false,"📋","Baba's task: "+ot.text,"مهمة من بابا",`data-bz="tasks"`,gate==="school"):""; })()}
     ${row(3,d.play,"🎈","Play: dress up, my home or explore","لعب: لبس، بيتي، أو استكشاف",`data-go="dress"`)}
     ${gate==="time"?`<p class="hint" style="margin:0">⏰ Business time is finished for today. Let's study! <span class="ar" dir="rtl" lang="ar" style="display:inline">وقت البيزنس خلص النهارده. يلا نذاكر!</span></p>`:""}</div>`;
 }
@@ -2892,6 +2927,9 @@ function bizReportLines(){
   TRACKS.forEach(T=>{ const s=trackState(T); if(!s.soon) L.push(`  ${T.en}: stage ${s.stage}, ${s.done}/${s.total} done${s.pending?", waiting for your approval":""}`); });
   L.push(`  Posts in gallery: ${B.gallery.length}. Helper: ${B.helper.good} good picks of ${B.helper.asks} requests.`);
   if(B.cash) L.push(`  Cashier: best ${B.cash.best}/3 stars, played ${B.cash.plays} times.`);
+  if(B.oj) L.push(`  Order journey: best ${B.oj.best}/3 stars, ${B.oj.orders} orders run.`);
+  if(B.beans) L.push(`  Bean math (cost, price, profit): best ${B.beans.best}/3 stars, played ${B.beans.plays} times.`);
+  const TB=tasksS(); if(TB.tasks.length) L.push(`  Baba's tasks: ${TB.tasks.filter(x=>x.st==="done").length} done, ${TB.tasks.filter(x=>x.st==="wait").length} waiting, ${TB.tasks.filter(x=>x.st==="new").length} open. Rewards this week: ${weekTotal()} / ${TB.tcap} ${TB.tcur}.`);
   const d=dayRec(); L.push(`  Today: school ${d.school?"done":"not yet"}, business ${d.biz?"done":"not yet"}, play ${d.play?"done":"not yet"}; business minutes ${Math.round(d.bizSec/60)}.`);
   return L;
 }
@@ -2905,6 +2943,7 @@ function bizParentCard(){
     ${pend.length?pend.map(id=>{ const T=TRACKS.find(x=>x.id===id); return `<div class="bzpend"><b>✉️ ${T.e} ${T.en}: ${esc(T.proj[0])}</b><span dir="rtl" lang="ar">${esc(T.proj[1])}</span>
       <div class="row" style="justify-content:flex-start"><button class="btn sm" data-bz="papprove" data-v="${id}">✅ Approve · موافق</button><button class="btn sm alt" data-bz="pnotyet" data-v="${id}">Not yet · لسه</button></div></div>`; }).join("")
       :`<p class="hint" style="margin:0">No projects waiting. · مفيش مشاريع مستنية.</p>`}
+    ${taskParentHTML()}
     <div class="bzpend" style="border-color:var(--mint)"><b>🗓️ Today: school ${dayRec().school?"✅":"⏳"} · business ${dayRec().biz?"✅":"⏳"} · play ${dayRec().play?"✅":"⏳"}</b>
       <span dir="rtl" lang="ar">المدرسة الأول، وبعدين البيزنس. أقل نسبة للمدرسة من وقت اللعب:</span>
       <div class="row" style="justify-content:flex-start">${[[.3,"30%"],[.5,"50%"],[.7,"70%"]].map(([x,l])=>`<button class="btn sm ${(B.share??.5)===x?"":"alt"}" data-bz="pshare" data-v="${x}">${l}</button>`).join("")}
@@ -2915,6 +2954,284 @@ function bizParentCard(){
     <details><summary style="cursor:pointer;font-weight:800">Gallery (${B.gallery.length}) · المعرض</summary><div class="bzgal" style="margin-top:8px">${B.gallery.slice().reverse().map(p=>`<div style="position:relative">${bizPost(p,true)}<button class="btn sm danger" style="position:absolute;top:4px;right:4px;padding:4px 10px" data-bz="pdel" data-v="${p.id}" aria-label="Delete post">✕</button></div>`).join("")||`<span class="hint">No posts yet.</span>`}</div></details>
     <details><summary style="cursor:pointer;font-weight:800">Smart helper log (${B.helper.log.length}) · سجل المساعد</summary><div style="max-height:220px;overflow:auto;margin-top:8px;display:grid;gap:6px">${B.helper.log.slice(-30).reverse().map(x=>`<div style="padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07)"><small>${new Date(x.t).toLocaleString()}</small><div>${esc(x.q)} → <b>${esc(x.a)}</b>${x.ok===0?" ❌":x.ok?" ✅":""}</div></div>`).join("")||`<span class="hint">Nothing yet.</span>`}</div></details>
   </div>`;
+}
+
+
+/* ---------------- v14: order journey, coffee-bean math, Baba's tasks ----------------
+   Everything is scripted and stays inside the app. No live AI, no payments: Baba's rewards are notes he gives in real life. */
+const OJ_STEPS = {
+  coffee:[["💬","Message","رسالة","A customer sends a message to order.","عميل بيبعت رسالة عشان يطلب."],
+    ["✅","Check","تأكيد","We say thank you and check the order and the address.","بنقول شكرًا ونتأكد من الطلب والعنوان."],
+    ["📦","Pack","تغليف","We put the right bags in a box.","بنحط العبوات الصح في كرتونة."],
+    ["🚚","Courier","المندوب","We give the box to the delivery driver.","بنسلّم الكرتونة لمندوب التوصيل."],
+    ["🏠","Delivered","التسليم","The customer gets the box at home.","العميل بيستلم الكرتونة في بيته."],
+    ["💛","Follow up","المتابعة","We ask: did you like it?","بنسأل العميل: عجبك؟"]],
+  salon:[["💬","Message","رسالة","A customer sends a message to book.","عميل بيبعت رسالة عشان يحجز."],
+    ["🗓️","Book","الحجز","We pick a free time and write the name.","بنختار معاد فاضي ونكتب الاسم."],
+    ["🙋","Welcome","الاستقبال","The front desk says hello at the door.","الاستقبال بيرحّب بيه على الباب."],
+    ["✂️","Haircut","القصة","The barber does the haircut.","الحلاق بيعمل القصة."],
+    ["🧾","Pay","الدفع","The customer pays at the cashier.","العميل بيدفع عند الكاشير."],
+    ["💛","Follow up","المتابعة","We ask: did you like it?","بنسأل العميل: عجبك؟"]],
+};
+const OJ_NAMES = [["Mona","منى"],["Omar","عمر"],["Sara","سارة"],["Youssef","يوسف"],["Laila","ليلى"],["Karim","كريم"],["Nour","نور"],["Hassan","حسن"]];
+const OJ_PLACES = [["Nasr City","مدينة نصر"],["Maadi","المعادي"],["Zamalek","الزمالك"],["Heliopolis","مصر الجديدة"],["Dokki","الدقي"]];
+/* who-does-it questions: [step, en, ar, [good en, ar], [bad...], [bad...]] */
+const OJ_WHO = {
+  coffee:[[0,"Who reads the customer's message first?","مين بيقرا رسالة العميل الأول؟",["We do, the shop","إحنا، المتجر"],["The delivery driver","مندوب التوصيل"],["The neighbor","الجيران"]],
+    [1,"Before we pack, what do we check?","قبل ما نغلّف، بنتأكد من إيه؟",["The order and the address","الطلب والعنوان"],["The weather","الجو"],["Nothing","ولا حاجة"]],
+    [3,"Who do we give the box to?","بنسلّم الكرتونة لمين؟",["The delivery driver","مندوب التوصيل"],["Anyone in the street","أي حد في الشارع"],["The cat 🐱","القطة 🐱"]],
+    [4,"Who receives the box at home?","مين بيستلم الكرتونة في البيت؟",["The customer whose name is on the box","العميل اللي اسمه على الكرتونة"],["The driver keeps it","المندوب ياخدها"],["We do","إحنا"]],
+    [5,"After the box arrives, what do we do?","بعد ما الكرتونة توصل، بنعمل إيه؟",["Ask if they liked it","نسأل العميل عجبه ولا لأ"],["Forget the customer","ننسى العميل"],["Send the same box again","نبعت نفس الكرتونة تاني"]]],
+  salon:[[0,"Who answers the booking message?","مين بيرد على رسالة الحجز؟",["The front desk (us)","الاستقبال (إحنا)"],["Another customer","زبون تاني"],["The mirror 🪞","المراية 🪞"]],
+    [1,"What do we write when someone books?","بنكتب إيه لما حد يحجز؟",["The name and the time","الاسم والمعاد"],["Their favorite color","لونه المفضل"],["Nothing","ولا حاجة"]],
+    [2,"Who says hello when the customer walks in?","مين بيرحّب بالزبون لما يدخل؟",["The front desk","الاستقبال"],["Nobody","محدش"],["The hair dryer","السشوار"]],
+    [4,"Where does the customer pay?","الزبون بيدفع فين؟",["At the cashier","عند الكاشير"],["In the chair","على الكرسي"],["Outside in the street","برّه في الشارع"]],
+    [5,"After the haircut, what do we do?","بعد القصة، بنعمل إيه؟",["Say thank you and ask if they liked it","نقول شكرًا ونسأله عجبته"],["Push them out fast","نطلعه بسرعة"],["Cut more hair","نقص شعر تاني"]]],
+};
+/* customer problems: [en, ar, best reply, ok reply, bad reply], each reply [en, ar] */
+const OJ_PROB = {
+  coffee:[["The box came late! 😟","الكرتونة وصلت متأخر! 😟",["Sorry it was late! Your next order goes first, with a free cup.","آسفين إنها اتأخرت! طلبك الجاي هيخرج الأول، ومعاه فنجان هدية."],["Sorry.","آسفين."],["Not my problem.","مش مشكلتي."]],
+    ["I ordered a small bag, but I got a big one.","طلبت عبوة صغيرة، وجاتلي كبيرة.",["Sorry! We will send the right bag today and take this one back.","آسفين! هنبعتلك العبوة الصح النهارده وناخد دي."],["Oh, okay.","آه، ماشي."],["Just keep it and pay more.","خليها وادفع زيادة."]],
+    ["The bag is torn.","العبوة مقطوعة.",["Sorry! We will send you a new bag for free.","آسفين! هنبعتلك عبوة جديدة ببلاش."],["That happens.","بتحصل."],["You tore it!","إنت اللي قطعتها!"]],
+    ["Can I change my address?","ممكن أغيّر العنوان؟",["Sure! What is the new address? We will fix it before the driver leaves.","أكيد! إيه العنوان الجديد؟ هنعدّله قبل ما المندوب يتحرك."],["Maybe.","يمكن."],["No, never.","لأ، خالص."]],
+    ["Nobody was home when the driver came.","محدش كان في البيت لما المندوب جه.",["No problem! When can the driver come back?","ولا يهمك! المندوب ييجي تاني إمتى؟"],["Okay, bye.","أوكي، باي."],["Then no coffee for you.","يبقى مفيش قهوة."]]],
+  salon:[["I waited a long time! 😟","استنيت كتير! 😟",["Sorry for the wait! Next time we will call you when your chair is ready.","آسفين على الانتظار! المرة الجاية هنكلمك لما الكرسي يجهز."],["Sorry.","آسفين."],["Everyone waits.","كله بيستنى."]],
+    ["I booked at 5, but my name is not in the book.","حجزت الساعة 5، واسمي مش مكتوب.",["Sorry! Let us find a time for you right now.","آسفين! يلا نلاقيلك معاد دلوقتي حالًا."],["Hmm.","امم."],["You did not book.","إنت ما حجزتش."]],
+    ["I don't like my haircut.","القصة مش عاجباني.",["Sorry! Come back and we will fix it for free.","آسفين! تعالى تاني ونظبطها ببلاش."],["It looks fine.","شكلها حلو."],["Too bad.","معلش بقى."]],
+    ["Can I change my time?","ممكن أغيّر المعاد؟",["Sure! Which time is good for you?","أكيد! أنهي معاد يناسبك؟"],["Maybe later.","يمكن بعدين."],["No changes!","مفيش تغيير!"]]],
+};
+const OJ_N = 3;
+function ojS(){ const B=bizS(); return B.oj ||= {plays:0, best:0, orders:0}; }
+function ojOrder(w){
+  const [nm,nmAr]=pick(OJ_NAMES), [pl,plAr]=pick(OJ_PLACES), o={name:nm, nameAr:nmAr, place:pl, placeAr:plAr};
+  if(w==="coffee"){ const want={small:rnd(1,3), big:rnd(0,1), gift:rnd(0,2)}; if(want.big+want.gift===0) want.gift=1; o.want=want;
+    const parts=[], partsAr=[]; const W=[["small","small bag","عبوة صغيرة","عبوات صغيرة"],["big","big bag","عبوة كبيرة","عبوات كبيرة"],["gift","gift bag","عبوة هدية","عبوات هدية"]];
+    W.forEach(([k,en,ar1,arN])=>{ const n=want[k]; if(n){ parts.push(`${n} ${en}${n>1?"s":""}`); partsAr.push(n===1?ar1:n===2?(ar1.replace("عبوة","عبوتين")):`${n} ${arN}`); } });
+    o.msg=`Hi! I want ${parts.join(" and ")} to ${pl}, please. I'm ${nm}.`; o.msgAr=`أهلًا! عايز ${partsAr.join(" و")} على ${plAr} لو سمحت. أنا ${nmAr}.`; }
+  else { const slots=[3,4,5,6,7], taken=new Set(); while(taken.size<2) taken.add(pick(slots));
+    const free=slots.filter(s=>!taken.has(s)); let ask, ans;
+    if(Math.random()<.5){ ask=[pick(free)]; ans=ask[0]; }
+    else { const t=pick([...taken]); const alt=free.find(s=>s>t)||free.find(s=>s<t); ask=[t,alt]; ans=alt; }
+    o.slots=slots.map(s=>({s, who:taken.has(s)?pick(OJ_NAMES.filter(x=>x[0]!==nm))[0]:""})); o.ans=ans;
+    o.msg=ask.length===1?`Hi! Can I book a haircut at ${ask[0]}? I'm ${nm}.`:`Hi! Can I come at ${ask[0]} or ${ask[1]}? I'm ${nm}.`;
+    o.msgAr=ask.length===1?`أهلًا! ممكن أحجز قصة الساعة ${ask[0]}؟ أنا ${nmAr}.`:`أهلًا! ممكن آجي الساعة ${ask[0]} أو ${ask[1]}؟ أنا ${nmAr}.`; }
+  return o;
+}
+function ojStart(w){
+  if(timeUp()) return go({name:"rest"});
+  w = (w==="coffee" && bizS().open.coffee) ? "coffee" : "salon";
+  const steps=OJ_STEPS[w].map((s,i)=>({i,s}));
+  let sh; do{ sh=shuffle(steps); }while(sh.every((x,k)=>x.i===k));
+  const whoPool=shuffle(OJ_WHO[w]), probPool=shuffle(OJ_PROB[w]);
+  const tasks=[]; for(let k=0;k<OJ_N;k++){ const o=ojOrder(w); tasks.push({t:w==="coffee"?"pack":"book", o, step:w==="coffee"?2:1}, {t:"who", o, q:whoPool[k%whoPool.length], step:whoPool[k%whoPool.length][0]}, {t:"prob", o, q:probPool[k%probPool.length], step:5}); }
+  BZ={screen:"oj", w, from:BZ.screen, j:{w, phase:"seq", seq:sh, got:[], tasks, i:0, first:0, n:tasks.length+1, tried:false, box:{small:0,big:0,gift:0}, wrong:[]}};
+  go({name:"biz"}); speak("Let's run some orders! First, put the steps in order.",true);
+}
+function ojRoad(J, cur){
+  const S6=OJ_STEPS[J.w];
+  return `<div class="ojroad">${S6.map((s,i)=>`<div class="ojstep ${i<cur?"done":""} ${i===cur?"now":""}"><span>${s[0]}</span><b>${s[1]}</b><small dir="rtl" lang="ar">${s[2]}</small></div>`).join("")}
+    <i class="ojtruck" style="--p:${Math.max(0,cur)/(S6.length-1)}">${J.w==="coffee"?"🚚":"💈"}</i></div>`;
+}
+function ojView(){
+  const J=BZ.j, br=brandOf(J.w), S6=OJ_STEPS[J.w];
+  if(J.done) return `<div class="sheet"><h2>📦 Orders done!</h2>${J.first===J.n?`<div class="duper">🌟 Super duper, ${esc(S.child.name)}! 🌟</div>`:""}<div class="bigstars">${"★".repeat(J.stars)}<span class="e">${"★".repeat(3-J.stars)}</span></div>
+    <p style="margin:0;font-size:1.15rem">${J.first} of ${J.n} right the first time. ${OJ_N} happy customers at ${esc(br.name)}!<span class="ar" dir="rtl" lang="ar">${OJ_N} عملاء مبسوطين!</span></p>
+    <div class="row"><button class="btn" data-bz="oj" data-v="${J.w}">Play again</button><button class="btn alt" data-bz="world" data-v="${J.w}">${esc(br.name)}</button></div></div>`;
+  const top=`<div class="gtop"><button class="back" style="margin:0" data-bz="world" data-v="${J.w}">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">📦 ${esc(br.name)}: ${J.w==="coffee"?"order journey":"customer journey"}</b><div class="dots">${Array.from({length:OJ_N},(_,k)=>`<i class="${J.phase==="run"&&Math.floor(J.i/3)>k?"ok":""} ${J.phase==="run"&&Math.floor(J.i/3)===k?"now":""}"></i>`).join("")}</div></div>`;
+  if(J.phase==="seq"){
+    const next=J.got.length;
+    return `<div class="game shopgame">${top}<div class="sheet ojsheet">
+      ${bi("How does an order travel? Tap the steps in order, from first to last.","الطلب بيمشي إزاي؟ دوسي على الخطوات بالترتيب من الأول للآخر.",true)}
+      <div class="ojline">${S6.map((s,i)=>`<div class="ojslot ${i<next?"done":""}">${i<next?`<span>${s[0]}</span><b>${s[1]}</b><small dir="rtl" lang="ar">${s[2]}</small>`:`<span>${i+1}</span>`}</div>`).join("")}</div>
+      ${next>0?`<p class="hint" style="margin:0">${esc(S6[next-1][3])} <span class="ar" dir="rtl" lang="ar" style="display:inline">${esc(S6[next-1][4])}</span></p>`:""}
+      <div class="tiles">${J.seq.filter(x=>!J.got.includes(x.i)).map(x=>`<button class="tile sm ojcard ${J.wrong.includes(x.i)?"wrong":""}" data-bz="ojseq" data-v="${x.i}">${x.s[0]} ${x.s[1]}<small class="ar" dir="rtl" lang="ar">${x.s[2]}</small></button>`).join("")}</div>
+      <div class="cheer" id="cheer" aria-live="polite"></div></div></div>`;
+  }
+  const T=J.tasks[J.i], o=T.o, ordNo=Math.floor(J.i/3)+1;
+  const msg=`<div class="ojmsg"><span class="ojav">${o.name[0]}</span><div><small>${esc(o.name)} · ${J.w==="coffee"?esc(o.place):"📱"}</small><p>${esc(o.msg)}</p><p class="ar" dir="rtl" lang="ar">${esc(o.msgAr)}</p></div></div>`;
+  let body="";
+  if(T.t==="pack"){ const B=J.box, I=[["small","🫘","Small bag","عبوة صغيرة"],["big","🛍️","Big bag","عبوة كبيرة"],["gift","🎁","Gift bag","عبوة هدية"]];
+    body=`${bi(`Order ${ordNo}: pack the box for ${o.name}. Tap a bag to put it in. Tap it in the box to take it out.`,`طلب ${ordNo}: غلّفي الكرتونة لـ${o.nameAr}. دوسي على العبوة عشان تحطيها، ودوسي عليها جوه الكرتونة عشان تشيليها.`)}
+      <div class="tiles">${I.map(([k,e,en,ar])=>`<button class="tile sm" data-bz="ojadd" data-v="${k}">${e} ${en}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`).join("")}</div>
+      <div class="ojbox"><b>📦 ${esc(o.name)} · ${esc(o.place)}</b><div class="ojin">${I.flatMap(([k,e])=>Array.from({length:B[k]},()=>`<button class="ojbag" data-bz="ojrem" data-v="${k}" aria-label="Take out">${e}</button>`)).join("")||`<span class="hint">Empty · فاضية</span>`}</div></div>
+      <button class="btn" data-bz="ojclose" ${B.small+B.big+B.gift?"":"disabled"}>✅ Close the box · اقفلي الكرتونة</button>`; }
+  else if(T.t==="book"){
+    body=`${bi(`Order ${ordNo}: ${o.name} wants to book. Tap a FREE time that fits the message.`,`طلب ${ordNo}: ${o.nameAr} عايز يحجز. دوسي على معاد فاضي يناسب الرسالة.`)}
+      <div class="ojbook">${o.slots.map(x=>`<button class="ojslotb ${x.who?"taken":""} ${J.wrong.includes(x.s)?"wrong":""}" data-bz="ojbk" data-v="${x.s}"><b>🕒 ${x.s}:00</b><span>${x.who?"✍️ "+esc(x.who):"Free · فاضي"}</span></button>`).join("")}</div>`; }
+  else if(T.t==="who"){ const q=T.q, ch=J.ch||(J.ch=shuffle([[q[3],1],[q[4],0],[q[5],0]]));
+    body=`${bi(q[1],q[2],true)}<div class="hopts">${ch.map((c,k)=>`<button class="tile ${J.wrong.includes(k)?"wrong":""}" data-bz="ojans" data-v="${k}" ${J.wrong.includes(k)?"disabled":""}>${esc(c[0][0])}<small class="ar" dir="rtl" lang="ar">${esc(c[0][1])}</small></button>`).join("")}</div>`; }
+  else { const q=T.q, ch=J.ch||(J.ch=shuffle([[q[2],2],[q[3],1],[q[4],0]]));
+    body=`<div class="ojmsg prob"><span class="ojav">${o.name[0]}</span><div><small>${esc(o.name)} 😟</small><p>${esc(q[0])}</p><p class="ar" dir="rtl" lang="ar">${esc(q[1])}</p></div></div>
+      ${bi("A customer has a problem. Which reply is the BEST?","العميل عنده مشكلة. أنهي رد هو الأحسن؟",true)}
+      <div class="hopts">${ch.map((c,k)=>`<button class="tile ${J.wrong.includes(k)?"wrong":""}" data-bz="ojans" data-v="${k}" ${J.wrong.includes(k)?"disabled":""}>💬 ${esc(c[0][0])}<small class="ar" dir="rtl" lang="ar">${esc(c[0][1])}</small></button>`).join("")}</div>`; }
+  return `<div class="game shopgame">${top}<div class="sheet ojsheet">${ojRoad(J, T.step)}${T.t!=="prob"?msg:""}${body}
+    <button class="say" data-bz="ojsay" aria-label="Read it aloud">🔈</button><div class="cheer" id="cheer" aria-live="polite"></div></div></div>`;
+}
+function ojOk(msg){ const J=BZ.j; if(!J.tried) J.first++; J.tried=true; sfx.ok(); cheer(msg+" ⭐"); J.lock=true;
+  setTimeout(()=>{ if(BZ.screen!=="oj"||BZ.j!==J) return; J.lock=false; ojNext(); }, 1500); }
+function ojNo(msg){ const J=BZ.j; J.tried=true; sfx.no(); render(); cheer(msg+" 💫",true); speak(msg.split("  ")[0],true); }
+function ojNext(){ const J=BZ.j;
+  if(J.phase==="seq"){ J.phase="run"; J.i=0; }
+  else J.i++;
+  J.tried=false; J.wrong=[]; J.ch=null; J.box={small:0,big:0,gift:0};
+  if(J.phase==="run" && J.i>=J.tasks.length){ const r=J.first/J.n; J.stars=r>=.85?3:r>=.6?2:1; J.done=true;
+    const O=ojS(); O.plays++; O.best=Math.max(O.best,J.stars); O.orders+=OJ_N; O.last=Date.now(); addStars(J.stars); markDay("biz"); save(); sfx.win(); render(); winSpeak(J.first===J.n, J.stars>=2, J.first, J.n, J.stars); return; }
+  render(); }
+function ojClick(d,t){
+  const J=BZ.j, v=d.v; if(!J||J.lock) return true;
+  const T=J.tasks&&J.tasks[J.i];
+  switch(d.bz){
+    case "ojsay": { if(J.phase==="seq") speak("Tap the steps in order. What happens first?",true); else if(T.t==="prob") speak(T.q[0]+" Which reply is the best?",true); else if(T.t==="who") speak(T.q[1],true); else speak(T.o.msg,true); return true; }
+    case "ojseq": { const k=+v, need=J.got.length;
+      if(k===need){ J.got.push(k); J.wrong=[]; sfx.ok(); if(J.got.length===OJ_STEPS[J.w].length){ if(!J.tried) J.first++; J.tried=true; render(); cheer("Yes! That's the whole journey! ⭐ صح! دي الرحلة كلها"); J.lock=true; setTimeout(()=>{ if(BZ.screen!=="oj"||BZ.j!==J) return; J.lock=false; ojNext(); },1700); } else { render(); cheer("Yes! ⭐"); } }
+      else { J.tried=true; J.wrong=[k]; sfx.no(); render(); const S6=OJ_STEPS[J.w]; cheer(need?`Not yet! What comes after "${S6[need-1][1]}"? 💫  إيه اللي بعد كده؟`:"Not yet! What happens FIRST? 💫  إيه أول خطوة؟",true); }
+      return true; }
+    case "ojadd": { const B=J.box; if(B.small+B.big+B.gift>=8){ sfx.no(); cheer("The box is full! 📦 الكرتونة اتملت",true); return true; } B[v]++; sfx.tap(); render(); return true; }
+    case "ojrem": { if(J.box[v]>0) J.box[v]--; sfx.tap(); render(); return true; }
+    case "ojclose": { const B=J.box, W=T.o.want; if(B.small===W.small&&B.big===W.big&&B.gift===W.gift){ ojOk(`Perfect box for ${T.o.name}!`); }
+      else { const k=["small","big","gift"].find(k=>B[k]!==W[k]), nm={small:["small bags","العبوات الصغيرة"],big:["big bags","العبوات الكبيرة"],gift:["gift bags","عبوات الهدية"]}[k];
+        ojNo(`Check the ${nm[0]}: the message says ${W[k]}, the box has ${B[k]}.  راجعي ${nm[1]}: الرسالة فيها ${W[k]}`); } return true; }
+    case "ojbk": { const s=+v, sl=T.o.slots.find(x=>x.s===s);
+      if(s===T.o.ans){ ojOk(`Booked! ${T.o.name} at ${s}:00 ✍️`); }
+      else { J.wrong.push(s); ojNo(sl.who?`${s}:00 is taken by ${sl.who}. Find a free time!  المعاد ده محجوز`:`${s}:00 is free, but read the message again!  اقري الرسالة تاني`); } return true; }
+    case "ojans": { const c=J.ch[+v];
+      if(T.t==="who"){ if(c[1]) ojOk("Yes!"); else { J.wrong.push(+v); ojNo(`Hmm, not that one. ${OJ_STEPS[J.w][T.step][3]}  ${OJ_STEPS[J.w][T.step][4]}`); } }
+      else { if(c[1]===2) ojOk("Best reply! Say sorry and FIX it."); else { J.wrong.push(+v); ojNo(c[1]===1?"Nice, but it does not fix the problem. Say sorry AND fix it!  كويس، بس لازم نحل المشكلة كمان":"That is not kind. Customers need a kind reply!  ده مش لطيف. العميل محتاج رد لطيف"); } }
+      return true; }
+  }
+  return false;
+}
+
+/* ---------- Coffee-bean math: cost, price and profit ---------- */
+function beansStart(){
+  if(timeUp()) return go({name:"rest"});
+  if(!bizS().open.coffee){ sfx.no(); toast("🔒 Ask Baba to open the coffee shop · اطلبي من بابا يفتح متجر البن"); return; }
+  if(!cashLevel().add){ sfx.no(); toast("🔒 Play the Addition chapter in Learn first · العبي فصل الجمع الأول"); return; }
+  BZ={screen:"beans", w:"coffee", from:BZ.screen, b:{i:0, n:6, first:0, intro:true}}; go({name:"biz"});
+}
+const coins = (n, cls) => `<span class="bcoins">${Array.from({length:n},()=>`<i class="${cls||""}">🪙</i>`).join("")}</span>`;
+function beansRound(){
+  const Bm=BZ.b, L=cashLevel(), types=["cost","pl","price","many"]; if(L.sub) types.push("profit","profit");
+  let t=pick(types); if(Bm.lastT===t) t=pick(types); Bm.lastT=t; let q;
+  if(t==="cost"){ const a=rnd(2,6), b=rnd(1,2); q={t, a, b, ans:a+b, en:`Beans for one bag cost ${a}. The empty bag costs ${b}. How much does one full bag cost us?`, ar:`البن اللي في العبوة بـ${a}، والعبوة الفاضية بـ${b}. العبوة المليانة بتكلّفنا كام؟`, vis:`<div class="bvis"><span>🫘 ${coins(a)}</span><b>+</b><span>🛍️ ${coins(b)}</span></div>`}; }
+  else if(t==="profit"){ const c=rnd(3,7), p=c+rnd(1,4); q={t, c, p, ans:p-c, en:`One bag costs us ${c}. We sell it for ${p}. How much do we earn? That is the PROFIT.`, ar:`العبوة بتكلّفنا ${c}، وبنبيعها بـ${p}. بنكسب كام؟ ده اسمه المكسب.`, vis:`<div class="bvis"><span>🏷️ ${p}: ${coins(c,"cost")}${coins(p-c,"gain")}</span></div><p class="hint" style="margin:0">🟤 cost · التكلفة &nbsp; 🟡 profit · المكسب</p>`}; }
+  else if(t==="pl"){ const c=rnd(3,7), k=pick([1,1,0,-1]), p=Math.max(1,c+k*rnd(1,2)); const ans=p>c?"gain":p===c?"zero":"loss";
+    q={t, c, p, ans, en:`It costs us ${c}. We sell it for ${p}. Do we earn money?`, ar:`بتكلّفنا ${c}، وبنبيعها بـ${p}. هل بنكسب؟`, vis:`<div class="bvis"><span>💰 Cost · التكلفة ${coins(c,"cost")}</span><span>🏷️ Price · السعر ${coins(p)}</span></div>`,
+      opts:[["gain","😀 Profit","بنكسب"],["zero","😐 No profit","لا مكسب ولا خسارة"],["loss","😢 Loss","بنخسر"]]}; }
+  else if(t==="price"){ const c=rnd(3,8), g=rnd(1,3); q={t, c, g, ans:c+g, en:`One bag costs us ${c}. Set the price so we earn ${g} on each bag.`, ar:`العبوة بتكلّفنا ${c}. حطي السعر عشان نكسب ${g} في كل عبوة.`}; Bm.price=c; }
+  else { const n=rnd(2,3), g=rnd(1,3); q={t, n, g, ans:n*g, en:`We sold ${n} bags. We earn ${g} on each bag. How much did we earn altogether?`, ar:`بعنا ${n} عبوات، وبنكسب ${g} في كل عبوة. كسبنا كام كله؟`, vis:`<div class="bvis">${Array.from({length:n},()=>`<span>🫘 ${coins(g,"gain")}</span>`).join("<b>+</b>")}</div>`}; }
+  if(typeof q.ans==="number" && t!=="price") q.ch=numChoices(q.ans,0,20);
+  Bm.q=q; Bm.tried=false; Bm.wrong=[];
+}
+function beansView(){
+  const Bm=BZ.b, br=brandOf("coffee");
+  if(Bm.intro) return `${navTabs("biz")}${bizBack("world", BIZ_WORLDS.coffee.en)}
+    <div class="sheet beansheet"><div style="font-size:3.4rem">🫘🛍️🪙</div>${bi("Bean math: how a coffee shop earns money","حساب البن: المتجر بيكسب فلوس إزاي",true)}
+    <div class="bdefs"><div><b>💰 Cost</b><span dir="rtl" lang="ar">التكلفة</span><p>What WE pay for beans and the bag.</p><p dir="rtl" lang="ar">اللي إحنا بندفعه في البن والعبوة.</p></div>
+      <div><b>🏷️ Price</b><span dir="rtl" lang="ar">السعر</span><p>What the CUSTOMER pays us.</p><p dir="rtl" lang="ar">اللي العميل بيدفعهولنا.</p></div>
+      <div><b>😀 Profit</b><span dir="rtl" lang="ar">المكسب</span><p>Price minus cost. What we keep!</p><p dir="rtl" lang="ar">السعر ناقص التكلفة. ده اللي بيفضل معانا!</p></div></div>
+    <button class="btn" data-bz="bgo">▶️ Let's count! · يلا نحسب</button></div>`;
+  if(Bm.done) return `<div class="sheet"><h2>🫘 Bean math done!</h2>${Bm.first===Bm.n?`<div class="duper">🌟 Super duper, ${esc(S.child.name)}! 🌟</div>`:""}<div class="bigstars">${"★".repeat(Bm.stars)}<span class="e">${"★".repeat(3-Bm.stars)}</span></div>
+    <p style="margin:0;font-size:1.15rem">${Bm.first} of ${Bm.n} right the first time. ${esc(br.name)} knows its profit!<span class="ar" dir="rtl" lang="ar">بقيتي عارفة المكسب!</span></p>
+    <div class="row"><button class="btn" data-bz="beans">Play again</button><button class="btn alt" data-bz="world" data-v="coffee">${esc(br.name)}</button></div></div>`;
+  const q=Bm.q, dots=Array.from({length:Bm.n},(_,k)=>`<i class="${k<Bm.i?"ok":""} ${k===Bm.i?"now":""}"></i>`).join("");
+  let ans;
+  if(q.t==="pl") ans=`<div class="tiles">${q.opts.map(([k,en,ar])=>`<button class="tile ${Bm.wrong.includes(k)?"wrong":""}" data-bz="bans" data-v="${k}" ${Bm.wrong.includes(k)?"disabled":""}>${en}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`).join("")}</div>`;
+  else if(q.t==="price"){ const p=Bm.price, g=p-q.c;
+    ans=`<div class="bprice"><button class="btn alt" data-bz="bstep" data-v="-1" aria-label="Lower price">−</button><div class="btag" style="--bc:${br.color}">🏷️ <b>${p}</b></div><button class="btn alt" data-bz="bstep" data-v="1" aria-label="Raise price">+</button></div>
+      <div class="bvis"><span>${coins(Math.min(p,q.c),"cost")}${g>0?coins(g,"gain"):""}</span></div><p class="hint" style="margin:0">🟤 cost · التكلفة &nbsp; 🟡 profit · المكسب</p>
+      <p style="margin:0;font-weight:800;color:${g>0?"var(--mint)":g<0?"var(--bad)":"var(--muted)"}">${g>0?`😀 We earn ${g} · بنكسب ${g}`:g<0?`😢 We lose ${-g} · بنخسر ${-g}`:"😐 No profit · مفيش مكسب"}</p>
+      <button class="btn" data-bz="bset">✅ Put the price tag · حطي السعر</button>`; }
+  else ans=`<div class="tiles">${q.ch.map(c=>`<button class="tile cashans ${Bm.wrong.includes(c.value)?"wrong":""}" data-bz="bans" data-v="${c.value}" ${Bm.wrong.includes(c.value)?"disabled":""}>${c.value}</button>`).join("")}</div>`;
+  return `<div class="game shopgame"><div class="gtop"><button class="back" style="margin:0" data-bz="world" data-v="coffee">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">🫘 ${esc(br.name)} bean math</b><div class="dots">${dots}</div></div>
+  <div class="sheet beansheet">${q.vis||""}${bi(q.en,q.ar,true)}<button class="say" data-bz="bsay" aria-label="Read it aloud">🔈</button>${ans}
+    <div class="cheer" id="cheer" aria-live="polite"></div></div></div>`;
+}
+function beansClick(d,t){
+  const Bm=BZ.b, v=d.v;
+  switch(d.bz){
+    case "beans": sfx.tap(); beansStart(); return true;
+    case "bgo": Bm.intro=false; beansRound(); sfx.tap(); render(); return true;
+  }
+  if(!Bm||Bm.lock) return d.bz&&["bsay","bans","bstep","bset"].includes(d.bz);
+  const q=Bm.q;
+  switch(d.bz){
+    case "bsay": speak(q.en,true); return true;
+    case "bstep": Bm.price=Math.max(1,Math.min(20,Bm.price+(+v))); sfx.tap(); render(); return true;
+    case "bset": if(Bm.price===q.ans) beansOk(`Price ${q.ans}: we earn ${q.g}!`); else beansNo(Bm.price<q.ans?`Too low. Price ${Bm.price} earns ${Math.max(0,Bm.price-q.c)}. Go up!  السعر قليل، زوّديه`:`Too high. We want to earn ${q.g}, not ${Bm.price-q.c}.  السعر عالي، قلّليه`); return true;
+    case "bans": { const val=q.t==="pl"?v:+v;
+      if(val===q.ans) beansOk(q.t==="pl"?({gain:"Yes! Price is more than cost: profit!",zero:"Yes! Price = cost: no profit.",loss:"Yes! Price is less than cost: we lose."})[q.ans]:`Yes! ${q.ans}`);
+      else { Bm.wrong.push(val); beansNo({cost:"Add the beans and the bag.  اجمعي البن والعبوة",profit:"Price minus cost. Count up from the cost!  عدّي من التكلفة للسعر",many:`Add ${q.g} ${q.n} times.  اجمعي ${q.g} كذا مرة`,pl:"Compare the price and the cost.  قارني السعر بالتكلفة"}[q.t]); }
+      return true; }
+  }
+  return false;
+}
+function beansOk(msg){ const Bm=BZ.b; if(!Bm.tried) Bm.first++; Bm.tried=true; Bm.lock=true; sfx.ok(); cheer(msg+" ⭐");
+  setTimeout(()=>{ if(BZ.screen!=="beans"||BZ.b!==Bm) return; Bm.lock=false; Bm.i++;
+    if(Bm.i>=Bm.n){ const r=Bm.first/Bm.n; Bm.stars=r>=.85?3:r>=.6?2:1; Bm.done=true; const B=bizS(); B.beans ||= {plays:0,best:0}; B.beans.plays++; B.beans.best=Math.max(B.beans.best,Bm.stars); B.beans.last=Date.now(); addStars(Bm.stars); markDay("biz"); save(); sfx.win(); render(); winSpeak(Bm.first===Bm.n, Bm.stars>=2, Bm.first, Bm.n, Bm.stars); }
+    else { beansRound(); render(); } }, 1300); }
+function beansNo(msg){ const Bm=BZ.b; Bm.tried=true; sfx.no(); render(); cheer(msg+" 💫",true); }
+
+/* ---------- Baba's tasks: real tasks, approved in the grown-ups area, reward = a note with a weekly cap ---------- */
+const TASK_IDEAS = [["Tell Baba 3 reasons people choose his salon","قولي لبابا 3 أسباب الناس بتختار صالونه عشانها"],["Draw a new logo idea on paper","ارسمي فكرة لوجو جديد على ورقة"],["Count the coffee bags with Baba","عدّي عبوات البن مع بابا"],["Make a post in the studio for Baba","اعملي بوست في الاستوديو لبابا"],["Say hello nicely to a customer with Baba","سلّمي على عميل بلطف مع بابا"],["Tidy your desk","رتّبي مكتبك"]];
+function tasksS(){ const B=bizS(); B.tasks ||= []; B.rewards ||= []; if(B.tcap==null) B.tcap=50; B.tcur ||= "EGP"; return B; }
+function weekKey(t){ const d=new Date(t||Date.now()); d.setHours(0,0,0,0); d.setDate(d.getDate()-((d.getDay()+1)%7)); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+const weekTotal = () => tasksS().rewards.filter(r=>r.week===weekKey()).reduce((a,r)=>a+(r.amt||0),0);
+const openTasks = () => tasksS().tasks.filter(x=>x.st==="new");
+function tasksView(){
+  const B=tasksS(), L=B.tasks.slice().reverse();
+  const row=x=>`<div class="card taskc ${x.st}"><div style="display:flex;gap:12px;align-items:center"><span style="font-size:2rem">${x.st==="done"?"✅":x.st==="wait"?"✉️":"📋"}</span><b dir="auto" style="font-size:1.25rem;flex:1;min-width:0">${esc(x.text)}</b></div>
+    ${x.st==="new"?`<button class="btn" data-bz="tdid" data-v="${x.id}">✋ I did it! · خلّصتها</button>`
+    :x.st==="wait"?`<p style="margin:0;font-weight:800;color:var(--mint)">Waiting for Baba to check. <span class="ar" dir="rtl" lang="ar" style="display:inline">مستنيين بابا يشوفها.</span></p>`
+    :`<p style="margin:0;font-weight:800">🎁 Baba's reward: ${x.paid?`${x.paid} ${esc(B.tcur)}`:""}${x.note?` ${esc(x.note)}`:""}${!x.paid&&!x.note?"⭐ stars":""}</p>`}</div>`;
+  return `${navTabs("biz")}${bizBack()}
+  <div class="hello"><div><h1>📋 Baba's tasks</h1><p>${bi("Real work from Baba! Do it, tap \"I did it\", and Baba checks it.","شغل حقيقي من بابا! اعمليه، ودوسي \"خلّصتها\"، وبابا هيراجعه.")}</p></div></div>
+  <p class="hint" style="margin:0 0 10px">Baba gives the reward in real life. The app never pays money. <span class="ar" dir="rtl" lang="ar" style="display:inline">بابا بيدّي المكافأة في الحقيقة، والتطبيق عمره ما بيدفع فلوس.</span></p>
+  <div class="tasklist">${L.length?L.map(row).join(""):`<div class="card" style="text-align:center">${bi("No tasks yet. Ask Baba for one!","مفيش مهام لسه. اطلبي من بابا مهمة!",true)}</div>`}</div>`;
+}
+function taskParentHTML(){
+  const B=tasksS(), wt=weekTotal(), wait=B.tasks.filter(x=>x.st==="wait"), open=B.tasks.filter(x=>x.st==="new");
+  return `<div class="bzpend" style="border-color:var(--sky)"><b>📋 Baba's tasks · مهام بابا</b>
+    <span dir="rtl" lang="ar">اكتب مهمة حقيقية لمريم. لما تخلّصها بتوافق هنا، والمكافأة بتتسجّل كملاحظة بس (إنت اللي بتديهالها في الحقيقة). التطبيق مفيهوش أي دفع.</span>
+    <div class="row" style="justify-content:flex-start;gap:6px">${TASK_IDEAS.map((x,i)=>`<button class="btn sm alt" data-bz="tidea" data-v="${i}">${esc(x[1])}</button>`).join("")}</div>
+    <input type="text" id="tkText" maxlength="80" placeholder="Task · المهمة" dir="auto" autocomplete="off">
+    <div class="row" style="justify-content:flex-start;gap:8px;flex-wrap:wrap"><label>Reward · المكافأة <input type="number" id="tkAmt" min="0" max="1000" value="10" style="width:90px"> ${esc(B.tcur)}</label>
+      <input type="text" id="tkNote" maxlength="40" placeholder="Note (e.g. ice cream) · ملاحظة" dir="auto" autocomplete="off" style="flex:1;min-width:160px">
+      <button class="btn sm" data-bz="tadd">➕ Add task · ضيف</button></div>
+    <div class="bzprow"><span>This week · الأسبوع ده: <b>${wt} / ${B.tcap} ${esc(B.tcur)}</b></span><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm alt" data-bz="tcap" data-v="-10" aria-label="Lower weekly cap">−</button><b>Cap ${B.tcap}</b><button class="btn sm alt" data-bz="tcap" data-v="10" aria-label="Raise weekly cap">+</button></span></div>
+    ${wait.map(x=>`<div class="bzprow" style="border:2px solid var(--star)"><span dir="auto">✉️ ${esc(x.text)} · ${x.amt} ${esc(B.tcur)}${x.note?" + "+esc(x.note):""}</span><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm" data-bz="tok" data-v="${x.id}">✅ Approve · موافق</button><button class="btn sm alt" data-bz="tno" data-v="${x.id}">Not yet · لسه</button></span></div>`).join("")}
+    ${open.map(x=>`<div class="bzprow"><span dir="auto">📋 ${esc(x.text)} · ${x.amt} ${esc(B.tcur)}${x.note?" + "+esc(x.note):""} <small class="hint">(not done yet · لسه)</small></span><button class="btn sm danger" data-bz="tdel" data-v="${x.id}" aria-label="Delete task">✕</button></div>`).join("")}
+    <details><summary style="cursor:pointer;font-weight:800">Reward notes (${B.rewards.length}) · سجل المكافآت</summary><div style="display:grid;gap:6px;margin-top:8px;max-height:220px;overflow:auto">${B.rewards.slice().reverse().map(r=>`<div class="bzprow"><span dir="auto"><small>${new Date(r.t).toLocaleDateString()}</small> ${esc(r.task)}</span><b>${r.amt} ${esc(B.tcur)}${r.note?" + "+esc(r.note):""}${r.capped?" (cap)":""}</b></div>`).join("")||`<span class="hint">Nothing yet.</span>`}</div></details>
+  </div>`;
+}
+function tasksClick(d,t){
+  const B=tasksS(), v=d.v, x=B.tasks.find(y=>y.id===v);
+  switch(d.bz){
+    case "tasks": if(timeUp()) return go({name:"rest"}), true; sfx.tap(); BZ={screen:"tasks"}; go({name:"biz"}); return true;
+    case "tdid": if(x&&x.st==="new"){ x.st="wait"; x.didAt=Date.now(); markDay("biz"); save(); sfx.win(); toast("Sent to Baba! ✉️ اتبعت لبابا"); speak(`Great job, ${S.child.name}! Baba will check it.`,true); render(); } return true;
+    /* grown-ups area */
+    case "tidea": { const i=$("#tkText"); if(i) i.value=TASK_IDEAS[+v][1]; return true; }
+    case "tadd": { const tx=String(($("#tkText")||{}).value||"").replace(/[<>]/g,"").trim().slice(0,80); if(!tx){ toast("Write the task first · اكتب المهمة"); return true; }
+      const amt=Math.max(0,Math.min(1000,Math.round(+(($("#tkAmt")||{}).value)||0))), note=String(($("#tkNote")||{}).value||"").replace(/[<>]/g,"").trim().slice(0,40);
+      B.tasks.push({id:uid(), text:tx, amt, note, st:"new", t:Date.now()}); if(B.tasks.length>80) B.tasks.splice(0, B.tasks.length-80); save(); toast("Task added · المهمة اتضافت"); render(); return true; }
+    case "tcap": B.tcap=Math.max(0,Math.min(1000,B.tcap+(+v))); save(); render(); return true;
+    case "tdel": B.tasks=B.tasks.filter(y=>y.id!==v); save(); render(); return true;
+    case "tok": { if(!x||x.st!=="wait") return true; const room=Math.max(0,B.tcap-weekTotal()), amt=Math.min(x.amt,room);
+      x.st="done"; x.doneAt=Date.now(); x.paid=amt; B.rewards.push({t:Date.now(), week:weekKey(), task:x.text, amt, note:x.note, capped:amt<x.amt}); if(B.rewards.length>200) B.rewards.shift();
+      const ns=addStars(3); S.cheers.push(`Baba checked your task and said YES! 🎁 ${amt?amt+" "+B.tcur:""}${x.note?" "+x.note:""} (+3 stars)`+(ns.length?" "+ns.join(" "):"")); save(); sfx.win();
+      toast(amt<x.amt?`Weekly cap reached: noted ${amt} ${B.tcur} · وصلت للحد الأسبوعي`:"Approved · اتوافق"); render(); return true; }
+    case "tno": if(x){ x.st="new"; S.cheers.push(`Baba says: try "${x.text}" one more time 💪`); save(); render(); } return true;
+  }
+  return false;
+}
+function b14Click(d,t){
+  switch(d.bz){
+    case "oj": sfx.tap(); ojStart(d.v||BZ.w||"salon"); return true;
+  }
+  if(d.bz&&d.bz.startsWith("oj")) return ojClick(d,t);
+  if(["beans","bgo","bsay","bans","bstep","bset"].includes(d.bz)) return beansClick(d,t);
+  if(["tasks","tdid","tidea","tadd","tcap","tdel","tok","tno"].includes(d.bz)) return tasksClick(d,t);
+  return false;
 }
 
 /* ---------------- Events ---------------- */
@@ -3002,5 +3319,4 @@ initCloud();
 </script>
 
 
-<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
-</body></html>
+</body></html><script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
