@@ -4,7 +4,7 @@
 <meta name="theme-color" content="#0f0a2e">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* v14 */
+<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* v15 */
 .ojsheet,.beansheet{max-width:780px}
 .ojroad{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%;padding-bottom:26px}
 .ojstep{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid var(--line);opacity:.6;font-size:.85rem;text-align:center}
@@ -745,6 +745,562 @@ Object.assign(GEN, {
   },
 });
 
+/* =====================================================================
+   LANGUAGE PACK (v15): English + Arabic chapters, a standard Grade 1 order.
+   - Chapters are plain data in LANG_CHAPTERS below: reorder, rename, or add
+     "page:" to match the school book later. Ids must stay the same so
+     progress is kept (en1.., ar1..).
+   - Word banks (EN_W, AR_W, ...) are plain lists: add or remove words freely.
+   - Question formats: choice, true/false, build (tap letters/words in order),
+     kbd (type the word on letter keys), match (tap a pair), find the mistake.
+   - Listening: the 🔈 button reads the word even when sound is muted.
+   ===================================================================== */
+let LAST_SUBJ = "math";
+const curSubjId = () => { const s = SUBJECTS.find(x=>x.id===LAST_SUBJ); return s && s.units.length && !s.soon ? s.id : "math"; };
+const subjIds = sid => [...new Set((SUBJECTS.find(s=>s.id===sid)||SUBJECTS[0]).units.flatMap(u=>u.skills))];
+const subjOfSkill = id => (SUBJECTS.find(s=>s.units.some(u=>u.skills.includes(id)))||SUBJECTS[0]).id;
+function chalRec(sid){ sid = sid || curSubjId(); if(sid==="math") return S.chal || (S.chal={done:0}); S.chalBy ||= {}; return S.chalBy[sid] ||= {done:0}; }
+
+const LANG_CHAPTERS = {
+  english: [
+    {id:"en1",  title:"ABC: Big and Small Letters", ar:"الحروف الكبيرة والصغيرة", color:"#ff7ac6", skills:["en_case","en_abc"],
+      tip:["Every letter has a big (capital) shape and a small shape: A a, B b.","كل حرف ليه شكل كبير وشكل صغير: A a و B b."]},
+    {id:"en2",  title:"Letter Sounds", ar:"أصوات الحروف", color:"#ffd447", skills:["en_first","en_hear"],
+      tip:["Each letter makes a sound. Ball starts with the sound b.","كل حرف ليه صوت. كلمة ball بتبدأ بصوت b."]},
+    {id:"en3",  title:"Short Vowels a e i o u", ar:"الحروف المتحركة", color:"#5ef2c8", skills:["en_vowel","en_cvc","en_rhyme"],
+      tip:["a, e, i, o, u are vowels. c-a-t makes cat!","a e i o u اسمهم vowels. c-a-t تبقى cat!"]},
+    {id:"en4",  title:"Sight Words", ar:"كلمات بنحفظها", color:"#6cc8ff", skills:["en_sight","en_sightfill"],
+      tip:["Sight words are words we see a lot, like the, is, and. We know them fast!","كلمات بنشوفها كتير زي the و is و and، بنحفظها ونقراها بسرعة."]},
+    {id:"en5",  title:"My Words", ar:"كلماتي", color:"#b48cff", skills:["en_vocab","en_match","en_odd"],
+      tip:["Animals, food, colours, family, school: learn the words for things around you.","حيوانات، أكل، ألوان، عيلة، مدرسة: نتعلم أسامي الحاجات اللي حوالينا."]},
+    {id:"en6",  title:"Word Fun: a/an, more than one, opposites", ar:"ألعاب الكلمات", color:"#ff9f43", skills:["en_aan","en_plural","en_opp","en_prep"],
+      tip:["We say an before a, e, i, o, u: an apple. More than one: cat, cats.","بنقول an قبل a e i o u: an apple. أكتر من واحد: cat و cats."]},
+    {id:"en7",  title:"Sentences", ar:"الجمل", color:"#7be37b", skills:["en_order","en_tf","en_fix"],
+      tip:["A sentence starts with a capital letter and ends with a full stop.","الجملة بتبدأ بحرف كبير وبتخلص بنقطة."]},
+    {id:"en8",  title:"Spelling", ar:"الإملاء", color:"#ffb3a7", skills:["en_spell","en_wrong","en_missing"],
+      tip:["Say the word slowly, hear each sound, then write a letter for each sound.","قولي الكلمة بالراحة، اسمعي كل صوت، واكتبي حرف لكل صوت."]},
+    {id:"en9",  title:"Reading", ar:"القراءة", color:"#ff9fd8", skills:["en_read","en_readpic"],
+      tip:["Read the words, look at the picture, then answer.","اقري الكلام، بصي على الصورة، وبعدين جاوبي."]},
+    {id:"en10", title:"Listening", ar:"الاستماع", color:"#a0e7ff", skills:["en_listen","en_listensent","en_listenspell"],
+      tip:["Tap the speaker 🔈 to hear it. You can listen again and again!","دوسي على السماعة 🔈 عشان تسمعي. ممكن تسمعي تاني وتالت!"]},
+  ],
+  arabic: [
+    {id:"ar1", title:"الحروف", en:"Arabic letters", color:"#5ef2c8", skills:["ar_name","ar_abc"],
+      tip:["There are 28 Arabic letters, from ا (alif) to ي (ya).","الحروف العربية ٢٨ حرف، من الألف للياء."]},
+    {id:"ar2", title:"الحركات", en:"Short vowels", color:"#ffd447", skills:["ar_haraka","ar_first"],
+      tip:["Fatha َ says a, damma ُ says u, kasra ِ says i: بَ بُ بِ.","الفتحة َ والضمة ُ والكسرة ِ: بَ بُ بِ."]},
+    {id:"ar3", title:"الحرف في الكلمة", en:"Letters inside words", color:"#ff7ac6", skills:["ar_inword"],
+      tip:["A letter can be at the start, the middle or the end of a word.","الحرف ممكن ييجي في أول الكلمة أو وسطها أو آخرها."]},
+    {id:"ar4", title:"كلماتي", en:"My Arabic words", color:"#6cc8ff", skills:["ar_vocab","ar_match"],
+      tip:["Learn the Arabic name of each picture.","نتعلم اسم كل صورة بالعربي."]},
+    {id:"ar5", title:"تكوين الكلمات", en:"Building words", color:"#b48cff", skills:["ar_build","ar_missing"],
+      tip:["Put the letters in order from right to left to make a word.","رتبي الحروف من اليمين للشمال عشان تعملي كلمة."]},
+    {id:"ar6", title:"هذا وهذه وال", en:"This (هذا / هذه) and ال", color:"#ff9f43", skills:["ar_this","ar_al"],
+      tip:["هذا for a boy word, هذه for a girl word (often ends with ة). ال means 'the'.","هذا للمذكر، وهذه للمؤنث (غالبًا آخرها ة). و«ال» يعني the."]},
+    {id:"ar7", title:"الجمل والقراءة", en:"Sentences and reading", color:"#7be37b", skills:["ar_sent","ar_tf","ar_read"],
+      tip:["Arabic is read from right to left. Read slowly, then answer.","العربي بيتقري من اليمين للشمال. اقري بالراحة وبعدين جاوبي."]},
+    {id:"ar8", title:"الكتابة والإملاء", en:"Writing and spelling", color:"#ffb3a7", skills:["ar_spell","ar_wrong"],
+      tip:["Look at the dots! ب has one dot under, ت has two dots on top.","خدي بالك من النقط! ب نقطة تحت، ت نقطتين فوق."]},
+    {id:"ar9", title:"الاستماع", en:"Listening", color:"#a0e7ff", skills:["ar_listen"],
+      tip:["Tap the speaker 🔈, listen to the word, then choose.","دوسي على السماعة 🔈، اسمعي الكلمة، واختاري."]},
+  ],
+};
+const LANG_SKILLS = {
+  en_case:{name:"Big and small letters", blurb:"A goes with a"}, en_abc:{name:"ABC order", blurb:"What comes next?"},
+  en_first:{name:"First sound", blurb:"Which letter does it start with?"}, en_hear:{name:"Hear the first sound", blurb:"Listen, then tap the letter"},
+  en_vowel:{name:"Missing vowel", blurb:"c _ t"}, en_cvc:{name:"Build the word", blurb:"Tap the letters in order"}, en_rhyme:{name:"Rhyme time", blurb:"cat, hat, bat"},
+  en_sight:{name:"Find the sight word", blurb:"the, is, and…"}, en_sightfill:{name:"Fill the gap", blurb:"Pick the missing word"},
+  en_vocab:{name:"Word and picture", blurb:"Name what you see"}, en_match:{name:"Match them", blurb:"Tap a pair"}, en_odd:{name:"Odd one out", blurb:"Which one is different?"},
+  en_aan:{name:"a or an?", blurb:"an apple, a ball"}, en_plural:{name:"One or more?", blurb:"cat, cats"}, en_opp:{name:"Opposites", blurb:"big and small"}, en_prep:{name:"Where is it?", blurb:"in, on, under, next to"},
+  en_order:{name:"Make a sentence", blurb:"Tap the words in order"}, en_tf:{name:"True or false?", blurb:"Read and decide"}, en_fix:{name:"Find the mistake", blurb:"Tap the wrong word"},
+  en_spell:{name:"Type the word", blurb:"Spell it on the keys"}, en_wrong:{name:"Spelled wrong?", blurb:"Find the wrong spelling"}, en_missing:{name:"Missing letter", blurb:"Fill in the letter"},
+  en_read:{name:"Read a story", blurb:"Read and answer"}, en_readpic:{name:"Read and pick", blurb:"Which picture?"},
+  en_listen:{name:"Listen and pick", blurb:"Hear a word"}, en_listensent:{name:"Listen to a sentence", blurb:"Hear and choose"}, en_listenspell:{name:"Spell what you hear", blurb:"Listen, then spell"},
+  ar_name:{name:"اسم الحرف", blurb:"Letter names"}, ar_abc:{name:"ترتيب الحروف", blurb:"Letter order"},
+  ar_haraka:{name:"الحركات", blurb:"Fatha, damma, kasra"}, ar_first:{name:"أول حرف", blurb:"First letter of the word"},
+  ar_inword:{name:"الحرف فين؟", blurb:"Find the letter in words"},
+  ar_vocab:{name:"الكلمة والصورة", blurb:"Word and picture"}, ar_match:{name:"وصّلي", blurb:"Match pairs"},
+  ar_build:{name:"كوّني الكلمة", blurb:"Tap the letters in order"}, ar_missing:{name:"الحرف الناقص", blurb:"Missing letter"},
+  ar_this:{name:"هذا أم هذه؟", blurb:"This (boy / girl word)"}, ar_al:{name:"ال", blurb:"The word 'the'"},
+  ar_sent:{name:"رتّبي الجملة", blurb:"Make a sentence"}, ar_tf:{name:"صح أم غلط؟", blurb:"True or false"}, ar_read:{name:"اقرئي وجاوبي", blurb:"Read and answer"},
+  ar_spell:{name:"اكتبي الكلمة", blurb:"Type the word"}, ar_wrong:{name:"فين الغلطة؟", blurb:"Find the wrong spelling"},
+  ar_listen:{name:"اسمعي واختاري", blurb:"Listen and choose"},
+};
+Object.assign(SKILLS, LANG_SKILLS);
+["english","arabic"].forEach(sid=>{ const s=SUBJECTS.find(x=>x.id===sid); if(s){ s.soon=false; s.units=LANG_CHAPTERS[sid]; } });
+SUBJECTS.find(x=>x.id==="arabic").name = "Arabic عربي";
+
+/* ---------- word banks ---------- */
+const EN_W = [
+  ["cat","🐱","animals"],["dog","🐶","animals"],["fish","🐟","animals"],["bird","🐦","animals"],["cow","🐄","animals"],["pig","🐷","animals"],["duck","🦆","animals"],["hen","🐔","animals"],["lion","🦁","animals"],["frog","🐸","animals"],["bee","🐝","animals"],["fox","🦊","animals"],["bear","🐻","animals"],["owl","🦉","animals"],["horse","🐴","animals"],["sheep","🐑","animals"],["rabbit","🐰","animals"],["monkey","🐒","animals"],["snake","🐍","animals"],["tiger","🐯","animals"],["zebra","🦓","animals"],["ant","🐜","animals"],["elephant","🐘","animals"],
+  ["apple","🍎","food"],["banana","🍌","food"],["egg","🥚","food"],["milk","🥛","food"],["cake","🍰","food"],["bread","🍞","food"],["cheese","🧀","food"],["grapes","🍇","food"],["orange","🍊","food"],["rice","🍚","food"],["pizza","🍕","food"],["carrot","🥕","food"],["corn","🌽","food"],
+  ["red","🔴","colors"],["blue","🔵","colors"],["green","🟢","colors"],["yellow","🟡","colors"],["purple","🟣","colors"],["black","⚫","colors"],["white","⚪","colors"],["brown","🟤","colors"],
+  ["eye","👁️","body"],["ear","👂","body"],["nose","👃","body"],["hand","✋","body"],["foot","🦶","body"],["leg","🦵","body"],["mouth","👄","body"],["tooth","🦷","body"],
+  ["mom","👩","family"],["dad","👨","family"],["baby","👶","family"],["sister","👧","family"],["brother","👦","family"],["grandma","👵","family"],["grandpa","👴","family"],
+  ["book","📖","school"],["pen","🖊️","school"],["pencil","✏️","school"],["bag","🎒","school"],["ruler","📏","school"],["crayon","🖍️","school"],["chair","🪑","school"],["clock","🕐","school"],["scissors","✂️","school"],
+  ["car","🚗","go"],["bus","🚌","go"],["train","🚆","go"],["ship","🚢","go"],["bike","🚲","go"],["plane","✈️","go"],["boat","⛵","go"],
+  ["ball","⚽","toys"],["kite","🪁","toys"],["teddy","🧸","toys"],["drum","🥁","toys"],["balloon","🎈","toys"],["robot","🤖","toys"],
+  ["sun","☀️","sky"],["moon","🌙","sky"],["star","⭐","sky"],["cloud","☁️","sky"],["rainbow","🌈","sky"],
+  ["bed","🛏️","home"],["door","🚪","home"],["house","🏠","home"],["cup","🥤","home"],["hat","🎩","home"],["key","🔑","home"],["tree","🌳","home"],["flower","🌸","home"],["box","📦","home"],
+].map(([w,e,c])=>({w,e,c}));
+const EN_CAT = {animals:"an animal", food:"food", colors:"a colour", body:"a body part", family:"family", school:"a school thing", go:"a way to travel", toys:"a toy"};
+const EN_CAT_AR = {animals:"حيوان", food:"أكل", colors:"لون", body:"جزء من الجسم", family:"العيلة", school:"حاجة في المدرسة", go:"مواصلة", toys:"لعبة"};
+const EN_CVC = [["cat","🐱"],["bat","🦇"],["hat","🎩"],["map","🗺️"],["van","🚐"],["cap","🧢"],["bag","🎒"],["rat","🐀"],["hen","🐔"],["bed","🛏️"],["pen","🖊️"],["net","🥅"],["leg","🦵"],["web","🕸️"],["ten","🔟"],["pig","🐷"],["six","6️⃣"],["lip","👄"],["bin","🗑️"],["kid","🧒"],["dog","🐶"],["fox","🦊"],["box","📦"],["pot","🍲"],["hot","🔥"],["sun","☀️"],["bus","🚌"],["cup","🥤"],["bug","🐛"],["nut","🥜"],["mug","☕"]].map(([w,e])=>({w,e}));
+const EN_EMO = {}; [...EN_W, ...EN_CVC].forEach(x=>{ EN_EMO[x.w] ||= x.e; }); Object.assign(EN_EMO,{ring:"💍",goat:"🐐",coat:"🧥",spoon:"🥄",socks:"🧦",king:"🤴",jar:"🫙",tree:"🌳",three:"3️⃣",snake:"🐍",lake:"🏞️",wing:"🪽",run:"🏃",bun:"🍞",star:"⭐",car:"🚗"});
+const EN_RHYME = [["cat","hat","bat","rat","mat"],["hen","pen","ten","men"],["pig","wig","big","dig"],["dog","log","frog","fog"],["sun","bun","run","fun"],["bug","mug","rug","hug"],["cake","lake","snake","make"],["car","star","jar","far"],["bee","tree","see","three"],["king","ring","sing","wing"],["boat","goat","coat"],["moon","spoon","soon"],["bed","red","fed"],["fox","box","socks"]];
+const EN_SIGHT = [["the","The cat is big."],["a","I see a dog."],["I","I like cake."],["is","The sun is hot."],["it","It is a bus."],["in","The fish is in the sea."],["and","Mom and Dad play."],["to","I go to school."],["you","I love you."],["my","This is my bag."],["see","I see the moon."],["can","I can run."],["go","We go home."],["we","We play ball."],["he","He is my dad."],["she","She is my mom."],["look","Look at me!"],["like","I like milk."],["said","Mom said yes."],["was","It was fun."],["are","We are happy."],["have","I have a pen."],["this","This is a cat."],["here","Come here."],["up","Look up."],["down","Sit down."],["big","The bear is big."],["little","The ant is little."],["yes","Yes, I can."],["no","No, thank you."],["me","Play with me."],["play","Let's play."],["come","Come and see."],["for","This is for you."],["not","It is not big."],["on","The cat is on the bed."],["at","Look at the star."],["with","Come with me."],["all","We all sing."],["do","I do my homework."],["get","Get the ball."],["they","They are cats."],["of","A cup of milk."],["what","What is this?"],["where","Where is my bag?"]];
+const EN_OPP = [["big","small","🐘","🐭"],["hot","cold","🔥","🧊"],["up","down","⬆️","⬇️"],["happy","sad","😀","😢"],["fast","slow","🐆","🐢"],["day","night","☀️","🌙"],["open","closed","📖","📕"],["tall","short","🦒","🐧"],["wet","dry","💧","🌵"],["boy","girl","👦","👧"],["black","white","⚫","⚪"],["yes","no","✅","❌"],["in","out","📥","📤"],["old","new","👴","👶"],["full","empty","🍯","🫙"]];
+const EN_AN = [["apple","🍎"],["egg","🥚"],["owl","🦉"],["ant","🐜"],["orange","🍊"],["elephant","🐘"],["umbrella","☂️"],["ice cream","🍦"],["octopus","🐙"]];
+const EN_A = [["cat","🐱"],["dog","🐶"],["ball","⚽"],["book","📖"],["hat","🎩"],["car","🚗"],["pen","🖊️"],["cake","🍰"],["bus","🚌"],["fish","🐟"],["kite","🪁"],["tree","🌳"]];
+const EN_PL = [["cat","cats","🐱"],["dog","dogs","🐶"],["bird","birds","🐦"],["apple","apples","🍎"],["star","stars","⭐"],["car","cars","🚗"],["book","books","📖"],["ball","balls","⚽"],["frog","frogs","🐸"],["duck","ducks","🦆"],["cake","cakes","🍰"],["tree","trees","🌳"]];
+const EN_PLES = [["box","boxes","📦"],["bus","buses","🚌"],["fox","foxes","🦊"],["dress","dresses","👗"],["watch","watches","⌚"],["peach","peaches","🍑"]];
+const EN_PREP = ["in","on","under","next to"];
+const EN_SENT = [["I","like","cake"],["I","see","Mom"],["We","can","run"],["The","dog","is","big"],["I","can","see","the","sun"],["We","go","to","school"],["My","bag","is","red"],["She","has","a","pen"],["The","fish","can","swim"],["I","love","my","mom"],["He","is","my","dad"],["Look","at","the","moon"],["The","cat","is","on","the","bed"],["I","have","a","red","ball"],["We","play","in","the","park"],["The","bird","can","fly","up"]];
+const EN_FACTS = [["The banana is yellow.",1,"🍌"],["The frog is green.",1,"🐸"],["The sun is cold.",0,"☀️"],["The fish can swim.",1,"🐟"],["The cat can fly.",0,"🐱"],["The ice is hot.",0,"🧊"],["The apple is red.",1,"🍎"],["A bird can fly.",1,"🐦"],["The snow is white.",1,"❄️"],["A car has legs.",0,"🚗"],["We see the moon at night.",1,"🌙"],["The elephant is little.",0,"🐘"],["The ant is big.",0,"🐜"],["A cow says moo.",1,"🐄"],["A dog says meow.",0,"🐶"],["The grass is blue.",0,"🌱"]];
+const EN_STORIES = [
+  {t:"Sam has a red ball. He plays with his dog. The dog is big.", e:"⚽🐶", q:[["What colour is the ball?","red","blue","green"],["Who plays with Sam?","his dog","his cat","his mom"],["Is the dog big or little?","big","little","sad"]]},
+  {t:"I see a little cat. The cat is on the bed. It is sleeping.", e:"🐱🛏️", q:[["Where is the cat?","on the bed","under the bed","in the box"],["What is the cat doing?","sleeping","eating","running"]]},
+  {t:"Mom has a cake. The cake is pink. We eat the cake at the party.", e:"🍰🎉", q:[["What does Mom have?","a cake","a hat","a ball"],["What colour is the cake?","pink","blue","green"]]},
+  {t:"The sun is hot. Ben and Mia go to the sea. They swim with the fish.", e:"☀️🌊🐟", q:[["Where do they go?","to the sea","to school","to the shop"],["They swim with the…","fish","cat","bus"]]},
+  {t:"Mariam has a bag. In the bag there is a book and a pen. She goes to school.", e:"🎒📖🖊️", q:[["What is in the bag?","a book and a pen","an apple","a doll"],["Where does she go?","to school","to bed","to the park"]]},
+  {t:"The frog is green. It can jump. It jumps into the pond.", e:"🐸💦", q:[["What colour is the frog?","green","red","black"],["What can the frog do?","jump","read","sing"]]},
+  {t:"Dad has a car. The car is blue. We go to the park in the car.", e:"🚙🌳", q:[["What colour is the car?","blue","yellow","pink"],["Where do we go?","to the park","to the sea","to the zoo"]]},
+  {t:"It is night. I see the moon and the stars. I go to bed.", e:"🌙⭐🛏️", q:[["What do I see?","the moon and the stars","the sun","a rainbow"],["Is it day or night?","night","day","morning"]]},
+  {t:"Tom has two fish. One fish is red. One fish is yellow.", e:"🐟🐠", q:[["How many fish does Tom have?","two","one","three"],["One fish is red. The other is…","yellow","green","blue"]]},
+  {t:"The bird is in the tree. It has a nest. There are three eggs in the nest.", e:"🐦🌳🥚", q:[["Where is the bird?","in the tree","on the car","in the box"],["How many eggs are there?","three","two","five"]]},
+  {t:"Baba has a coffee shop. People buy coffee beans in bags. I help Baba.", e:"☕🛍️", q:[["What does Baba have?","a coffee shop","a car shop","a toy shop"],["What do people buy?","coffee beans","shoes","cakes"]]},
+];
+const AR_ABC = [["ا","ألف"],["ب","باء"],["ت","تاء"],["ث","ثاء"],["ج","جيم"],["ح","حاء"],["خ","خاء"],["د","دال"],["ذ","ذال"],["ر","راء"],["ز","زاي"],["س","سين"],["ش","شين"],["ص","صاد"],["ض","ضاد"],["ط","طاء"],["ظ","ظاء"],["ع","عين"],["غ","غين"],["ف","فاء"],["ق","قاف"],["ك","كاف"],["ل","لام"],["م","ميم"],["ن","نون"],["ه","هاء"],["و","واو"],["ي","ياء"]];
+const AR_LET = AR_ABC.map(x=>x[0]);
+const AR_W = [
+  ["أرنب","🐰","m","rabbit"],["بطة","🦆","f","duck"],["تفاحة","🍎","f","apple"],["ثعلب","🦊","m","fox"],["جمل","🐫","m","camel"],["حصان","🐴","m","horse"],["خروف","🐑","m","sheep"],["دب","🐻","m","bear"],["ذرة","🌽","f","corn"],["زرافة","🦒","f","giraffe"],["سمكة","🐟","f","fish"],["شمس","☀️","f","sun"],["صاروخ","🚀","m","rocket"],["ضفدع","🐸","m","frog"],["طائرة","✈️","f","plane"],["ظرف","✉️","m","envelope"],["عين","👁️","f","eye"],["غزال","🦌","m","deer"],["فيل","🐘","m","elephant"],["قمر","🌙","m","moon"],["كتاب","📖","m","book"],["ليمون","🍋","m","lemon"],["موز","🍌","m","banana"],["نحلة","🐝","f","bee"],["هدية","🎁","f","gift"],["وردة","🌹","f","rose"],["يد","✋","f","hand"],
+  ["بيت","🏠","m","house"],["باب","🚪","m","door"],["قلم","✏️","m","pencil"],["نجمة","⭐","f","star"],["قطة","🐱","f","cat"],["كلب","🐶","m","dog"],["لبن","🥛","m","milk"],["ولد","👦","m","boy"],["بنت","👧","f","girl"],["شجرة","🌳","f","tree"],["سيارة","🚗","f","car"],["كرة","⚽","f","ball"],["أسد","🦁","m","lion"],["بيضة","🥚","f","egg"],["خبز","🍞","m","bread"],["جبنة","🧀","f","cheese"],["ساعة","⌚","f","watch"],["مفتاح","🔑","m","key"],["سرير","🛏️","m","bed"],["حقيبة","🎒","f","bag"],["بقرة","🐄","f","cow"],["ديك","🐓","m","rooster"],["عنب","🍇","m","grapes"],["جزرة","🥕","f","carrot"],["مدرسة","🏫","f","school"],["طفل","👶","m","baby"],["سحابة","☁️","f","cloud"],["قارب","⛵","m","boat"],["قطار","🚆","m","train"],["بحر","🌊","m","sea"],["نملة","🐜","f","ant"],
+].map(([w,e,g,en])=>({w,e,g,en}));
+const AR_SENT = [["القطة","تشرب","اللبن"],["أنا","أحب","أمي"],["الشمس","في","السماء"],["مريم","تقرأ","الكتاب"],["البطة","في","الماء"],["أبي","يقود","السيارة"],["ذهب","الولد","إلى","المدرسة"],["السمكة","تسبح","في","البحر"],["الولد","يلعب","بالكرة"],["أكلت","البنت","التفاحة"],["القمر","في","السماء","بالليل"],["أنا","أساعد","بابا","في","المحل"]];
+const AR_FACTS = [["الموزة صفراء",1,"🍌"],["الشمس باردة",0,"☀️"],["السمكة تسبح",1,"🐟"],["القطة تطير",0,"🐱"],["الفيل كبير",1,"🐘"],["النملة كبيرة",0,"🐜"],["الثلج ساخن",0,"🧊"],["البقرة تعطينا اللبن",1,"🐄"],["العصفور يطير",1,"🐦"],["القمر يظهر بالليل",1,"🌙"],["السيارة تأكل",0,"🚗"],["الوردة جميلة",1,"🌹"]];
+const AR_TEXTS = [
+  {t:"عند مريم قطة صغيرة. اسمها لولو. لولو تحب اللبن.", e:"🐱🥛", q:[["ما اسم القطة؟","لولو","ميمي","سوسو"],["ماذا تحب لولو؟","اللبن","الموز","الخبز"]]},
+  {t:"ذهب أحمد إلى الحديقة. لعب بالكرة مع صديقه. كانت الكرة حمراء.", e:"🌳⚽", q:[["أين ذهب أحمد؟","إلى الحديقة","إلى البحر","إلى السوق"],["ما لون الكرة؟","حمراء","زرقاء","خضراء"]]},
+  {t:"في السماء شمس كبيرة. الجو حار. شربت سارة ماء باردا.", e:"☀️💧", q:[["كيف الجو؟","حار","بارد","ممطر"],["ماذا شربت سارة؟","ماء","لبن","عصير"]]},
+  {t:"أبي عنده محل قهوة. القهوة في أكياس. أنا أساعد أبي.", e:"☕🛍️", q:[["ماذا عند أبي؟","محل قهوة","محل لعب","محل كتب"],["أين القهوة؟","في أكياس","في الثلاجة","في الحقيبة"]]},
+  {t:"البطة تسبح في الماء. معها ثلاث بطات صغيرة.", e:"🦆🦆🦆", q:[["أين تسبح البطة؟","في الماء","في البيت","فوق الشجرة"],["كم بطة صغيرة معها؟","ثلاث","اثنتان","خمس"]]},
+  {t:"ذهبت مريم إلى المدرسة. معها حقيبة وقلم. قالت المعلمة: أحسنت يا مريم!", e:"🏫🎒", q:[["ماذا قالت المعلمة؟","أحسنت","نامي","اجري"],["ماذا مع مريم؟","حقيبة وقلم","كرة ولعبة","تفاحة وموزة"]]},
+  {t:"في الليل نرى القمر والنجوم. أنام في سريري.", e:"🌙⭐", q:[["متى نرى القمر؟","في الليل","في الصباح","في الظهر"],["أين أنام؟","في سريري","في السيارة","في المدرسة"]]},
+];
+const AR_DOTS = {"ب":"تثن","ت":"بث","ث":"تب","ج":"حخ","ح":"جخ","خ":"حج","د":"ذ","ذ":"د","ر":"ز","ز":"ر","س":"ش","ش":"س","ص":"ض","ض":"ص","ط":"ظ","ظ":"ط","ع":"غ","غ":"ع","ف":"ق","ق":"ف","ة":"ه","ن":"تب","ي":"ب"};
+const HARAKAT = [["َ","فتحة","fatha","a"],["ُ","ضمة","damma","u"],["ِ","كسرة","kasra","i"],["ْ","سكون","sukun","no sound"]];
+
+/* ---------- helpers ---------- */
+const LAR = s => `<span class="lar" dir="rtl" lang="ar">${esc(s)}</span>`;
+const lpic = (e, big) => `<span class="lpic${big?" big":""}">${e}</span>`;
+const lword = w => `<span class="lword">${esc(w)}</span>`;
+const arNorm = c => ({"أ":"ا","إ":"ا","آ":"ا"}[c]||c);
+const takeN = (arr, n, bad) => shuffle(arr.filter(x=>!bad(x))).slice(0,n);
+const nOpt = L => [3,4,4][L-1];
+const TF_EN = v => v==="t"?"✅ True":"❌ False";
+const TF_AR = v => v==="t"?`✅ ${LAR("صح")}`:`❌ ${LAR("غلط")}`;
+function mcq(o){
+  const vals = shuffle([o.ans, ...o.wrong.filter((v,i,a)=>v!==o.ans && a.indexOf(v)===i)]);
+  return {text:o.text, sub:o.sub, say:o.say, lang:o.lang, listen:o.listen, hint:o.hint, xs:o.xs, visual:o.visual||"", small:o.small!==false,
+    choices: vals.map(v=>({value:v, html:o.html?o.html(v):esc(v), say:o.sayOpt?o.sayOpt(v):v})), answer:o.ans, reveal:o.reveal||String(o.ans)};
+}
+function tfq(o){ return mcq({...o, ans:o.truth?"t":"f", wrong:[o.truth?"f":"t"], html:o.lang==="ar"?TF_AR:TF_EN, reveal:o.lang==="ar"?(o.truth?"صح":"غلط"):(o.truth?"True":"False")}); }
+function buildQ(o){
+  const target=o.target, extra=(o.extra||[]);
+  return {fmt:"build", text:o.text, sub:o.sub, say:o.say, lang:o.lang, listen:o.listen, hint:o.hint, visual:o.visual||"", xs:o.xs,
+    items:shuffle([...target, ...extra]), target, pos:0, used:[], join:o.join||"", suffix:o.suffix||"", answer:target.join(o.join||""), reveal:target.join(o.join||"")+(o.suffix||"")};
+}
+function kbdQ(o){ return {fmt:"kbd", text:o.text, sub:o.sub, say:o.say, lang:o.lang, listen:o.listen, hint:o.hint, visual:o.visual||"", xs:o.xs, keys:o.keys, input:"", word:o.word, answer:o.word, reveal:o.word}; }
+function matchQ(o){ const idx=o.pairs.map((p,i)=>i); return {fmt:"match", text:o.text, sub:o.sub, say:o.say, lang:o.lang, hint:o.hint, visual:o.visual||"", pairs:o.pairs, L:shuffle(idx), R:shuffle(idx), sel:null, done:[], answer:"match", reveal:""}; }
+function enKeys(word, L){
+  const need=[...new Set(word.toLowerCase().replace(/[^a-z]/g,"").split(""))];
+  if(L>=3) return EN_ABC_L;
+  const more=shuffle(EN_ABC_L.filter(c=>!need.includes(c))).slice(0, L===1?3:6);
+  return [...need, ...more].sort();
+}
+const EN_ABC_L = "abcdefghijklmnopqrstuvwxyz".split("");
+function arKeys(word, L){
+  const need=[...new Set([...word])];
+  const more=shuffle([...AR_LET,"ة"].filter(c=>!need.includes(c))).slice(0, [3,6,10][L-1]);
+  const order=[...AR_LET,"أ","ة"]; return [...need, ...more].sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+}
+function enMisspell(w){
+  const V="aeiou", ch=w.split(""); const real=new Set(EN_W.map(x=>x.w).concat(EN_CVC.map(x=>x.w)));
+  for(let g=0; g<30; g++){
+    const c=[...ch], r=Math.random();
+    if(r<.45){ const vi=c.map((x,i)=>V.includes(x)?i:-1).filter(i=>i>=0); if(!vi.length) continue; const i=pick(vi); c[i]=pick(V.split("").filter(v=>v!==c[i])); }
+    else if(r<.75 && c.length>2){ const i=rnd(0,c.length-2); [c[i],c[i+1]]=[c[i+1],c[i]]; }
+    else { const sw={c:"k",k:"c",s:"z",b:"d",d:"b",p:"q",m:"n",n:"m",f:"v",g:"j"}; const ci=c.map((x,i)=>sw[x]?i:-1).filter(i=>i>=0); if(!ci.length) continue; const i=pick(ci); c[i]=sw[c[i]]; }
+    const m=c.join(""); if(m!==w && !real.has(m)) return m;
+  }
+  return w+w.slice(-1);
+}
+function arMisspell(w){
+  const real=new Set(AR_W.map(x=>x.w)), ch=[...w];
+  for(let g=0; g<30; g++){
+    const c=[...ch];
+    if(Math.random()<.75){ const di=c.map((x,i)=>AR_DOTS[x]?i:-1).filter(i=>i>=0); if(!di.length) continue; const i=pick(di); c[i]=pick([...AR_DOTS[c[i]]]); }
+    else if(c.length>2){ const i=rnd(0,c.length-2); [c[i],c[i+1]]=[c[i+1],c[i]]; }
+    const m=c.join(""); if(m!==w && !real.has(m)) return m;
+  }
+  return w+"ا";
+}
+function prepVis(p, small){
+  const s=small?"1.8rem":"3rem";
+  const box=`<span style="font-size:${s};line-height:1">📦</span>`, ball=`<span style="font-size:calc(${s} * .7);line-height:1">⚽</span>`;
+  const col=(a,b)=>`<span style="display:inline-flex;flex-direction:column;align-items:center;gap:0">${a}${b}</span>`;
+  if(p==="on") return col(ball,box);
+  if(p==="under") return col(box,ball);
+  if(p==="in") return `<span style="position:relative;display:inline-block">${box}<span style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:calc(${s} * .45)">⚽</span></span>`;
+  return `<span style="display:inline-flex;align-items:flex-end;gap:4px">${box}${ball}</span>`;
+}
+const sentHTML = (words, bad) => `<div class="lsent">${words.map((w,i)=>`<span class="${i===bad?"bad":""}">${esc(w)}</span>`).join(" ")}</div>`;
+
+/* ---------- English generators ---------- */
+Object.assign(GEN, {
+  en_case(L){
+    if(L===3){ const ls=shuffle(EN_ABC_L).slice(0,4); return matchQ({text:"Match the big and small letters", sub:"وصّلي الحرف الكبير بالصغير", say:"Match each big letter with its small letter.", pairs:ls.map(l=>[`<b class="lletter">${l.toUpperCase()}</b>`,`<b class="lletter">${l}</b>`])}); }
+    const t=pick(EN_ABC_L), tricky={b:"dpq",d:"bpq",p:"qbd",q:"pbd",m:"nw",n:"mh",u:"vn",i:"jl"};
+    const pool = L===2 && tricky[t] ? [...tricky[t]] : EN_ABC_L.filter(x=>x!==t);
+    const wrong = shuffle(pool).slice(0,nOpt(L)-1); while(wrong.length<nOpt(L)-1){ const x=pick(EN_ABC_L); if(x!==t&&!wrong.includes(x)) wrong.push(x); }
+    return mcq({text:`Find small ${t}`, sub:`لاقي الحرف الصغير بتاع ${t.toUpperCase()}`, say:`Find the small letter for big ${t.toUpperCase()}.`, visual:`<span class="big lletter">${t.toUpperCase()}</span>`, ans:t, wrong, small:false, html:v=>`<span class="lletter">${v}</span>`, sayOpt:v=>v, hint:`Big ${t.toUpperCase()} and small ${t} are the same letter. ${t.toUpperCase()} و ${t} نفس الحرف.`});
+  },
+  en_abc(L){
+    if(L===3){ const ls=shuffle(EN_ABC_L).slice(0,5); const tgt=[...ls].sort(); return buildQ({text:"Tap the letters in ABC order", sub:"دوسي على الحروف بالترتيب", say:"Tap the letters in A B C order.", target:tgt, join:" ", visual:`<span class="big">🔤</span>`, hint:"Sing the ABC song in your head! غني أغنية ABC في سرك."}); }
+    const i=rnd(1,24), before=L===2&&Math.random()<.5, ans=before?EN_ABC_L[i-1]:EN_ABC_L[i+1];
+    const wrong=takeN(EN_ABC_L.slice(Math.max(0,i-4),i+5),nOpt(L)-1,x=>x===ans);
+    return mcq({text:before?`What comes before ${EN_ABC_L[i]}?`:`What comes after ${EN_ABC_L[i]}?`, sub:before?"إيه الحرف اللي قبله؟":"إيه الحرف اللي بعده؟", say:before?`What letter comes before ${EN_ABC_L[i]}?`:`What letter comes after ${EN_ABC_L[i]}?`,
+      visual:before?`<span class="numbox q">?</span><span class="numbox">${EN_ABC_L[i]}</span>`:`<span class="numbox">${EN_ABC_L[i]}</span><span class="numbox q">?</span>`, ans, wrong, small:false, html:v=>`<span class="lletter">${v}</span>`});
+  },
+  en_first(L){
+    const pool=EN_W.filter(x=>x.c!=="colors" && x.c!=="family");
+    if(L===3){ const t=pick(pool), l=t.w[0]; const wrong=takeN(pool,3,x=>x.w[0]===l).map(x=>x.w);
+      return mcq({text:`Which one starts with ${l}?`, sub:`أنهي صورة بتبدأ بحرف ${l}؟`, say:`Which picture starts with the letter ${l}?`, visual:`<span class="big lletter">${l}</span>`, ans:t.w, wrong, small:false, html:v=>lpic(EN_EMO[v]), hint:`${t.w} starts with ${l}.`}); }
+    const t=pick(pool), l=t.w[0]; const wrong=takeN(EN_ABC_L,nOpt(L)-1,x=>x===l);
+    return mcq({text:"What is the first letter?", sub:"أول حرف في الكلمة إيه؟", say:`${t.w}. What letter does ${t.w} start with?`, visual:lpic(t.e,true), ans:l, wrong, small:false, html:v=>`<span class="lletter">${v}</span>`, hint:`${t.w} → ${l}`});
+  },
+  en_hear(L){
+    const t=pick(EN_W.filter(x=>x.c!=="colors")), l=t.w[0]; const wrong=takeN(EN_ABC_L,nOpt(L)-1,x=>x===l);
+    return mcq({text:"Listen 🔈 What letter does the word start with?", sub:"اسمعي الكلمة: بتبدأ بأنهي حرف؟", say:t.w, listen:true, visual:L===1?lpic(t.e,true):`<span class="big">👂</span>`, ans:l, wrong, small:false, html:v=>`<span class="lletter">${v}</span>`, xs:6, hint:`The word was ${t.w}. الكلمة كانت ${t.w}.`});
+  },
+  en_vowel(L){
+    const t=pick(EN_CVC), v=t.w[1], shown=t.w[0]+"_"+t.w[2];
+    const wrong = takeN("aeiou".split(""), L===1?2:4, x=>x===v);
+    return mcq({text:`${shown}: which vowel?`, sub:"أنهي حرف متحرك ناقص؟", say:L===3?`${t.w}. Which vowel is missing?`:`Which vowel is missing? ${t.w}.`, listen:L===3, visual:`${L<3?lpic(t.e,true):"👂"}<span class="big lletter">${shown}</span>`, ans:v, wrong, small:false, html:x=>`<span class="lletter">${x}</span>`, hint:`${t.w}: ${t.w.split("").join("-")}`});
+  },
+  en_cvc(L){
+    const t = L<3 ? pick(EN_CVC) : pick(EN_W.filter(x=>x.w.length===4 && x.c!=="colors"));
+    const extra = takeN(EN_ABC_L, L===1?0:L===2?2:3, x=>t.w.includes(x));
+    return buildQ({text:"Build the word", sub:"كوّني الكلمة: دوسي على الحروف بالترتيب", say:`${t.w}. Spell ${t.w}.`, visual:lpic(t.e,true), target:t.w.split(""), extra, hint:`${t.w}: ${t.w.split("").join(" - ")}`});
+  },
+  en_rhyme(L){
+    const g=pick(EN_RHYME), [a,b]=shuffle(g).slice(0,2); const wrong=takeN(EN_RHYME.filter(x=>x!==g).flat(), nOpt(L)-1, ()=>false);
+    const pic = L===1 && EN_EMO[a] && [b,...wrong].every(w=>EN_EMO[w]);
+    return mcq({text:`Which word rhymes with ${a}?`, sub:`أنهي كلمة على نفس الوزن مع ${a}؟`, say:`Which word rhymes with ${a}?`, visual:EN_EMO[a]?lpic(EN_EMO[a],true):`<span class="big">🎵</span>`, ans:b, wrong,
+      html:v=>pic?`<span class="lstack">${lpic(EN_EMO[v])}${lword(v)}</span>`:lword(v), hint:`${a} and ${b} end with the same sound. ${a} و ${b} آخرهم نفس الصوت.`});
+  },
+  en_sight(L){
+    const pool=EN_SIGHT.slice(0, [15,30,EN_SIGHT.length][L-1]).map(x=>x[0]); const w=pick(pool);
+    const wrong=takeN(pool, nOpt(L)-1, x=>x===w);
+    return mcq({text:L===3?"Listen 🔈 and tap the word":`Find the word: ${w}`, sub:L===3?"اسمعي ودوسي على الكلمة":"لاقي الكلمة", say:w, listen:L===3, visual:`<span class="big">👀</span>`, ans:w, wrong, html:lword, xs:L===3?6:0});
+  },
+  en_sightfill(L){
+    const pool=EN_SIGHT.slice(0,[15,30,EN_SIGHT.length][L-1]); const [w,s]=pick(pool);
+    const re=new RegExp(`(^|[^A-Za-z'])(${w})(?=[^A-Za-z']|$)`, w==="I"?"":"i"); const gap=s.replace(re,(m,p)=>p+"___");
+    const wrong=takeN(pool.map(x=>x[0]), nOpt(L)-1, x=>x.toLowerCase()===w.toLowerCase());
+    return mcq({text:gap, sub:"إيه الكلمة الناقصة؟", say:`${gap.replace("___","blank")} Which word is missing?`, visual:`<span class="big">📝</span>`, ans:w, wrong, html:lword, hint:s});
+  },
+  en_vocab(L){
+    const pool=EN_W; const t=pick(pool);
+    if(L===3){ const wrong=takeN(pool,3,x=>x.w===t.w||x.e===t.e).map(x=>x.w); return mcq({text:`Which picture is “${t.w}”?`, sub:"أنهي صورة؟", say:`Which picture is ${t.w}?`, visual:`<span class="big">${esc(t.w)}</span>`, ans:t.w, wrong, small:false, html:v=>lpic(EN_EMO[v])}); }
+    const same = L===2 ? pool.filter(x=>x.c===t.c) : pool;
+    const wrong=takeN(same.length>4?same:pool, nOpt(L)-1, x=>x.w===t.w).map(x=>x.w);
+    return mcq({text:"What is this?", sub:"ده اسمه إيه بالإنجليزي؟", say:"What is this?", visual:lpic(t.e,true), ans:t.w, wrong, html:lword, hint:`This is ${t.w==="mom"||t.w==="dad"?"":"a "}${t.w}.`});
+  },
+  en_match(L){
+    if(L===3){ const ps=shuffle(EN_OPP).slice(0,4); return matchQ({text:"Match the opposites", sub:"وصّلي كل كلمة بعكسها", say:"Match each word with its opposite.", pairs:ps.map(p=>[`${p[2]} ${esc(p[0])}`, esc(p[1])])}); }
+    const ps=shuffle(EN_W).filter((x,i,a)=>a.findIndex(y=>y.e===x.e)===i).slice(0,L+2);
+    return matchQ({text:"Match the picture and the word", sub:"وصّلي الصورة بالكلمة", say:"Match each picture with its word.", pairs:ps.map(p=>[lpic(p.e), esc(p.w)])});
+  },
+  en_odd(L){
+    const cats=Object.keys(EN_CAT), c=pick(cats), oc=pick(cats.filter(x=>x!==c));
+    const same=takeN(EN_W, nOpt(L)-1, x=>x.c!==c), odd=pick(EN_W.filter(x=>x.c===oc));
+    return mcq({text:`Which one is NOT ${EN_CAT[c]}?`, sub:`أنهي واحدة مش ${EN_CAT_AR[c]}؟`, say:`Which one is not ${EN_CAT[c]}?`, visual:`<span class="big">🤔</span>`, ans:odd.w, wrong:same.map(x=>x.w),
+      html:v=>`<span class="lstack">${lpic(EN_EMO[v])}${L<3?lword(v):""}</span>`, hint:`${odd.w} is ${EN_CAT[oc]}.`});
+  },
+  en_aan(L){
+    const an=Math.random()<.5, [w,e]=pick(an?EN_AN:EN_A);
+    if(L===3){ const right=(an?"an ":"a ")+w, wr=(an?"a ":"an ")+w; return mcq({text:"Which one is right?", sub:"أنهي واحدة صح؟", say:"Which one is right?", visual:lpic(e,true), ans:right, wrong:[wr], html:lword, hint:"an + a, e, i, o, u"}); }
+    return mcq({text:`___ ${w}`, sub:"نقول a ولا an؟", say:`Do we say a or an, ${w}?`, visual:lpic(e,true), ans:an?"an":"a", wrong:[an?"a":"an"], small:false, html:lword, hint:an?`${w} starts with a vowel, so: an ${w}.`:`${w} does not start with a e i o u, so: a ${w}.`});
+  },
+  en_plural(L){
+    const [one,many,e] = pick(L===3 ? EN_PLES : EN_PL);
+    if(L===1){ const n=rnd(2,5), show=Math.random()<.5; return mcq({text:show?"One or more? Pick the word":"Pick the word", sub:"واحد ولا أكتر؟", say:"Look at the picture. Pick the right word.", visual:show?icons(n,e):lpic(e,true), ans:show?many:one, wrong:[show?one:many], html:lword, hint:"More than one: add s. أكتر من واحد: نزود s."}); }
+    const n=rnd(2,6); const wr=L===3?[one+"s", one]:[one, one+"es"].filter(x=>x!==many);
+    return mcq({text:`one ${one}, ${WORDS[n]} ___`, sub:"كملي الكلمة", say:`One ${one}, ${WORDS[n]} what?`, visual:icons(n,e), ans:many, wrong:wr, html:lword, hint:L===3?`${one} → ${many} (add es)`:`${one} → ${many}`});
+  },
+  en_opp(L){
+    const p=pick(EN_OPP), flip=Math.random()<.5, a=flip?p[1]:p[0], b=flip?p[0]:p[1], ea=flip?p[3]:p[2];
+    const wrong=takeN(EN_OPP.flat().filter((x,i)=>i%4<2), nOpt(L)-1, x=>x===a||x===b);
+    return mcq({text:`What is the opposite of ${a}?`, sub:`إيه عكس ${a}؟`, say:`What is the opposite of ${a}?`, visual:L<3?lpic(ea,true):`<span class="big">${esc(a)}</span>`, ans:b, wrong, html:lword, hint:`${a} ↔ ${b}`});
+  },
+  en_prep(L){
+    const p=pick(EN_PREP);
+    if(L===3){ return mcq({text:`The ball is ${p} the box.`, sub:"أنهي صورة؟", say:`Which picture shows: the ball is ${p} the box?`, visual:`<span class="big">⚽📦</span>`, ans:p, wrong:EN_PREP.filter(x=>x!==p), small:false, html:v=>prepVis(v,true), reveal:p}); }
+    const wrong=takeN(EN_PREP, L===1?2:3, x=>x===p);
+    return mcq({text:"Where is the ball?", sub:"الكورة فين؟", say:"Where is the ball? In, on, under, or next to the box?", visual:prepVis(p), ans:p, wrong, html:v=>lword(v+" the box"), hint:"in = جوه, on = فوق, under = تحت, next to = جنب"});
+  },
+  en_order(L){
+    const pool=EN_SENT.filter(s=>L===1?s.length===3:L===2?s.length===4:s.length>=5); const s=pick(pool);
+    return buildQ({text:"Make the sentence", sub:"رتبي الكلمات وكوّني جملة", say:s.join(" "), target:s, join:" ", suffix:".", visual:`<span class="big">🧩</span>`, hint:`${s.join(" ")}. A sentence starts with a capital letter. الجملة بتبدأ بحرف كبير.`});
+  },
+  en_tf(L){
+    if(L===1){ const t=pick(EN_W.filter(x=>x.c!=="colors"&&x.c!=="family")), truth=Math.random()<.5, other=truth?t:pick(EN_W.filter(x=>x.c===t.c&&x.w!==t.w)); const s=`This is a ${other.w}.`;
+      return tfq({text:s, sub:"صح ولا غلط؟", say:`${s} True or false?`, visual:lpic(t.e,true), truth, hint:`This is a ${t.w}.`}); }
+    if(L===2){ const [s,tr,e]=pick(EN_FACTS); return tfq({text:s, sub:"صح ولا غلط؟", say:`${s} True or false?`, visual:lpic(e,true), truth:!!tr}); }
+    const t=pick(EN_PL), n=rnd(2,6), said=Math.random()<.5?n:pick([n-1,n+1].filter(x=>x>=2)); const s=`I see ${WORDS[said]} ${t[1]}.`;
+    return tfq({text:s, sub:"عدّي واقري: صح ولا غلط؟", say:`${s} True or false?`, visual:icons(n,t[2]), truth:said===n, hint:`I see ${WORDS[n]} ${t[1]}.`});
+  },
+  en_fix(L){
+    if(L===1){ const s=pick(EN_SENT.filter(x=>x.length<=5)), i=0; const t=pick(EN_W.filter(x=>x.c==="animals")), o=pick(EN_W.filter(x=>x.c==="animals"&&x.w!==t.w));
+      const words=["I","see","a",o.w+"."]; return mcq({text:"Tap the wrong word", sub:"الكلمة اللي غلط مع الصورة؟", say:`I see a ${o.w}. Look at the picture. Which word is wrong?`, visual:`${lpic(t.e,true)}${sentHTML(words)}`, ans:o.w+".", wrong:["I","see","a"], html:lword, hint:`I see a ${t.w}.`}); }
+    if(L===2){ const s=pick(EN_SENT); const bad=[s[0].toLowerCase(), ...s.slice(1)]; bad[bad.length-1]+="."; if(s[0]==="I") bad[0]="i";
+      return mcq({text:"Tap the mistake", sub:"فين الغلطة؟ (الحرف الكبير)", say:"Find the mistake in the sentence.", visual:sentHTML(bad), ans:bad[0], wrong:bad.slice(1,4), html:lword, hint:"A sentence starts with a capital letter. الجملة بتبدأ بحرف كبير.", reveal:s[0]}); }
+    const s=pick(EN_SENT.filter(x=>x.some(w=>w.length>=3&&w!=="the"))); const cand=s.map((w,i)=>i).filter(i=>s[i].length>=3 && s[i]!=="The"); const bi=pick(cand); const bad=[...s]; bad[bi]=enMisspell(s[bi].toLowerCase()); bad[bad.length-1]+=".";
+    return mcq({text:"Tap the word that is spelled wrong", sub:"أنهي كلمة متكتبة غلط؟", say:"One word is spelled wrong. Which one?", visual:sentHTML(bad), ans:bad[bi], wrong:takeN(bad,3,x=>x===bad[bi]), html:lword, hint:`${s.join(" ")}.`, reveal:s[bi]});
+  },
+  en_spell(L){
+    const pool = L===1 ? EN_CVC : L===2 ? EN_W.filter(x=>x.w.length===4&&!x.w.includes(" ")) : EN_W.filter(x=>x.w.length>=5&&x.w.length<=6); const t=pick(pool);
+    return kbdQ({text:"Type the word", sub:"اكتبي اسم الصورة", say:t.w, visual:lpic(t.e,true), word:t.w, keys:enKeys(t.w,L), hint:`${t.w}: ${t.w.split("").join(" - ")}`});
+  },
+  en_wrong(L){
+    const pool=L===1?EN_CVC:EN_W.filter(x=>x.w.length>=4&&x.w.length<=6&&x.c!=="colors"), t=pick(pool), bad=enMisspell(t.w);
+    if(L===3) return mcq({text:"Which spelling is right?", sub:"أنهي كتابة صح؟", say:`${t.w}. Which spelling is right?`, visual:lpic(t.e,true), ans:t.w, wrong:[bad, enMisspell(t.w)], html:lword});
+    const good=takeN(pool, nOpt(L)-1, x=>x.w===t.w).map(x=>x.w);
+    return mcq({text:"Which word is spelled wrong?", sub:"أنهي كلمة متكتبة غلط؟", say:"One word is spelled wrong. Can you find it?", visual:`<span class="big">🔎</span>`, ans:bad, wrong:good, html:lword, hint:`It should be: ${t.w}`, reveal:bad+" → "+t.w});
+  },
+  en_missing(L){
+    const pool = L===1 ? EN_W.filter(x=>x.w.length===4) : L===2 ? EN_W.filter(x=>x.w.length===5) : EN_W.filter(x=>x.w.length>=6&&!x.w.includes(" "));
+    const t=pick(pool), i=rnd(0,t.w.length-1), l=t.w[i], shown=t.w.slice(0,i)+"_"+t.w.slice(i+1);
+    const wrong=takeN(EN_ABC_L, nOpt(L)-1, x=>x===l);
+    return mcq({text:`${shown}`, sub:"أنهي حرف ناقص؟", say:`${t.w}. Which letter is missing?`, visual:`${lpic(t.e,true)}<span class="big lletter">${shown}</span>`, ans:l, wrong, small:false, html:x=>`<span class="lletter">${x}</span>`, hint:t.w});
+  },
+  en_read(L){
+    const st = pick(L===1?EN_STORIES.slice(0,5):EN_STORIES), qq = L===1?st.q[0]:pick(st.q);
+    return mcq({text:qq[0], sub:"اقري الحكاية وجاوبي", say:`${st.t} ${qq[0]}`, visual:`<div class="lstory"><span class="lstorye">${st.e}</span><p>${esc(st.t)}</p></div>`, ans:qq[1], wrong:qq.slice(2), html:lword, xs:20, hint:"Read the story again. اقري الحكاية تاني."});
+  },
+  en_readpic(L){
+    if(L===3){ const p=pick(EN_PREP); return mcq({text:`The ball is ${p} the box.`, sub:"اقري واختاري الصورة", say:`The ball is ${p} the box.`, visual:"", ans:p, wrong:EN_PREP.filter(x=>x!==p), small:false, html:v=>prepVis(v,true), reveal:p}); }
+    if(L===2){ const t=pick(EN_PL), n=rnd(2,5); const s=`I see ${WORDS[n]} ${t[1]}.`; const wrong=takeN([1,2,3,4,5,6],2,x=>x===n||x<2).map(String);
+      return mcq({text:s, sub:"اقري واختاري الصورة", say:s, visual:"", ans:String(n), wrong, small:false, html:v=>`<span style="font-size:1.6rem;line-height:1.2">${t[2].repeat(+v)}</span>`, reveal:WORDS[n]+" "+t[1]}); }
+    const t=pick(EN_W.filter(x=>x.c!=="colors")), s=`I see a ${t.w}.`, wrong=takeN(EN_W,2,x=>x.w===t.w||x.c==="colors"||x.e===t.e).map(x=>x.w);
+    return mcq({text:s, sub:"اقري واختاري الصورة", say:s, visual:"", ans:t.w, wrong, small:false, html:v=>lpic(EN_EMO[v]), reveal:t.w});
+  },
+  en_listen(L){
+    let t, wrong;
+    if(L===3){ const g=pick(EN_RHYME.filter(g=>g.filter(w=>EN_EMO[w]).length>=3)); const ws=shuffle(g.filter(w=>EN_EMO[w])); t=ws[0]; wrong=ws.slice(1,4); }
+    else { const x=pick(EN_W); t=x.w; wrong=takeN(EN_W,nOpt(L)-1,y=>y.w===t||y.e===x.e).map(y=>y.w); }
+    return mcq({text:"Listen 🔈 and tap the picture", sub:"اسمعي ودوسي على الصورة", say:t, listen:true, visual:`<span class="big">👂</span>`, ans:t, wrong, small:false, html:v=>lpic(EN_EMO[v]), xs:6, reveal:t});
+  },
+  en_listensent(L){
+    if(L===3){ const p=pick(EN_PREP); return mcq({text:"Listen 🔈 and tap the picture", sub:"اسمعي الجملة واختاري الصورة", say:`The ball is ${p} the box.`, listen:true, visual:`<span class="big">👂</span>`, ans:p, wrong:EN_PREP.filter(x=>x!==p), small:false, html:v=>prepVis(v,true), xs:6, reveal:`The ball is ${p} the box.`}); }
+    if(L===2){ const t=pick(EN_PL), n=rnd(2,5); const wrong=takeN([2,3,4,5,6],2,x=>x===n).map(String);
+      return mcq({text:"Listen 🔈 and tap the picture", sub:"اسمعي الجملة واختاري الصورة", say:`I see ${WORDS[n]} ${t[1]}.`, listen:true, visual:`<span class="big">👂</span>`, ans:String(n), wrong, small:false, html:v=>`<span style="font-size:1.6rem;line-height:1.2">${t[2].repeat(+v)}</span>`, xs:6, reveal:`I see ${WORDS[n]} ${t[1]}.`}); }
+    const [s,tr,e]=pick(EN_FACTS); return tfq({text:"Listen 🔈 True or false?", sub:"اسمعي: صح ولا غلط؟", say:s, listen:true, visual:lpic(e,true), truth:!!tr, xs:6, hint:s});
+  },
+  en_listenspell(L){
+    const t = L===3 ? pick(EN_W.filter(x=>x.w.length===4)) : pick(EN_CVC);
+    if(L===1) return buildQ({text:"Listen 🔈 and build the word", sub:"اسمعي وكوّني الكلمة", say:t.w, listen:true, visual:`<span class="big">👂</span>`, target:t.w.split(""), extra:takeN(EN_ABC_L,2,x=>t.w.includes(x)), xs:6, hint:t.w});
+    return kbdQ({text:"Listen 🔈 and type the word", sub:"اسمعي واكتبي الكلمة", say:t.w, listen:true, visual:`<span class="big">👂</span>`, word:t.w, keys:enKeys(t.w,L), xs:6, hint:t.w});
+  },
+});
+
+/* ---------- Arabic generators ---------- */
+const arQ = o => ({...o, lang:"ar"});
+const arPic = v => lpic((AR_W.find(x=>x.w===v)||{}).e||"❓");
+const arLetterHTML = v => `<span class="lar lletter">${esc(v)}</span>`;
+Object.assign(GEN, {
+  ar_name(L){
+    const [l,n]=pick(AR_ABC), wrong=takeN(AR_LET, nOpt(L)-1, x=>x===l);
+    return mcq(arQ({text:L===3?"اسمعي 🔈 واختاري الحرف":`فين حرف ال${n}؟`, sub:L===3?"Listen and tap the letter":`Find the letter ${n}`, say:n, listen:L===3, visual:L===3?`<span class="big">👂</span>`:`<span class="big">${LAR(n)}</span>`, ans:l, wrong, small:false, html:arLetterHTML, xs:L===3?6:0}));
+  },
+  ar_abc(L){
+    if(L===3){ const i=rnd(0,AR_LET.length-5), tgt=AR_LET.slice(i,i+5); return buildQ(arQ({text:"رتّبي الحروف: ا ب ت ث…", sub:"Tap the letters in order", say:"رتّبي الحروف", target:tgt, join:" ", visual:`<span class="big">🔤</span>`, hint:"ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي"})); }
+    const i=rnd(1,AR_LET.length-2), before=L===2&&Math.random()<.5, ans=before?AR_LET[i-1]:AR_LET[i+1];
+    const wrong=takeN(AR_LET.slice(Math.max(0,i-4),i+5), nOpt(L)-1, x=>x===ans);
+    return mcq(arQ({text:before?`إيه الحرف اللي قبل ${AR_LET[i]}؟`:`إيه الحرف اللي بعد ${AR_LET[i]}؟`, sub:before?"Which letter comes before?":"Which letter comes next?", say:before?`ما الحرف الذي قبل ${AR_ABC[i][1]}؟`:`ما الحرف الذي بعد ${AR_ABC[i][1]}؟`,
+      visual:`<span class="big">${LAR(AR_LET[i])}</span>`, ans, wrong, small:false, html:arLetterHTML}));
+  },
+  ar_haraka(L){
+    const l=pick(AR_LET.filter(x=>x!=="ا"));
+    if(L===3){ const h=pick(HARAKAT); return mcq(arQ({text:"اسم الحركة إيه؟", sub:"Which mark is this?", say:l+h[0], visual:`<span class="big">${LAR(l+h[0])}</span>`, ans:h[1], wrong:HARAKAT.filter(x=>x!==h).map(x=>x[1]), html:LAR, hint:`${h[1]} = ${h[2]} (${h[3]})`})); }
+    const h=pick(HARAKAT.slice(0,3)), ls = L===1 ? [l,l,l] : shuffle(AR_LET.filter(x=>x!=="ا")).slice(0,3);
+    const opts=HARAKAT.slice(0,3).map((x,i)=>ls[i]+x[0]); const ans=opts[HARAKAT.indexOf(h)];
+    return mcq(arQ({text:`فين الحرف اللي عليه ${h[1]}؟`, sub:`Which letter has a ${h[2]} (says ${h[3]})?`, say:`فين الحرف اللي عليه ${h[1]}`, visual:`<span class="big">${LAR("ـ"+h[0])}</span>`, ans, wrong:opts.filter(x=>x!==ans), small:false, html:arLetterHTML, hint:"الفتحة فوق، الكسرة تحت، الضمة واو صغيرة فوق."}));
+  },
+  ar_first(L){
+    const t=pick(AR_W), l=arNorm([...t.w][0]);
+    if(L===3){ const wrong=takeN(AR_W,3,x=>arNorm([...x.w][0])===l||x.e===t.e).map(x=>x.w);
+      return mcq(arQ({text:`أنهي صورة بتبدأ بحرف ${l}؟`, sub:`Which picture starts with ${l}?`, say:`أي صورة تبدأ بحرف ${l}`, visual:`<span class="big">${LAR(l)}</span>`, ans:t.w, wrong, small:false, html:arPic, hint:t.w})); }
+    const wrong=takeN(AR_LET, nOpt(L)-1, x=>x===l);
+    return mcq(arQ({text:"أول حرف في الكلمة إيه؟", sub:"What is the first letter?", say:t.w, visual:`${lpic(t.e,true)}${L===1?`<span class="big">${LAR(t.w)}</span>`:""}`, ans:l, wrong, small:false, html:arLetterHTML, hint:`${t.w} ← ${l}`}));
+  },
+  ar_inword(L){
+    const t=pick(AR_W.filter(x=>[...x.w].length>=3)), ch=[...t.w];
+    const l = L===1 ? arNorm(ch[0]) : L===2 ? ch[1] : ch[ch.length-1];
+    const has = w => { const c=[...w].map(arNorm); return L===1 ? c[0]===l : L===2 ? c.includes(l) : c[c.length-1]===l; };
+    const wrong=takeN(AR_W, nOpt(L)-1, x=>has(x.w)).map(x=>x.w);
+    const q=[`أنهي كلمة بتبدأ بحرف ${l}؟`,`أنهي كلمة فيها حرف ${l}؟`,`أنهي كلمة آخرها حرف ${l}؟`][L-1], en=[`Which word starts with ${l}?`,`Which word has ${l} in it?`,`Which word ends with ${l}?`][L-1];
+    return mcq(arQ({text:q, sub:en, say:q, visual:`<span class="big">${LAR(l)}</span>`, ans:t.w, wrong, html:LAR, hint:t.w}));
+  },
+  ar_vocab(L){
+    const t=pick(AR_W);
+    if(L===3){ const wrong=takeN(AR_W,3,x=>x.w===t.w||x.e===t.e).map(x=>x.w); return mcq(arQ({text:`أنهي صورة «${t.w}»؟`, sub:"Which picture?", say:t.w, visual:`<span class="big">${LAR(t.w)}</span>`, ans:t.w, wrong, small:false, html:arPic})); }
+    const wrong=takeN(AR_W, nOpt(L)-1, x=>x.w===t.w||x.e===t.e).map(x=>x.w);
+    return mcq(arQ({text:"ده اسمه إيه؟", sub:`What is this in Arabic? (${t.en})`, say:"ما هذا؟", visual:lpic(t.e,true), ans:t.w, wrong, html:LAR, hint:`${t.e} = ${t.w} = ${t.en}`}));
+  },
+  ar_match(L){
+    const ps=shuffle(AR_W).filter((x,i,a)=>a.findIndex(y=>y.e===x.e)===i).slice(0,L+2);
+    if(L===3) return matchQ(arQ({text:"وصّلي الكلمة العربي بالإنجليزي", sub:"Match Arabic and English", say:"وصلي", pairs:ps.map(p=>[LAR(p.w), esc(p.en)])}));
+    return matchQ(arQ({text:"وصّلي الصورة بالكلمة", sub:"Match the picture and the word", say:"وصلي الصورة بالكلمة", pairs:ps.map(p=>[lpic(p.e), LAR(p.w)])}));
+  },
+  ar_build(L){
+    const pool=AR_W.filter(x=>[...x.w].length<=[3,4,6][L-1] && [...x.w].length>=[2,3,4][L-1]); const t=pick(pool), ch=[...t.w];
+    return buildQ(arQ({text:"كوّني الكلمة", sub:"Tap the letters in order (right to left)", say:t.w, visual:lpic(t.e,true), target:ch, extra:takeN(AR_LET,[0,2,3][L-1],x=>ch.includes(x)), hint:t.w}));
+  },
+  ar_missing(L){
+    const pool=AR_W.filter(x=>[...x.w].length>=3); const t=pick(pool), ch=[...t.w]; const i=L===1?0:rnd(L===2?1:0,ch.length-1); const l=ch[i];
+    const shown=ch.map((c,j)=>j===i?"⬚":c).join(""); const wrong=takeN([...AR_LET,"ة","أ"], nOpt(L)-1, x=>x===l||arNorm(x)===arNorm(l));
+    return mcq(arQ({text:"أنهي حرف ناقص؟", sub:"Which letter is missing?", say:t.w, visual:`${lpic(t.e,true)}<span class="big">${LAR(shown)}</span>`, ans:l, wrong, small:false, html:arLetterHTML, hint:t.w}));
+  },
+  ar_this(L){
+    const t=pick(AR_W), ans=t.g==="m"?"هذا":"هذه";
+    if(L===3){ const wr=(t.g==="m"?"هذه ":"هذا ")+t.w, right=ans+" "+t.w; return mcq(arQ({text:"أنهي جملة صح؟", sub:"Which sentence is right?", say:right, visual:lpic(t.e,true), ans:right, wrong:[wr], html:LAR, hint:`${t.w}: ${t.g==="m"?"مذكر ← هذا":"مؤنث ← هذه"}`})); }
+    return mcq(arQ({text:`____ ${t.w}`, sub:"هذا (boy word) or هذه (girl word)?", say:`${ans} ${t.w}`, visual:lpic(t.e,true), ans, wrong:[t.g==="m"?"هذه":"هذا"], small:false, html:LAR, hint:`${ans} ${t.w}`}));
+  },
+  ar_al(L){
+    const t=pick(AR_W.filter(x=>!/^[أا]/.test(x.w)));
+    if(L===1){ return mcq(arQ({text:`زوّدي «ال» على ${t.w}`, sub:`Add ال (the) to ${t.en}`, say:"ال"+t.w, visual:lpic(t.e,true), ans:"ال"+t.w, wrong:[t.w+"ال","ل"+t.w], html:LAR, hint:"ال"+t.w})); }
+    if(L===2){ const wrong=takeN(AR_W,3,x=>x.w===t.w).map(x=>x.w); return mcq(arQ({text:"أنهي كلمة فيها «ال»؟", sub:"Which word has ال (the)?", say:"أي كلمة فيها ال", visual:`<span class="big">${LAR("ال")}</span>`, ans:"ال"+t.w, wrong, html:LAR})); }
+    return mcq(arQ({text:`شيلي «ال» من ال${t.w}`, sub:`Take away ال`, say:"ال"+t.w, visual:`<span class="big">${LAR("ال"+t.w)}</span>`, ans:t.w, wrong:["ال"+t.w, [...t.w].slice(1).join("")||t.w+"ا"], html:LAR}));
+  },
+  ar_sent(L){
+    const pool=AR_SENT.filter(s=>L===1?s.length===3:L===2?s.length===4:s.length>=4); const s=pick(pool);
+    return buildQ(arQ({text:"رتّبي الكلمات وكوّني جملة", sub:"Make the sentence (right to left)", say:s.join(" "), target:s, join:" ", visual:`<span class="big">🧩</span>`, hint:s.join(" ")}));
+  },
+  ar_tf(L){
+    if(L<3){ const t=pick(AR_W), truth=Math.random()<.5, o=truth?t:pick(AR_W.filter(x=>x.w!==t.w&&x.e!==t.e)); const s=`${o.g==="m"?"هذا":"هذه"} ${o.w}`;
+      return tfq(arQ({text:s, sub:"True or false?", say:s, visual:lpic(t.e,true), truth, hint:`${t.g==="m"?"هذا":"هذه"} ${t.w}`})); }
+    const [s,tr,e]=pick(AR_FACTS); return tfq(arQ({text:s, sub:"True or false?", say:s, visual:lpic(e,true), truth:!!tr}));
+  },
+  ar_read(L){
+    const st=pick(L===1?AR_TEXTS.slice(0,4):AR_TEXTS), qq=L===1?st.q[0]:pick(st.q);
+    return mcq(arQ({text:qq[0], sub:"Read and answer", say:`${st.t} ${qq[0]}`, visual:`<div class="lstory" dir="rtl" lang="ar"><span class="lstorye">${st.e}</span><p>${esc(st.t)}</p></div>`, ans:qq[1], wrong:qq.slice(2), html:LAR, xs:20, hint:"اقري تاني بالراحة."}));
+  },
+  ar_spell(L){
+    const pool=AR_W.filter(x=>[...x.w].length<=[3,4,6][L-1] && [...x.w].length>=[2,3,4][L-1]); const t=pick(pool);
+    return kbdQ(arQ({text:"اكتبي اسم الصورة", sub:"Type the word", say:t.w, visual:lpic(t.e,true), word:t.w, keys:arKeys(t.w,L), hint:t.w}));
+  },
+  ar_wrong(L){
+    const t=pick(AR_W.filter(x=>[...x.w].length>=3)), bad=arMisspell(t.w);
+    if(L===3) return mcq(arQ({text:"أنهي كتابة صح؟", sub:"Which spelling is right?", say:t.w, visual:lpic(t.e,true), ans:t.w, wrong:[bad, arMisspell(t.w)], html:LAR, hint:t.w}));
+    const good=takeN(AR_W, nOpt(L)-1, x=>x.w===t.w).map(x=>x.w);
+    return mcq(arQ({text:"أنهي كلمة متكتبة غلط؟", sub:"Which word is spelled wrong? Look at the dots!", say:"أي كلمة مكتوبة خطأ؟", visual:`<span class="big">🔎</span>`, ans:bad, wrong:good, html:LAR, hint:`الصح: ${t.w}`, reveal:`${bad} ← ${t.w}`}));
+  },
+  ar_listen(L){
+    const t=pick(AR_W), wrong=takeN(AR_W, nOpt(L)-1, x=>x.w===t.w||x.e===t.e).map(x=>x.w);
+    return mcq(arQ({text:L===3?"اسمعي 🔈 واختاري الكلمة":"اسمعي 🔈 واختاري الصورة", sub:L===3?"Listen and tap the word":"Listen and tap the picture", say:t.w, listen:true, visual:`<span class="big">👂</span>`, ans:t.w, wrong, small:L===3, html:L===3?LAR:arPic, xs:6, reveal:t.w}));
+  },
+});
+
+/* ---------- formats: build / kbd / match ---------- */
+function lxBody(q){
+  const ar=q.lang==="ar", dir=ar?"rtl":"ltr";
+  if(q.fmt==="build"){ const built=q.target.slice(0,q.pos).join(q.join)+(q.pos>=q.target.length?q.suffix:"");
+    return `<div class="lwrap"><div class="lbuilt ${ar?"lar":""}" id="lbuilt" dir="${dir}">${esc(built)||"…"}</div><div class="ltiles" dir="${dir}">${q.items.map((v,i)=>`<button class="choice small ltile ${ar?"lar":""}" data-lx="b" data-i="${i}" ${q.used.includes(i)?"disabled":""}>${esc(v)}</button>`).join("")}</div></div>`; }
+  if(q.fmt==="kbd") return `<div class="lwrap"><div class="lbuilt ${ar?"lar":""}" id="lbuilt" dir="${dir}">${esc(q.input)||"…"}</div><div class="lkeys" dir="${dir}">${q.keys.map(k=>`<button class="key lkey ${ar?"lar":""}" data-lx="k" data-v="${esc(k)}">${esc(k)}</button>`).join("")}<button class="key lkey" data-lx="k" data-v="back" aria-label="Delete">⌫</button><button class="key ok lkey" data-lx="k" data-v="ok" aria-label="Check">✔</button></div></div>`;
+  if(q.fmt==="match"){ const btn=(side,i)=>`<button class="choice small lm ${q.done.includes(i)?"right":""} ${side==="l"&&q.sel===i?"lsel":""}" data-lx="m${side}" data-i="${i}" ${q.done.includes(i)?"disabled":""}>${q.pairs[i][side==="l"?0:1]}</button>`;
+    return `<div class="lwrap lmatch"><div class="lcol">${q.L.map(i=>btn("l",i)).join("")}</div><div class="lcol">${q.R.map(i=>btn("r",i)).join("")}</div></div>`; }
+  return "";
+}
+function lxMiss(msg){ mathLog(false); sfx.no(); const ch=$("#cheer"); if(ch){ ch.className="cheer no"; ch.textContent=msg+(game.q.hint&&game.q.lang!=="ar"?"":""); } save(); }
+function lxClick(d, btn){
+  if(!game || !game.q || game.locked) return true;
+  const q=game.q, i=+d.i;
+  if(d.lx==="b"){ if(q.used.includes(i)) return true;
+    if(q.items[i]===q.target[q.pos]){ q.used.push(i); q.pos++; btn.classList.add("right"); btn.disabled=true; sfx.ok();
+      const b=$("#lbuilt"); if(b) b.textContent=q.target.slice(0,q.pos).join(q.join)+(q.pos>=q.target.length?q.suffix:"");
+      if(q.pos>=q.target.length){ if(b) b.classList.add("right"); judge(true,null); } }
+    else { btn.classList.add("wrong"); setTimeout(()=>btn.classList.remove("wrong"),400); lxMiss(q.lang==="ar"?"شوفي تاني! إيه اللي بعده؟ 💫":"Look again! Which one comes next? 💫"); }
+    return true; }
+  if(d.lx==="k"){ const v=d.v; sfx.tap();
+    if(v==="back") q.input=[...q.input].slice(0,-1).join("");
+    else if(v==="ok"){ if(!q.input) return true; const right=q.input===q.word; judge(right,null); if(!right){ q.input=""; } else { const b=$("#lbuilt"); if(b) b.classList.add("right"); } }
+    else if([...q.input].length < [...q.word].length+3) q.input+=v;
+    const b=$("#lbuilt"); if(b) b.textContent=q.input||"…"; return true; }
+  if(d.lx==="ml"){ q.sel=i; sfx.tap(); document.querySelectorAll('[data-lx="ml"]').forEach(x=>x.classList.toggle("lsel", +x.dataset.i===i)); return true; }
+  if(d.lx==="mr"){ if(q.sel===null){ toast(q.lang==="ar"?"اختاري من العمود الأول الأول":"Tap one on the left first"); return true; }
+    if(i===q.sel){ q.done.push(i); sfx.ok(); document.querySelectorAll(`[data-lx="ml"][data-i="${i}"],[data-lx="mr"][data-i="${i}"]`).forEach(x=>{ x.classList.add("right"); x.classList.remove("lsel"); x.disabled=true; }); q.sel=null;
+      if(q.done.length>=q.pairs.length) judge(true,null); }
+    else { btn.classList.add("wrong"); setTimeout(()=>btn.classList.remove("wrong"),400); lxMiss(q.lang==="ar"?"مش دي! جربي تاني 💫":"Not that one! Try again 💫"); }
+    return true; }
+  return false;
+}
+
+/* ---------- voice: Arabic voice + listening that works even when muted ---------- */
+let arVoice=null;
+function pickArVoice(){ try{ const vs=speechSynthesis.getVoices().filter(v=>/^ar/i.test(v.lang)); arVoice = vs.find(v=>/ar[-_]EG/i.test(v.lang)) || vs.find(v=>/google/i.test(v.name)) || vs[0] || null; }catch(e){} }
+try{ pickArVoice(); speechSynthesis.addEventListener("voiceschanged", pickArVoice); }catch(e){}
+function speakAs(t, lang){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t);
+  if(lang==="ar"){ if(arVoice) u.voice=arVoice; u.lang=arVoice?.lang||"ar-EG"; u.rate=.8; } else { if(voice) u.voice=voice; u.lang=voice?.lang||"en-GB"; u.rate=.85; u.pitch=1.1; }
+  speechSynthesis.speak(u); }catch(e){} }
+function langSay(q, tap){
+  if(!q || !q.say) return;
+  if(!q.lang && !q.listen) return speak(q.say, tap);
+  if(tap){ if(q.listen || S.sound) speakAs(q.say, q.lang); return; }
+  if(S.sound && S.autoVoice && !q.listen) speakAs(q.say, q.lang);
+}
+function langTipHTML(u){
+  if(!u.tip) return "";
+  return `<div class="ltip"><span style="font-size:2rem">💡</span><div><b>${esc(u.tip[0])}</b><span class="ar" dir="rtl" lang="ar">${esc(u.tip[1])}</span></div></div>`;
+}
+(function(){ const css=`
+.lar{font-family:Tahoma,"Segoe UI","Noto Naskh Arabic",sans-serif;direction:rtl;unicode-bidi:isolate}
+.lletter{font-family:var(--display);font-weight:800;font-size:2.6rem}
+.lletter.lar{font-family:Tahoma,"Noto Naskh Arabic",sans-serif;font-size:2.8rem}
+.big .lar{font-size:inherit}
+.lpic{font-size:2.6rem;line-height:1;display:inline-block}.lpic.big{font-size:clamp(4rem,12vw,6rem)}
+.lword{font-size:1.5rem;font-weight:800}
+.choice .lar{font-size:1.8rem;font-weight:700}
+.lstack{display:flex;flex-direction:column;align-items:center;gap:4px}
+.lsub{display:block;font-family:Tahoma,"Segoe UI",sans-serif;font-size:1rem;font-weight:700;color:var(--muted);margin-top:4px}
+.lbuilt{min-height:66px;min-width:180px;margin:0 auto 12px;padding:8px 22px;border-radius:22px;background:#fffaf0;color:#2a1a4a;border:4px solid var(--line);font-family:var(--display);font-weight:800;font-size:2.2rem;text-align:center;letter-spacing:.04em;word-break:break-word}
+.lbuilt.lar{font-family:Tahoma,"Noto Naskh Arabic",sans-serif;letter-spacing:0;font-size:2.4rem}
+.lbuilt.right{border-color:var(--mint);background:#d7fbea}
+.ltiles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.ltile{min-height:70px;min-width:70px;font-size:1.8rem!important;padding:6px 14px}
+.ltile.lar{font-size:2.2rem!important}
+.lkeys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:620px;margin:0 auto}
+.lkey{min-width:56px;height:58px;font-size:1.6rem;padding:0 10px}
+.lkey.lar{font-family:Tahoma,"Noto Naskh Arabic",sans-serif;font-size:1.9rem}
+.lmatch{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lcol{display:flex;flex-direction:column;gap:10px}
+.lm{min-height:74px!important}
+.lm.lsel{border-color:var(--star)!important;box-shadow:0 0 0 4px rgba(255,212,71,.45)}
+.lsent{font-family:var(--display);font-size:1.7rem;font-weight:800;line-height:1.5;text-align:center}
+.lstory{background:#fffaf0;color:#2a1a4a;border-radius:20px;padding:14px 18px;max-width:560px;text-align:start}
+.lstory p{margin:6px 0 0;font-size:1.35rem;font-weight:700;line-height:1.55}
+.lstory[dir=rtl] p{font-family:Tahoma,"Noto Naskh Arabic",sans-serif;font-size:1.5rem}
+.lstorye{font-size:2.2rem}
+.say.listen{width:84px;height:84px;font-size:2.4rem;background:var(--star);animation:lpulse 1.4s ease-in-out infinite}
+@keyframes lpulse{50%{transform:scale(1.08);box-shadow:0 0 0 10px rgba(255,212,71,.25)}}
+.ltip{display:flex;gap:14px;align-items:center;background:var(--panel2);border:2px solid var(--line);border-radius:20px;padding:12px 16px;margin:0 0 16px}
+.ltip b{display:block;font-size:1.1rem}
+.planet .uar{display:block;font-family:Tahoma,sans-serif;font-size:.95rem;color:var(--muted);font-weight:700}
+@media (orientation:landscape) and (min-width:900px){ .game .lwrap{grid-area:ch;align-self:center} }
+`; const st=document.createElement("style"); st.id="langpack-css"; st.textContent=css; document.head.appendChild(st); })();
+/* ======================= end LANGUAGE PACK ======================= */
+
 /* ---------------- Lessons: "what we did at school today" -> practice ---------------- */
 const PAD_WORDS = ["sun","cat","book","tree","star","moon","fish","hat","ball","cup"];
 function genLesson(id, level){
@@ -983,7 +1539,7 @@ function vHome(){
   <div class="subjects" role="list">${SUBJECTS.map(s=>`<button class="subj ${s.soon?"soon":""}" data-subject="${s.id}" aria-current="${s.id===subj.id}" role="listitem"><span class="dot" style="background:${s.color}"></span>${s.name}${s.soon?" <small>soon</small>":""}</button>`).join("")}</div>
   ${subj.id==="shop" ? shopHome() : subj.soon ? `<div class="empty">The ${subj.name} galaxy is being built. Math is ready to explore!</div>` :
   `<div class="planets">${subj.units.map((u,i)=>{ const got=unitStars(u), max=u.skills.length*3;
-    return `<button class="planet" data-unit="${u.id}"><span class="orb" style="background:radial-gradient(circle at 35% 30%,#fff8,${u.color} 40%,${u.color})"></span>${i%2?"":`<span class="ring"></span>`}<span class="u">Chapter ${i+1} · book p.${u.page}</span><h3>${esc(u.title)}</h3>${starsRow(Math.min(3,Math.round(got/max*3)))}<span class="hint">${got} / ${max} stars</span></button>`; }).join("")}</div>`}`;
+    return `<button class="planet" data-unit="${u.id}"><span class="orb" style="background:radial-gradient(circle at 35% 30%,#fff8,${u.color} 40%,${u.color})"></span>${i%2?"":`<span class="ring"></span>`}<span class="u">Chapter ${i+1}${u.page?` · book p.${u.page}`:""}</span><h3>${esc(u.title)}${u.ar?`<span class="uar" dir="rtl" lang="ar">${esc(u.ar)}</span>`:u.en?`<span class="uar">${esc(u.en)}</span>`:""}</h3>${starsRow(Math.min(3,Math.round(got/max*3)))}<span class="hint">${got} / ${max} stars</span></button>`; }).join("")}</div>`}`;
 }
 
 function smartBlock(){
@@ -991,7 +1547,7 @@ function smartBlock(){
   return `<div class="missions" style="margin-bottom:22px">
     <button class="mission" data-mode="mix" style="border-color:var(--mint)"><h3>🚀 Daily Mix</h3><p>6 questions picked just for you. They change every time!</p></button>
     <button class="mission" data-mode="check" style="${due?"border-color:var(--star)":""}"><h3>⭐ Star Check${due?" · time for one!":""}</h3><p>${last?`Last time: ${last.score} out of ${last.total}`:"10 questions to find your level"}</p></button>
-    <button class="mission" data-go="challenges" style="border-color:var(--pink)"><h3>🏆 Challenges</h3><p>Challenge ${((S.chal||{}).done||0)+1} is waiting! Clear one to open the next.</p></button></div>`;
+    <button class="mission" data-go="challenges" style="border-color:var(--pink)"><h3>🏆 Challenges</h3><p>Challenge ${(chalRec().done||0)+1} is waiting! Clear one to open the next.</p></button></div>`;
 }
 function schoolBlock(){
   const ls = S.school.filter(l=>!l.done || l.doneDate===today()).slice(-4).reverse();
@@ -1002,8 +1558,8 @@ const weekMin = () => { let s=0; for(let i=0;i<7;i++){ const d=new Date(); d.set
 function reportText(){
   const L = [`Star Academy report for ${S.child.name||"child"} (${today()})`, `Stars ${S.stars}, stickers ${S.stickers.length}, minutes played in the last 7 days: ${weekMin()}`];
   S.checks.slice(-3).forEach(c=>L.push(`Star Check ${new Date(c.t).toLocaleDateString()}: ${c.score}/${c.total}; missed: ${c.per.filter(p=>!p.ok).map(p=>(SKILLS[p.s]||{}).name||p.s).join(", ")||"none"}`));
-  SUBJECTS[0].units.forEach((u,i)=>{ L.push(`Chapter ${i+1} ${u.title}:`); u.skills.forEach(id=>{ const k=sk(id); L.push(`  ${SKILLS[id].name}: level ${k.level}/3, ${k.attempts?Math.round(k.correct/k.attempts*100)+"% right first time ("+k.attempts+" answers)":"not played yet"}`); }); });
-  L.push(`Challenges cleared: ${(S.chal||{}).done||0}`);
+  SUBJECTS.filter(s=>s.units.length&&!s.soon).forEach(s=>{ L.push(`== ${s.name} ==`); s.units.forEach((u,i)=>{ L.push(`Chapter ${i+1} ${u.title}${u.en?" ("+u.en+")":""}:`); u.skills.forEach(id=>{ const k=sk(id); L.push(`  ${SKILLS[id].name}: level ${k.level}/3, ${k.attempts?Math.round(k.correct/k.attempts*100)+"% right first time ("+k.attempts+" answers)":"not played yet"}`); }); }); });
+  L.push(`Challenges cleared: math ${chalRec("math").done||0}, English ${chalRec("english").done||0}, Arabic ${chalRec("arabic").done||0}`);
   L.push(`Nova chat: ${S.chat.on?"on":"off"}, ${S.chat.log.filter(x=>x.r==="u").length} messages logged, ${S.chat.log.filter(x=>x.flag).length} flagged`);
   shopReportLines().forEach(x=>L.push(x));
   L.push(`Homework done: ${S.homework.filter(h=>h.done).length} of ${S.homework.length}`);
@@ -1015,9 +1571,10 @@ function findUnit(id){ for(const s of SUBJECTS) for(const u of s.units) if(u.id=
 function vUnit(){
   const u = findUnit(view.unit);
   return `<button class="back" data-go="home">← Planets</button>
-  <div class="hello"><h1>${esc(u.title)}</h1></div>
+  <div class="hello"><h1 dir="auto">${esc(u.title)}</h1>${u.ar?`<p class="ar" dir="rtl" lang="ar">${esc(u.ar)}</p>`:u.en?`<p>${esc(u.en)}</p>`:""}</div>
+  ${langTipHTML(u)}
   <div class="missions">${u.skills.map(id=>{ const k=sk(id), d=SKILLS[id];
-    return `<button class="mission" data-skill="${id}"><h3>${d.name}</h3><p>${d.blurb}</p>
+    return `<button class="mission" data-skill="${id}"><h3 dir="auto">${d.name}</h3><p>${d.blurb}</p>
       <div class="lvl" aria-label="Level ${k.level} of 3">${[1,2,3].map(l=>`<i class="${l<=k.level?"on":""}"></i>`).join("")}</div>
       ${starsRow(Math.max(...k.best))}</button>`; }).join("")}</div>`;
 }
@@ -1032,24 +1589,24 @@ function startGame(skill, lessonId){
   game = {skill, theme:THEMES[(hashStr(skill)+k.level)%THEMES.length].id, lesson:lesson?lesson.id:null, level:k.level, i:0, results:[], q:null, tried:false, locked:false};
   nextQ(); go({name:"game", unit:view.unit});
 }
-const MATH_IDS = () => [...new Set(SUBJECTS[0].units.flatMap(u=>u.skills))];
+const MATH_IDS = () => subjIds(curSubjId());
 function weakPool(){
   const rec = S.log.slice(-150);
   const score = id => { const r = rec.filter(x=>x.s===id); return r.length ? r.filter(x=>x.ok).length/r.length : .5; };
   return MATH_IDS().map(id=>({id, s:score(id)+Math.random()*.15})).sort((a,b)=>a.s-b.s).slice(0,3).map(x=>x.id);
 }
 function startChallenge(n){
-  const C=S.chal||(S.chal={done:0});
+  const C=chalRec();
   if(n>C.done+1){ sfx.no(); speak("Clear the one before first!"); return toast("Clear the one before first 🔒"); }
   if(timeUp()) return go({name:"rest"});
-  game = {skill:"chal", mode:"chal", theme:THEMES[(n-1)%THEMES.length].id, chal:n, level:Math.min(3,1+Math.floor((n-1)/4)), i:0, results:[], detail:[], q:null, tried:false, locked:false, rounds:Math.min(5+Math.ceil(n/2),12), pool:MATH_IDS()};
+  game = {skill:"chal", mode:"chal", theme:THEMES[(n-1)%THEMES.length].id, chal:n, level:Math.min(3,1+Math.floor((n-1)/4)), i:0, results:[], detail:[], q:null, tried:false, locked:false, rounds:Math.min(5+Math.ceil(n/2),12), pool:MATH_IDS(), subj:curSubjId()};
   SKILLS.chal = {name:"Challenge "+n, blurb:""};
   nextQ(); go({name:"game"});
 }
 function vChallenges(){
-  const done=(S.chal||{}).done||0, n=Math.max(24,done+9);
+  const done=chalRec().done||0, n=Math.max(24,done+9);
   return `<button class="back" data-go="home">← Back</button>
-  <div class="hello"><h1>🏆 Challenges</h1><p>Clear a challenge to open the next one. There are lots, and they get bigger and harder!</p></div>
+  <div class="hello"><h1>🏆 ${esc((SUBJECTS.find(s=>s.id===curSubjId())||{}).name||"")} Challenges</h1><p>Clear a challenge to open the next one. There are lots, and they get bigger and harder!</p></div>
   <div class="chalgrid">${Array.from({length:n},(_,i)=>{ const k=i+1, st=k<=done?"done":k===done+1?"now":"lock";
     return `<button class="chal ${st}" data-chal="${k}" aria-label="Challenge ${k}"><b>${k}</b><span>${st==="done"?"⭐":st==="now"?"▶":"🔒"}</span></button>`; }).join("")}</div>`;
 }
@@ -1057,13 +1614,13 @@ function startMode(mode){
   if(timeUp()) return go({name:"rest"});
   const check = mode==="check";
   game = {skill:mode, mode, theme:(check?"galaxy":pick(THEMES).id), level:1, i:0, results:[], detail:[], q:null, tried:false, locked:false, rounds:check?10:6,
-    queue: check ? shuffle(MATH_IDS()).slice(0,10) : null, pool: check ? null : weakPool()};
-  SKILLS[mode] = {name:check?"Star Check":"Daily Mix", blurb:""};
+    queue: check ? shuffle(MATH_IDS()).slice(0,10) : null, pool: check ? null : weakPool(), subj:curSubjId()};
+  SKILLS[mode] = {name:(check?"Star Check":"Daily Mix")+(curSubjId()==="math"?"":" · "+SUBJECTS.find(s=>s.id===curSubjId()).name), blurb:""};
   nextQ(); go({name:"game"});
 }
 function nextQ(){ let q, guard=0; CUR_THINGS=(THEMES.find(t=>t.id===game.theme)||THEMES[0]).things;
   const mk = () => {
-    if((game.mode==="mix"||game.mode==="chal") && Math.random()<.15) return sortQ(game.mode==="chal"?game.level:2);
+    if((game.mode==="mix"||game.mode==="chal") && (!game.subj||game.subj==="math") && Math.random()<.15) return sortQ(game.mode==="chal"?game.level:2);
     if(game.skill==="order" && !game.mode && !game.lesson && Math.random()<.3) return sortQ(game.level);
     if(game.lesson) return genLesson(game.lesson, game.level);
     if(game.mode){ const s = game.mode==="check" ? game.queue[game.i] : pick(game.pool); const lv = game.mode==="check" ? Math.max(sk(s).level, S.checks.length?1:2) : game.mode==="chal" ? Math.min(3,Math.max(sk(s).level,game.level)) : sk(s).level;
@@ -1077,13 +1634,14 @@ function vGame(){
   let body;
   if(q.fmt==="typed") body=`<div class="typedwrap"><div class="typed" id="typedv">${q.input||"?"}</div><div class="keypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" data-key="${n}">${n}</button>`).join("")}<button class="key" data-key="back" aria-label="Delete">⌫</button><button class="key" data-key="0">0</button><button class="key ok" data-key="ok" aria-label="Check">✔</button></div></div>`;
   else if(q.fmt==="sort") body=`<div class="choices">${q.items.map((v,i)=>`<button class="choice" data-sort="${i}" ${q.done.includes(i)?"disabled":""}>${v}</button>`).join("")}</div>`;
+  else if(q.fmt==="build"||q.fmt==="kbd"||q.fmt==="match") body=lxBody(q);
   else body=`<div class="choices">${q.choices.map((c,i)=>`<button class="choice ${q.small?"small":""}" data-choice="${i}">${c.html}</button>`).join("")}</div>`;
   const T=themeObj();
   return `<div class="game themed" ${thStyle(T)}>${thDeco(T)}
     <div class="gtop"><button class="back" style="margin:0" data-act="quit">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">${d.name} · Level ${game.level}</b><span class="lvl">${T.icon} ${T.tag}</span>
       <div class="dots">${Array.from({length:game.rounds||ROUND},(_,i)=>`<i class="${i<game.results.length?(game.results[i]?"ok":"miss"):""} ${i===game.i?"now":""}"></i>`).join("")}</div></div>
     <div class="tbar ${S.timer===false?"off":""}" id="tbar" aria-hidden="true"><i></i></div>
-    <div class="q"><button class="say" data-act="say" aria-label="Read it aloud">🔈</button><h2>${esc(q.text)}</h2></div>
+    <div class="q"><button class="say ${q.listen?"listen":""}" data-act="say" aria-label="Read it aloud">🔈</button><h2 dir="auto" ${q.lang==="ar"?'lang="ar" class="lar"':""}>${esc(q.text)}${q.sub?`<small class="lsub" dir="auto">${esc(q.sub)}</small>`:""}</h2></div>
     <div class="visual">${q.visual}</div>
     ${body}
     <div class="cheer" id="cheer" aria-live="polite"></div>
@@ -1103,6 +1661,7 @@ function qSeconds(q){
   const lv=q.lv||game.level||1;
   let s = game.mode==="chal" ? Math.max(10, 22-Math.floor(game.chal/3)) : ({1:26,2:20,3:15}[lv]||20);
   if(q.fmt==="typed") s+=8; if(q.fmt==="sort") s+=10+q.items.length*2; if(game.lesson) s+=15;
+  if(q.fmt==="build") s+=8+q.target.length*3; if(q.fmt==="kbd") s+=12+[...q.word].length*3; if(q.fmt==="match") s+=8+q.pairs.length*5; s+=q.xs||0;
   return Math.max(8,Math.round(s*(S.tspeed||1)));
 }
 function shopSeconds(){ const t=SG.cur.t, base={pick:25,multi:35,tap:30,seq:40}[t]||30; return Math.max(15,Math.round(base*Math.max(.5,1-.04*((SG.lvl||1)-1))*(S.tspeed||1))); }
@@ -1127,14 +1686,14 @@ function mathTimeout(){
   if(!game||view.name!=="game"||game.locked) return;
   const q=game.q; mathLog(false); game.locked=true; sfx.no();
   if(q.fmt==="typed"){ const el=$("#typedv"); if(el){ el.textContent=q.answer; el.classList.add("right"); } }
-  else if(q.fmt!=="sort"){ const i=q.choices.findIndex(c=>c.value===q.answer); const b=document.querySelectorAll("[data-choice]")[i]; if(b) b.classList.add("right"); }
-  const ch=$("#cheer"); if(ch){ ch.className="cheer no"; ch.textContent="Time's up! ⏱️ Let's try the next one."; }
+  else if(q.fmt!=="sort" && q.choices){ const i=q.choices.findIndex(c=>c.value===q.answer); const b=document.querySelectorAll("[data-choice]")[i]; if(b) b.classList.add("right"); }
+  const ch=$("#cheer"); if(ch){ ch.className="cheer no"; ch.textContent="Time's up! ⏱️ "+(q.reveal?"Answer: "+q.reveal+". ":"")+"Let's try the next one."; }
   save(); setTimeout(mathAdvance, 2300);
 }
 function judge(right, btn){
   mathLog(right); const ch=$("#cheer");
   if(right){ game.locked=true; timerStop(); if(btn) btn.classList.add("right"); const tv=$("#typedv"); if(tv) tv.classList.add("right"); sfx.ok(); ch.className="cheer"; ch.textContent=pick(themeObj().praise||PRAISE)+" ⭐"; setTimeout(mathAdvance,1300); }
-  else { if(btn){ btn.classList.add("wrong"); btn.disabled=true; } sfx.no(); ch.className="cheer no"; ch.textContent="Almost! Try again 💫"; }
+  else { if(btn){ btn.classList.add("wrong"); btn.disabled=true; } sfx.no(); ch.className="cheer no"; ch.textContent=(game.q.lang==="ar"?"قربتي! جربي تاني 💫":"Almost! Try again 💫")+(game.q.hint?" 💡 "+game.q.hint:""); }
   save();
 }
 function typeKey(k){
@@ -1165,7 +1724,7 @@ function fmtQ(q){
     q.text=`${q.text}  Is it ${shown}?`; q.say=`${q.say} Is it ${shown}?`; q.choices=[{value:"y",html:"✅ Yes"},{value:"n",html:"❌ No"}]; q.answer=truth?"y":"n"; q.small=true; q.fmt="yesno"; return q; }
   return q;
 }
-function afterGame(){ if(!game.spoken){ game.spoken=true; setTimeout(()=>speak(game.q.say),250); } }
+function afterGame(){ if(!game.spoken){ game.spoken=true; setTimeout(()=>langSay(game.q,false),250); } }
 const PRAISE = ["Super!","Great job!","Stellar!","You did it!","Amazing!","Out of this world!"];
 function answer(i, btn){
   if(game.locked) return; const c = game.q.choices[i];
@@ -1310,7 +1869,7 @@ function finishMode(score, stars){
   if(check){ S.checks.push({t:Date.now(), score, total:rounds, per:det.map(d=>({s:d.s,l:d.lv,ok:d.ok?1:0}))}); if(S.checks.length>40) S.checks.shift(); S.lastCheck=Date.now(); }
   let bonus = check?2:1;
   const chalPass = game.mode==="chal" && score/rounds>=.8;
-  if(game.mode==="chal"){ const C=S.chal||(S.chal={done:0}); if(chalPass && game.chal>C.done) C.done=game.chal; bonus = chalPass ? (score===rounds?2:1) : 0; }
+  if(game.mode==="chal"){ const C=chalRec(game.subj); if(chalPass && game.chal>C.done) C.done=game.chal; bonus = chalPass ? (score===rounds?2:1) : 0; }
   if(game.mode==="explore"){
     if(S.explore.date!==today()) S.explore = {date:today(), done:{}};
     bonus = (score>=2 && !S.explore.done[game.unit]) ? 1 : 0;
@@ -2787,7 +3346,7 @@ function bizGate(){ const B=bizS(), d=dayRec();
   return ""; }
 function schoolTask(){
   const l=S.school.find(x=>!x.done);
-  return l ? {en:`School: ${l.subject} · ${l.topic}`, ar:"مهمة المدرسة", act:`data-lesson="${l.id}"`} : {en:"School: Daily Mix (6 math questions)", ar:"مهمة المدرسة: 6 أسئلة رياضة", act:`data-mode="mix"`};
+  return l ? {en:`School: ${l.subject} · ${l.topic}`, ar:"مهمة المدرسة", act:`data-lesson="${l.id}"`} : (()=>{ const sid=["math","english","arabic"][Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5)%3], nm={math:"math",english:"English",arabic:"Arabic"}[sid], ar={math:"رياضة",english:"إنجليزي",arabic:"عربي"}[sid]; return {en:`School: Daily Mix (6 ${nm} questions)`, ar:`مهمة المدرسة: 6 أسئلة ${ar}`, act:`data-mode="mix" data-subj="${sid}"`}; })();
 }
 function bizTask(){
   for(const T of TRACKS){ const s=trackState(T); if(s.soon||s.stage>1) continue; const i=s.infos.find(x=>!x.done&&!x.lock); if(i) return {en:"Business: "+i.en, ar:"مهمة البيزنس: "+i.ar, act:i.act, e:i.e}; }
@@ -3243,14 +3802,15 @@ document.addEventListener("click", e=>{
   if(d.go){ FROM_BIZ = false; if(d.go==="biz") BZ={screen:"map"}; if(["dress","base","explore"].includes(d.go)) markDay("play"); }
   if((d.sg||d.ls) && view.name==="biz") FROM_BIZ = true;
   if((d.sg||d.sx||d.drag||d.ls) && shopClick(t,d)) return;
-  if(d.go){ sfx.tap(); return go({name:d.go, subject:view.subject||"math"}); }
-  if(d.subject){ sfx.tap(); const s=SUBJECTS.find(x=>x.id===d.subject); if(s.soon) speak(`${s.name} is coming soon!`); return go({name:"home", subject:d.subject}); }
-  if(d.unit){ sfx.tap(); return go({name:"unit", unit:d.unit, subject:"math"}); }
+  if(d.go){ sfx.tap(); return go({name:d.go, subject:LAST_SUBJ||"math"}); }
+  if(d.subject){ sfx.tap(); LAST_SUBJ=d.subject; const s=SUBJECTS.find(x=>x.id===d.subject); if(s.soon) speak(`${s.name} is coming soon!`); return go({name:"home", subject:d.subject}); }
+  if(d.unit){ sfx.tap(); return go({name:"unit", unit:d.unit, subject:LAST_SUBJ}); }
   if(d.skill){ sfx.tap(); return startGame(d.skill); }
   if(d.lesson){ sfx.tap(); return startGame(null, d.lesson); }
-  if(d.mode){ sfx.tap(); return startMode(d.mode); }
+  if(d.mode){ sfx.tap(); if(d.subj) LAST_SUBJ=d.subj; return startMode(d.mode); }
   if(d.chal){ sfx.tap(); return startChallenge(+d.chal); }
   if(d.lessondel){ const l=S.school.find(x=>x.id===d.lessondel); if(l?.photo?.local) try{localStorage.removeItem(l.photo.local);}catch(e){} S.school=S.school.filter(x=>x.id!==d.lessondel); save(); return render(); }
+  if(d.lx!==undefined && view.name==="game" && lxClick(d,t)) return;
   if(d.key!==undefined) return typeKey(d.key);
   if(d.sort!==undefined) return sortTap(+d.sort, t);
   if(d.choice!==undefined){ const c=game.q.choices[+d.choice]; return answer(+d.choice, t); }
@@ -3270,9 +3830,9 @@ document.addEventListener("click", e=>{
   if(d.hwdel){ const h=S.homework.find(x=>x.id===d.hwdel); if(h?.photo?.local) try{localStorage.removeItem(h.photo.local);}catch(e){} if(h?.photo?.asset && ASSETS) ASSETS.delete(h.photo.asset).catch(()=>{}); S.homework=S.homework.filter(x=>x.id!==d.hwdel); save(); return render(); }
   switch(d.act){
     case "setup": { const n=$("#setupName").value.trim(); if(!n) return toast("Type a name first"); S.child.name=n; save(); go({name:"home",subject:"math"}); speak(`Welcome to Star Academy, ${n}!`); break; }
-    case "say": speak(game.q.say,true); break;
+    case "say": langSay(game.q,true); break;
     case "novaclear": S.chat.log=[]; save(); render(); break;
-    case "quit": go(game&&game.mode==="explore" ? {name:"explore"} : game&&(game.lesson||game.mode) ?{name:"home",subject:"math"} : {name:"unit", unit:view.unit}); break;
+    case "quit": go(game&&game.mode==="explore" ? {name:"explore"} : game&&(game.lesson||game.mode) ?{name:"home",subject:LAST_SUBJ} : {name:"unit", unit:view.unit}); break;
     case "addlesson": addLesson(); break;
     case "copyreport": { const t=reportText(), ta=$("#reportTxt"); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(()=>toast("Report copied")).catch(()=>{ ta.focus(); ta.select(); toast("Select the text and copy it"); }); break; }
     case "rmphoto": delete S.child.photo; save(); render(); break;
