@@ -3319,4 +3319,454 @@ initCloud();
 </script>
 
 
+<!--v15z-start-->
+<style id="v15z">
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Fredoka:wght@500;700&family=Baloo+Bhaijaan+2:wght@600;800&family=Playfair+Display:wght@700;800&family=Grandstander:wght@700;800&family=Chewy&family=Audiowide&family=Lilita+One&display=swap");
+/* v15: every zone gets its own look. Skin colours arrive as CSS vars on <body>; shapes come from --zr/--zrb/--zbw/--zglow. */
+body{--zr:24px;--zrb:20px;--zbw:1px;--zglow:none;--zsky:transparent}
+body.zskin{background:var(--space)}
+#zbg{position:fixed;inset:0;z-index:0;pointer-events:none;background:var(--zsky);transition:background .6s;overflow:hidden}
+#zbg i{position:absolute;font-style:normal;opacity:.18;font-size:var(--s,34px);animation:zfloat var(--d,22s) linear infinite;animation-delay:var(--dl,0s)}
+@keyframes zfloat{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-38px) rotate(12deg)}100%{transform:translateY(0) rotate(0)}}
+#zbg.pat-grid{background:linear-gradient(rgba(0,240,255,.07) 1px,transparent 1px) 0 0/44px 44px,linear-gradient(90deg,rgba(0,240,255,.07) 1px,transparent 1px) 0 0/44px 44px,var(--zsky)}
+#zbg.pat-circuit{background:linear-gradient(rgba(120,255,170,.06) 2px,transparent 2px) 0 0/60px 60px,linear-gradient(90deg,rgba(120,255,170,.06) 2px,transparent 2px) 0 0/60px 60px,radial-gradient(circle,rgba(120,255,170,.12) 3px,transparent 4px) 0 0/60px 60px,var(--zsky)}
+#zbg.pat-dots{background:radial-gradient(circle,rgba(255,255,255,.07) 2px,transparent 3px) 0 0/34px 34px,var(--zsky)}
+#zbg.pat-wood{background:repeating-linear-gradient(92deg,rgba(0,0,0,.10) 0 3px,transparent 3px 26px,rgba(255,255,255,.03) 26px 29px,transparent 29px 61px),var(--zsky)}
+#zbg.pat-marble{background:repeating-linear-gradient(125deg,rgba(255,255,255,.035) 0 2px,transparent 2px 70px),repeating-linear-gradient(35deg,rgba(212,175,55,.05) 0 1px,transparent 1px 120px),var(--zsky)}
+#zbg.pat-tiles{background:conic-gradient(from 45deg,rgba(255,215,120,.06) 25%,transparent 0 50%,rgba(255,215,120,.06) 0 75%,transparent 0) 0 0/56px 56px,var(--zsky)}
+#zbg.pat-shelves{background:repeating-linear-gradient(180deg,transparent 0 120px,rgba(0,0,0,.25) 120px 130px),var(--zsky)}
+body.zskin #app{position:relative;z-index:1}
+body.zskin .mission,body.zskin .planet,body.zskin .card,body.zskin .sheet,body.zskin .bzhero{border-radius:var(--zr);border-width:var(--zbw);box-shadow:var(--zglow)}
+body.zskin .btn,body.zskin .tab,body.zskin .back,body.zskin .tile,body.zskin .subj{border-radius:var(--zrb)}
+body.zskin .tab,body.zskin .back{border-width:var(--zbw)}
+body[data-zone=math] .hello h1,body[data-zone=coding] .hello h1{letter-spacing:.02em;text-shadow:0 0 18px var(--star)}
+body[data-zone=salon] .hello h1,body[data-zone=salon] .bzhero h2{color:var(--star)}
+body[data-zone=coffee] .card,body[data-zone=coffee] .mission{box-shadow:inset 0 -6px 0 rgba(0,0,0,.18)}
+body.zskin .dayplan{background:linear-gradient(160deg,var(--panel2),var(--panel))}
+body[data-zone=math] .game .q h2,body[data-zone=coding] .game .q h2{font-family:"Fredoka","Baloo 2",system-ui,sans-serif}
+body[data-zone=arabic]{--body:"Baloo Bhaijaan 2","Nunito",system-ui,sans-serif}
+body[data-zone=arabic] .hello h1{color:var(--star)}
+/* dock chip + music */
+.zchip{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:var(--panel);border:1px solid var(--line);max-width:46vw;text-align:left}
+.zchip .zg{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;background:var(--panel2);flex:none}
+.zchip b{display:block;font-family:var(--display);font-size:1rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zchip small{display:block;font-size:.8rem;color:var(--muted);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zchip>span:last-child{min-width:0}
+.iconbtn.zmus.on{background:var(--star);color:#2a1a00}
+#zNext[hidden]{display:none}
+@media (max-width:640px){.zchip{padding:4px}.zchip>span:last-child{display:none}}
+/* transitions */
+#ztrans{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden;opacity:0}
+#ztrans.go{opacity:1;animation:ztfade 1.25s ease forwards}
+@keyframes ztfade{0%{opacity:0}12%{opacity:1}75%{opacity:1}100%{opacity:0}}
+#ztrans .zbgc{position:absolute;inset:0;background:var(--tb)}
+#ztrans .zlab{position:absolute;left:0;right:0;top:58%;text-align:center;color:#fff;font-family:var(--tf,var(--display));font-size:clamp(1.6rem,6vw,2.8rem);font-weight:800;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+#ztrans .zlab small{display:block;font-family:"Baloo Bhaijaan 2",var(--body);font-size:.6em;opacity:.9}
+#ztrans .veh{position:absolute;font-size:clamp(4rem,14vw,8rem);top:30%;left:-30%;white-space:nowrap}
+#ztrans.v-rocket .veh{animation:zfly 1.15s cubic-bezier(.5,0,.5,1) forwards}
+#ztrans.v-rocket .veh::after{content:"";position:absolute;right:88%;top:46%;width:60vw;height:12px;border-radius:99px;background:linear-gradient(90deg,transparent,rgba(255,220,120,.9))}
+@keyframes zfly{0%{left:-25%}100%{left:120%}}
+#ztrans.v-rocket .veh span{display:inline-block;transform:rotate(45deg)}
+#ztrans.v-train .veh{top:36%;animation:ztrain 1.15s ease-in-out forwards;font-size:clamp(3rem,10vw,6rem)}
+#ztrans.v-train .rail{position:absolute;left:0;right:0;top:calc(36% + clamp(3rem,10vw,6rem));height:10px;background:repeating-linear-gradient(90deg,#6b4a2b 0 14px,transparent 14px 30px),linear-gradient(#bbb,#bbb) 0 0/100% 3px no-repeat}
+@keyframes ztrain{0%{left:110%}100%{left:-120%}}
+#ztrans.v-cloud .cl{position:absolute;font-size:clamp(6rem,24vw,14rem);opacity:.95;filter:drop-shadow(0 6px 0 rgba(0,0,0,.08))}
+#ztrans.v-cloud .cl.a{top:5%;animation:zcl1 1.2s ease-in-out forwards}
+#ztrans.v-cloud .cl.b{top:38%;animation:zcl2 1.2s ease-in-out forwards}
+#ztrans.v-cloud .cl.c{top:66%;animation:zcl1 1.2s .05s ease-in-out forwards}
+@keyframes zcl1{0%{left:-60%}50%{left:10%}100%{left:110%}}
+@keyframes zcl2{0%{left:110%}50%{left:30%}100%{left:-70%}}
+#ztrans.v-portal .ring{position:absolute;left:50%;top:40%;width:20px;height:20px;margin:-10px;border-radius:50%;border:8px solid #fff;box-shadow:0 0 40px #fff;animation:zring 1.15s ease-out forwards}
+@keyframes zring{0%{transform:scale(0)}100%{transform:scale(80);opacity:0}}
+@media (prefers-reduced-motion: reduce){#ztrans .veh,#ztrans .cl,#ztrans .ring{display:none}#zbg i{animation:none}}
+/* welcome screen */
+#zentry{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.45)}
+#zentry[hidden]{display:none}
+.zecard{width:min(520px,100%);border-radius:var(--zr);padding:24px 20px;background:linear-gradient(165deg,var(--panel2),var(--panel));border:2px solid var(--star);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:zpop .45s cubic-bezier(.3,1.5,.6,1)}
+@keyframes zpop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.zecard .zbig{font-size:5.2rem;line-height:1;animation:zbob 1.6s ease-in-out infinite}
+@keyframes zbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.zecard h2{font-size:clamp(1.8rem,6vw,2.5rem);color:var(--star)}
+.zecard .ar{display:block;font-family:"Baloo Bhaijaan 2",var(--body);font-size:1.15rem;color:var(--muted)}
+.zecard p{margin:0;font-size:1.15rem}
+.zecard .zskn{font-size:.95rem;color:var(--muted)}
+.zecard .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+/* look picker */
+.zlooks{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;width:100%}
+.zlook{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px;border-radius:18px;background:rgba(0,0,0,.2);border:3px solid transparent;font-weight:800}
+.zlook[aria-pressed=true]{border-color:var(--star)}
+.zsw{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,.5);display:grid;place-items:center;font-size:1.7rem}
+/* guide in games */
+.zguide{display:inline-flex;align-items:center;gap:6px;position:relative}
+.zguide .zgf{font-size:2rem;display:inline-block}
+.zguide.hop .zgf{animation:zhop .6s}
+@keyframes zhop{0%,100%{transform:translateY(0)}40%{transform:translateY(-16px) rotate(-8deg)}}
+.zguide .zsay{position:absolute;bottom:105%;right:0;white-space:nowrap;background:#fffaf0;color:#2a1a4a;font-weight:800;padding:4px 10px;border-radius:14px 14px 4px 14px;font-size:.95rem;opacity:0;transition:opacity .2s;pointer-events:none}
+.zguide.hop .zsay{opacity:1}
+/* parent settings card */
+.parent .zset label{display:flex;flex-direction:row;align-items:center;gap:10px;text-align:left}
+.zset .zrow{display:grid;grid-template-columns:1fr minmax(130px,200px);gap:8px;align-items:center}
+.zset select{font:inherit;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--space);color:var(--ink)}
+.zset input[type=checkbox]{width:24px;height:24px}
+</style>
+<script id="v15z-js">
+/* ===== v15: zones, weekly-rotating skins, world transitions, generated background music ===== */
+(function(){
+const H = s => [...String(s)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+/* skin colours: [space, space2, panel, panel2, accent(star), pink, mint, sky, muted] + sky gradient */
+const sk = (n, ar, c, sky, extra) => Object.assign({n, ar, c, sky}, extra||{});
+const g2 = (a,b,c) => `radial-gradient(ellipse at 18% 8%,${a} 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,${b} 0%,transparent 52%),${c}`;
+const ZONES = {
+  galaxy:{en:"Star Galaxy", ar:"مجرة النجوم", g:"⭐", gn:"Stella", font:'"Baloo 2"', veh:"rocket", shape:[28,20,1,""], pat:"", deco:[],
+    hi:["Hi! I'm Stella. Let's explore the stars!","أهلًا! أنا ستيلا. يلا نستكشف النجوم!"], praise:["Stellar!","You shine!","Twinkle twinkle, yes!"],
+    skins:[sk("Classic Space","الفضاء",["#0f0a2e","#1d1457","#2a1d6e","#3b2a9a","#ffd447","#ff7ac6","#5ef2c8","#6cc8ff","#bdb6ee"],"transparent"),
+      sk("Pink Nebula","سحابة وردي",["#1e0726","#3a0d45","#4a1257","#6a1d7a","#ffb3e6","#ff7ac6","#7ef5d2","#9ad7ff","#e4b8ec"],g2("#7a1d6e","#2a0d5a","#1e0726")),
+      sk("Aurora","الشفق",["#04161c","#083038","#0d3b45","#14566a","#7cffb2","#ff8ad8","#5ef2c8","#7cd8ff","#a9d9d6"],g2("#0f6b5a","#1a2a7a","#04161c")),
+      sk("Blue Comet","المذنب الأزرق",["#06122e","#0b2257","#11306e","#1c4396","#ffe066","#ff8fb1","#66f0d0","#8fd3ff","#b3c6ee"],g2("#1c4fa3","#3a1c80","#06122e")),
+      sk("Sunset Planet","كوكب الغروب",["#200a1a","#3d1230","#4d1838","#6e2448","#ffc14d","#ff7a9c","#6ff2c5","#ffb07a","#e8bccb"],g2("#8a2a3a","#3a1260","#200a1a"))]},
+  math:{en:"Neon Number City", ar:"مدينة الأرقام النيون", g:"🦊", gn:"Zip", font:"Orbitron", veh:"rocket", shape:[10,8,2,"0 0 0 1px var(--star),0 0 18px -4px var(--star)"], pat:"grid", deco:["➕","➖","🔢","⚡","✖️"],
+    hi:["Zoom! I'm Zip. Numbers light up the city!","زووم! أنا زيب. الأرقام بتنور المدينة!"], praise:["Zoom! Correct!","Power up!","Number ninja!"],
+    skins:[sk("Neon Night","ليل النيون",["#05050f","#0b0b24","#0f1030","#191a4a","#00f0ff","#ff2bd6","#39ff88","#7ab8ff","#9aa6d8"],g2("#2b0a5a","#002a4a","#05050f")),
+      sk("Laser Lime","ليزر أخضر",["#040a06","#0a1a10","#0d2416","#153a22","#b6ff3b","#ff4fd8","#3bffd0","#7af0ff","#a8c9a8"],g2("#1a4a10","#004a3a","#040a06")),
+      sk("Arcade Purple","أركيد بنفسجي",["#0c0418","#1a0836","#230b48","#351170","#ffe500","#ff3b8d","#3bffb4","#5ad8ff","#c0a8e8"],g2("#4a0f8a","#0a2a6a","#0c0418")),
+      sk("Electric Blue","أزرق كهربا",["#020a1c","#061a40","#08214f","#0e3378","#4dfcff","#ff5ef0","#5eff9e","#9cd2ff","#a3b8e0"],g2("#0a3a9a","#4a0a7a","#020a1c")),
+      sk("Retro Sunset","غروب ريترو",["#140414","#2a0828","#360a33","#521048","#ffb000","#ff2a6d","#05d9e8","#ff8a5c","#e0a8c8"],g2("#8a1050","#ff6a00","#140414"))]},
+  english:{en:"Magic Library", ar:"المكتبة السحرية", g:"🦉", gn:"Ollie", font:"Fredoka", veh:"cloud", shape:[8,22,1,"inset 6px 0 0 rgba(0,0,0,.18)"], pat:"shelves", deco:["📚","✨","🪄","📖","🔤"],
+    hi:["Hoo-hoo! I'm Ollie. Every book is a door!","هو هو! أنا أولي. كل كتاب باب سحري!"], praise:["Hoo-ray!","Magic words!","Brilliant reading!"],
+    skins:[sk("Midnight Library","مكتبة نص الليل",["#0a0e24","#141a40","#1a2250","#26316e","#ffcf5a","#ff8fb0","#7ae8c8","#9cc8ff","#b8bfe0"],g2("#2a2a7a","#4a2a10","#0a0e24")),
+      sk("Royal Purple","بنفسجي ملكي",["#14071f","#26103a","#311549","#47206a","#ffd86b","#ff9ad1","#8af0d0","#b4a8ff","#cdb8e0"],g2("#5a1a8a","#2a0a3a","#14071f")),
+      sk("Enchanted Forest","الغابة المسحورة",["#04140f","#0a2a20","#0e3628","#155040","#ffe27a","#ff9ac0","#8cffc8","#9ce0ff","#a8d0bc"],g2("#0e5a3a","#2a4a0a","#04140f")),
+      sk("Crimson Velvet","قطيفة حمرا",["#1a0508","#330a12","#420e18","#601826","#ffd27a","#ff9aa8","#8af0cc","#a8c8ff","#e0b0b8"],g2("#7a1020","#3a1040","#1a0508")),
+      sk("Old Parchment","ورق قديم",["#1a1208","#33240f","#3f2d14","#5a4220","#ffd98a","#ffa0a0","#9ff0c0","#a8d0ff","#d8c4a0"],g2("#6a4a1a","#3a2a10","#1a1208"))]},
+  arabic:{en:"Golden Garden", ar:"الجنينة الدهبية", g:"🐦", gn:"Bulbul", font:'"Baloo Bhaijaan 2"', veh:"cloud", shape:[30,26,1,"0 0 0 2px rgba(255,210,110,.25)"], pat:"tiles", deco:["🌴","🌹","📜","🌙","🌼"],
+    hi:["I'm Bulbul! Welcome to the golden garden.","أنا بلبل! أهلًا بيكي في الجنينة الدهبية."], praise:["برافو!","شاطرة!","ممتاز يا قمر!"],
+    skins:[sk("Palm Oasis","واحة النخيل",["#04170e","#0a2e1c","#0e3b25","#155535","#ffd36b","#ff9ab8","#8affc0","#9cdcff","#b4d8bc"],g2("#1a6a3a","#6a5a10","#04170e")),
+      sk("Rose Garden","جنينة الورد",["#1c0610","#360c20","#45112a","#63193d","#ffd27a","#ff8fb8","#90f0c8","#ffb0d0","#e4b4c8"],g2("#8a1a4a","#4a3a10","#1c0610")),
+      sk("Jasmine Night","ليل الياسمين",["#060c1e","#0e1a3c","#13224c","#1d336c","#ffe08a","#ffb0d8","#a8f0d8","#b8d0ff","#bcc4e0"],g2("#1a3a8a","#5a4a1a","#060c1e")),
+      sk("Olive Grove","بستان الزيتون",["#10140a","#202812","#2a3418","#3e4c24","#f5d36b","#ffa8a0","#b8f08a","#c8e0ff","#c8d0a8"],g2("#4a5a1a","#6a4a10","#10140a")),
+      sk("Golden Dunes","كثبان دهبي",["#1c1006","#38200c","#462a10","#64401a","#ffcf4a","#ff9a8a","#9af0c8","#ffd0a0","#e0c8a0"],g2("#8a5a10","#5a2a10","#1c1006"))]},
+  shop:{en:"Star Shop Market", ar:"سوق النجوم", g:"🐱", gn:"Penny", font:'"Lilita One"', veh:"train", shape:[22,16,2,"0 6px 0 rgba(0,0,0,.25)"], pat:"dots", deco:["🛍️","🏷️","🎁","🧾"],
+    hi:["Meow! I'm Penny. Let's sell some stars!","مياو! أنا بيني. يلا نبيع ونكسب نجوم!"], praise:["Sold!","Ka-ching!","Top seller!"],
+    skins:[sk("Candy Market","سوق الحلويات",["#22061e","#420c3a","#521048","#761a66","#ffe14d","#ff6fc0","#6ff5d0","#8ad0ff","#ecb4dc"],g2("#a01a7a","#4a0a5a","#22061e")),
+      sk("Fruit Stand","كشك الفاكهة",["#1e0a04","#3c1608","#4c1e0c","#6e2e14","#ffd23a","#ff7a6a","#8af07a","#ffb86a","#ecc0a8"],g2("#a04a10","#5a1a0a","#1e0a04")),
+      sk("Mint Mall","مول النعناع",["#03161a","#072c34","#0a3a44","#105460","#ffe066","#ff8ab8","#6affd8","#7ad8ff","#a8d8d8"],g2("#0a6a6a","#0a3a5a","#03161a")),
+      sk("Toy Store","محل اللعب",["#060e22","#0c1c44","#102454","#183678","#ffd23a","#ff7ab0","#7af5c0","#7ac4ff","#b0bce4"],g2("#1a4aaa","#6a1a7a","#060e22")),
+      sk("Night Bazaar","سوق بالليل",["#120a1c","#24123a","#2e1849","#44246a","#ffb83a","#ff7a9a","#7af0c8","#b4a0ff","#ccb8e0"],g2("#6a2a8a","#8a4a10","#120a1c"))]},
+  town:{en:"Business Town", ar:"مدينة البيزنس", g:"🐶", gn:"Max", font:"Fredoka", veh:"train", shape:[20,16,1,"0 4px 0 rgba(0,0,0,.2)"], pat:"dots", deco:["🏪","🚚","🏦","🌳"],
+    hi:["Woof! I'm Max. Let's walk to your shops!","هاو! أنا ماكس. يلا نتمشى لمحلاتك!"], praise:["Woof, great!","Boss move!","Smart business!"],
+    skins:[sk("Sunny Street","شارع مشمس",["#06182a","#0c2e4c","#103a5c","#18527e","#ffd447","#ff8ab8","#6ff5c8","#8cd8ff","#b0c8e0"],g2("#1a6aa0","#0a4a3a","#06182a")),
+      sk("Evening Town","المدينة بالليل",["#0e0a22","#1c1444","#241a54","#352876","#ffc84a","#ff7ab0","#6ff2c8","#a0b8ff","#bcb4e4"],g2("#3a2a8a","#8a3a2a","#0e0a22")),
+      sk("Park Green","جنينة المدينة",["#06180c","#0c3018","#103e20","#185a30","#ffe066","#ff9ab0","#8affb0","#9cd8ff","#b0d4b8"],g2("#1a7a3a","#0a3a4a","#06180c")),
+      sk("Brick Lane","شارع الطوب",["#1a0a08","#341410","#421a14","#5e2820","#ffd060","#ff9a90","#88f0c8","#a8c8ff","#e0bcb4"],g2("#7a2a1a","#3a1a3a","#1a0a08")),
+      sk("Harbor","الميناء",["#031420","#072840","#0a3450","#104a70","#ffd860","#ff9aa8","#6ff0e0","#7ad0ff","#a8c4d8"],g2("#0a5a8a","#0a2a5a","#031420"))]},
+  salon:{en:"Golden Salon", ar:"الصالون الدهبي", g:"🦁", gn:"Goldie", font:'"Playfair Display"', veh:"train", shape:[14,999,1.5,"0 0 0 1.5px rgba(212,175,55,.55)"], pat:"marble", deco:["✂️","💈","🪮","✨"],
+    hi:["Welcome! I'm Goldie. Every guest leaves shining.","أهلًا! أنا جولدي. كل زبون بيخرج منوّر."], praise:["Fabulous!","Sharp work!","Five stars!"],
+    skins:[sk("Charcoal Gold","فحمي ودهبي",["#141416","#202024","#26262b","#34343a","#d4af37","#e8a0b0","#9fe0c8","#b8c4d0","#b8b2a0"],g2("#3a3220","#1c1c22","#141416")),
+      sk("Black Marble","رخام أسود",["#0b0b0c","#18181a","#1e1e21","#2b2b30","#e6c45c","#e8a8b8","#a8e8d0","#c0c8d8","#c4bca8"],g2("#2a2a2a","#3a3018","#0b0b0c")),
+      sk("Silver Smoke","فضي مدخّن",["#1a1c20","#2a2d33","#31353c","#40454e","#e0c068","#f0b0c0","#a8e8d8","#c8d4e0","#c4c8cc"],g2("#4a4e58","#2a2a30","#1a1c20")),
+      sk("Midnight Gold","دهبي نص الليل",["#0c0f18","#171c2a","#1d2333","#2a3246","#d9b04a","#e8a0b8","#9fe8d0","#b0c4e8","#b4b4b8"],g2("#2a3450","#3a3018","#0c0f18")),
+      sk("Rose Gold Grey","روز جولد",["#1a1618","#2a2426","#322b2e","#433a3e","#e8b48a","#f0a8b8","#a8e8d0","#d0c0c8","#cbbcb8"],g2("#5a3a3a","#2a2226","#1a1618"))]},
+  coffee:{en:"Coffee Corner", ar:"ركن القهوة", g:"🐻", gn:"Bruno", font:"Grandstander", veh:"train", shape:[16,14,2,"0 6px 0 rgba(0,0,0,.25)"], pat:"wood", deco:["☕","🫘","🥐","♨️"],
+    hi:["Hi! I'm Bruno. Smell the fresh coffee beans!","أهلًا! أنا برونو. شمّي ريحة البن الطازة!"], praise:["Fresh!","Brew-tiful!","Coffee champ!"],
+    skins:[sk("Espresso Wood","خشب إسبريسو",["#1a0f08","#2e1a0e","#3a2212","#52311c","#ffcf7a","#ff9a8a","#9ff0c0","#ffd0a0","#d8bca4"],g2("#5a3218","#2a160a","#1a0f08")),
+      sk("Caramel Latte","لاتيه كراميل",["#21140a","#3e2614","#4c2f19","#6a4426","#ffd98a","#ffa89a","#a8f0c8","#ffdcb0","#e4cbb0"],g2("#8a5a2a","#3a2210","#21140a")),
+      sk("Mocha Night","موكا بالليل",["#120b0a","#241614","#2e1c19","#422a24","#f5c26b","#ff9ab0","#9ff0d0","#e8c0a8","#ccb4ac"],g2("#3a2220","#1a1430","#120b0a")),
+      sk("Cinnamon","قرفة",["#1e0c06","#3a180c","#481e10","#682c18","#ffc06a","#ff8a7a","#9ff0c0","#ffc4a0","#e4bca8"],g2("#8a3a18","#3a1a0a","#1e0c06")),
+      sk("Pistachio Cafe","كافيه فستقي",["#121408","#242810","#2e3414","#424a1e","#ffd36b","#ffa0a8","#c0f08a","#d8e0a8","#ccd0b0"],g2("#4a5a1a","#4a3010","#121408"))]},
+  studio:{en:"Color Studio", ar:"استوديو الألوان", g:"🦎", gn:"Pixel", font:"Chewy", veh:"cloud", shape:[30,26,3,"6px 6px 0 rgba(0,0,0,.25)"], pat:"dots", deco:["🎨","🖌️","🌈","📸","✏️"],
+    hi:["Hi! I'm Pixel. I change colors, and so can you!","أهلًا! أنا بيكسل. بغير ألواني، وانتي كمان!"], praise:["Beautiful!","So colorful!","Masterpiece!"],
+    skins:[sk("Rainbow Pop","رينبو",["#1a0628","#320c4c","#40105e","#5c1a86","#ffe14d","#ff5ec4","#5effd0","#5ac8ff","#d8b4f0"],g2("#a01a8a","#1a5aaa","#1a0628")),
+      sk("Paint Splash","رشة ألوان",["#04161c","#082c38","#0c3846","#125066","#ffd23a","#ff6a9a","#6affc8","#6adcff","#a8d4dc"],g2("#0a7a8a","#8a1a5a","#04161c")),
+      sk("Sticker Party","حفلة ستيكرز",["#1e0e04","#3c1c08","#4a240c","#6c3614","#ffe14d","#ff6ab0","#7af5c0","#7ad0ff","#ecc8a8"],g2("#c04a10","#6a1a8a","#1e0e04")),
+      sk("Bubble Gum","لبانة",["#200818","#3e1030","#4c143c","#6e2058","#fff06a","#ff7ad8","#7af5e0","#a0c8ff","#ecbce0"],g2("#c02a8a","#4a2aaa","#200818")),
+      sk("Crayon Box","علبة ألوان",["#060c24","#0c1848","#10205a","#18307e","#ffd23a","#ff6a6a","#6af07a","#6ac8ff","#b4bce8"],g2("#1a4ac0","#c03a1a","#060c24"))]},
+  coding:{en:"Robot Code Lab", ar:"معمل الروبوتات", g:"🤖", gn:"Bolt", font:"Audiowide", veh:"portal", shape:[6,6,2,"0 0 0 1px var(--mint)"], pat:"circuit", deco:["⚙️","🔌","💾","💡","🛰️"],
+    hi:["Beep boop! I'm Bolt. Let's give the computer orders!","بيب بوب! أنا بولت. يلا نِدّي الكمبيوتر أوامر!"], praise:["Beep! Correct!","Code works!","System awesome!"],
+    skins:[sk("Circuit Green","دايرة خضرا",["#020c06","#06180e","#082014","#0e3220","#5effa0","#ff6ad0","#5effa0","#6ad8ff","#9cc8a8"],g2("#0a4a2a","#0a2a3a","#020c06")),
+      sk("Blue Terminal","شاشة زرقا",["#020818","#061230","#08183e","#0e265e","#5ad8ff","#ff7ad0","#5effc8","#5ad8ff","#9cb4d8"],g2("#0a2a7a","#0a4a5a","#020818")),
+      sk("Orange Mech","روبوت برتقالي",["#140802","#281206","#341808","#4c240e","#ffa83a","#ff6a8a","#5effc8","#7ac8ff","#d8b8a0"],g2("#6a2a0a","#2a2a3a","#140802")),
+      sk("Purple Plasma","بلازما",["#0e0418","#1c0832","#240a42","#361262","#c88aff","#ff5ec8","#5effd8","#8ab8ff","#c0a8e0"],g2("#4a0a8a","#0a2a6a","#0e0418")),
+      sk("Steel Lab","معمل حديد",["#0c0e10","#181c20","#1e2328","#2c333a","#7ae8ff","#ff8ab0","#7affc0","#9cc8e8","#a8b4bc"],g2("#2a3440","#1a2a2a","#0c0e10"))]},
+  parent:{en:"Grown-ups", ar:"منطقة الكبار", g:"🌿", gn:"", font:"Nunito", veh:"cloud", shape:[14,12,1,""], pat:"", deco:[], calm:true,
+    hi:["",""], praise:[""],
+    skins:[sk("Calm Slate","رمادي هادي",["#12161c","#1c222a","#222a33","#2e3843","#e8c86a","#e8a0b8","#8fd8c0","#9cc4e4","#a8b4c0"],"#12161c"),
+      sk("Sage","أخضر هادي",["#101612","#1a241e","#202d25","#2c3d32","#e8cf7a","#e8a8b0","#a0e0c0","#a8cce0","#aabcaf"],"#101612"),
+      sk("Soft Navy","كحلي هادي",["#0e1220","#171d32","#1d253e","#283252","#e8c87a","#e8a8c0","#90dcc8","#a8c4f0","#a8b0c8"],"#0e1220"),
+      sk("Warm Taupe","بيج دافي",["#17130f","#241e18","#2d251e","#3d3229","#e8c47a","#e8a8a8","#a0dcc0","#c8c0d8","#bcb0a4"],"#17130f"),
+      sk("Dusk Lavender","بنفسجي هادي",["#14121c","#201d2c","#282436","#36304a","#e8c87a","#e8a8d0","#a0dcd0","#b8b8f0","#b4acc8"],"#14121c")]},
+};
+window.ZONES15 = ZONES;
+const VEH = {rocket:"🚀", train:"🚂🚃🚃", cloud:"☁️", portal:""};
+
+/* ---- state ---- */
+const LK = () => { S.look ||= {}; const L=S.look; if(L.rot===undefined) L.rot=true; if(L.kid===undefined) L.kid=true; if(L.trans===undefined) L.trans=true; if(L.intro===undefined) L.intro=true; L.force ||= {}; L.pick ||= {}; L.seen ||= {}; return L; };
+const MU = () => { S.music ||= {}; const M=S.music; if(M.on===undefined) M.on=false; if(M.vol===undefined) M.vol=5; if(!M.every) M.every="day"; if(M.n===undefined) M.n=0; return M; };
+const dayNo = () => { const d=new Date(); return Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate()) - new Date(2000,0,1))/864e5); };
+const weekNo = () => Math.floor(dayNo()/7); /* 1 Jan 2000 was a Saturday, so weeks start on Saturday */
+function skinIdx(z){
+  const L=LK(), n=ZONES[z].skins.length;
+  if(L.force[z]!=null && L.force[z]!=="" ) return (+L.force[z])%n;
+  const p=L.pick[z]; if(p && p.w===weekNo()) return p.i%n;
+  return L.rot ? (weekNo()+H(z))%n : 0;
+}
+const skinOf = z => ZONES[z].skins[skinIdx(z)];
+
+/* ---- which zone is on screen ---- */
+let LASTZ = "galaxy";
+function subjOfSkill(id){
+  if(!id) return null;
+  if(String(id).startsWith("lesson:")){ const l=(S.school||[]).find(x=>x.id===id.slice(7)); const s=(l&&l.subject||"").toLowerCase(); return s==="english"?"english":s==="arabic"?"arabic":s==="math"?"math":"galaxy"; }
+  for(const s of SUBJECTS) for(const u of (s.units||[])) if((u.skills||[]).includes(id)) return s.id;
+  return null;
+}
+const subjZone = s => s==="math"?"math":s==="english"?"english":s==="arabic"?"arabic":s==="shop"?"shop":null;
+function zoneOf(){
+  if(!S.child || !S.child.name) return "galaxy";
+  const v=view||{}, n=v.name;
+  if(n==="parent"||n==="pin") return "parent";
+  if(n==="home") return subjZone(v.subject)||"galaxy";
+  if(n==="unit"){ const u=typeof findUnit==="function"?findUnit(v.unit):null; if(u){ for(const s of SUBJECTS) if(s.units.includes(u)) return subjZone(s.id)||"galaxy"; } return LASTZ; }
+  if(n==="challenges") return "math";
+  if(n==="game"||n==="result"){ if(typeof game!=="undefined" && game){ if(["chal","check","mix"].includes(game.mode)) return "math"; const z=subjZone(subjOfSkill(game.skill)); if(z) return z; if(game.zone) return game.zone; } return LASTZ==="parent"?"galaxy":LASTZ; }
+  if(n==="shop") return "shop";
+  if(n==="biz"){ const b=(typeof BZ!=="undefined"&&BZ)||{}, sc=b.screen;
+    if(sc==="studio"||sc==="gallery") return "studio";
+    if(sc==="helper"||sc==="hlesson"||sc==="site") return "coding";
+    if(sc==="map"||sc==="tasks") return "town";
+    if(sc==="beans") return "coffee";
+    const w=b.w||(b.o&&b.o.w)||(b.c&&b.c.w); if(w==="coffee") return "coffee"; if(w==="salon") return "salon";
+    return "town"; }
+  if(ZONES[n]) return n;
+  return "galaxy";
+}
+
+/* ---- apply skin ---- */
+let ZCUR=null, ZSKIN=null;
+function zApply(z, force){
+  const Z=ZONES[z], s=skinOf(z), key=z+"/"+s.n;
+  if(!force && key===ZSKIN) return; ZSKIN=key;
+  const b=document.body, [sp,sp2,pa,pa2,st,pk,mi,sky,mu]=s.c;
+  b.classList.toggle("zskin", z!=="galaxy" || skinIdx(z)!==0);
+  b.dataset.zone=z;
+  const set=(k,v)=>b.style.setProperty(k,v);
+  set("--space",sp); set("--space2",sp2); set("--panel",pa); set("--panel2",pa2); set("--star",st); set("--pink",pk); set("--mint",mi); set("--sky",sky); set("--muted",mu);
+  set("--display",`${Z.font},"Baloo 2","Trebuchet MS",system-ui,sans-serif`);
+  set("--zr",Z.shape[0]+"px"); set("--zrb",Z.shape[1]+"px"); set("--zbw",Z.shape[2]+"px"); set("--zglow",Z.shape[3]||"none");
+  set("--zsky", s.sky||"transparent");
+  const bg=document.getElementById("zbg");
+  if(bg){ bg.className = Z.pat?"pat-"+Z.pat:""; bg.innerHTML = (Z.deco||[]).concat(Z.deco||[]).map((e,i)=>`<i style="left:${(i*37+H(z)%23)%92}%;top:${(i*53+11)%86}%;--s:${26+(i*7)%24}px;--d:${16+(i*5)%14}s;--dl:-${i*3}s">${e}</i>`).join(""); }
+  const skyEl=document.getElementById("sky"); if(skyEl) skyEl.style.opacity = (z==="galaxy"||z==="english"||z==="arabic"||z==="math") ? "1" : ".35";
+  const m=document.querySelector('meta[name="theme-color"]'); if(m) m.setAttribute("content", sp);
+  chip(z);
+}
+function chip(z){
+  const c=document.getElementById("zchip"); if(!c) return; const Z=ZONES[z], s=skinOf(z);
+  c.innerHTML=`<span class="zg" aria-hidden="true">${Z.g}</span><span><b>${esc(Z.en)}</b><small dir="rtl" lang="ar">${esc(Z.ar)}</small></span>`;
+  c.setAttribute("aria-label", `${Z.en}. Look: ${s.n}. Tap to see it.`);
+}
+
+/* ---- dock buttons ---- */
+function ensureDock(){
+  if(document.getElementById("zchip")) return;
+  const me=document.getElementById("meBtn"); if(!me) return;
+  const c=document.createElement("button"); c.className="zchip"; c.id="zchip"; c.dataset.zx="looks"; me.after(c);
+  const sb=document.getElementById("soundBtn");
+  const mb=document.createElement("button"); mb.className="iconbtn zmus"; mb.id="zMus"; mb.dataset.zx="music"; sb.before(mb);
+  const nb=document.createElement("button"); nb.className="iconbtn"; nb.id="zNext"; nb.dataset.zx="nexttune"; nb.textContent="⏭️"; nb.setAttribute("aria-label","Next tune"); sb.before(nb);
+  if(!document.getElementById("zbg")){ const bg=document.createElement("div"); bg.id="zbg"; bg.setAttribute("aria-hidden","true"); const sky=document.getElementById("sky"); (sky||document.body.firstChild).after(bg); }
+  for(const id of ["ztrans","zentry"]) if(!document.getElementById(id)){ const d=document.createElement("div"); d.id=id; if(id==="zentry"){ d.hidden=true; d.setAttribute("role","dialog"); d.setAttribute("aria-modal","true"); } else d.setAttribute("aria-hidden","true"); document.body.appendChild(d); }
+}
+function musBtn(){ const M=MU(), b=document.getElementById("zMus"); if(!b) return; b.textContent=M.on?"🎵":"🎶"; b.classList.toggle("on",M.on); b.setAttribute("aria-label",M.on?"Music on, tap to stop":"Music off, tap to play"); const nb=document.getElementById("zNext"); if(nb) nb.hidden=!M.on; }
+
+/* ---- transitions ---- */
+function playTrans(z){
+  const t=document.getElementById("ztrans"); if(!t) return; const Z=ZONES[z], s=skinOf(z);
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let inner="";
+  if(!reduce){ if(Z.veh==="rocket") inner=`<span class="veh"><span>${VEH.rocket}</span></span>`;
+    else if(Z.veh==="train") inner=`<span class="rail"></span><span class="veh">${VEH.train}</span>`;
+    else if(Z.veh==="cloud") inner=`<span class="cl a">☁️</span><span class="cl b">☁️</span><span class="cl c">☁️</span>`;
+    else inner=`<span class="ring"></span>`; }
+  t.className=""; void t.offsetWidth;
+  t.style.setProperty("--tb", `radial-gradient(circle at 50% 40%,${s.c[3]},${s.c[0]} 70%)`);
+  t.style.setProperty("--tf", Z.font);
+  t.innerHTML=`<div class="zbgc"></div>${inner}<div class="zlab">${Z.g} ${esc(Z.en)}<small dir="rtl" lang="ar">${esc(Z.ar)}</small></div>`;
+  t.className="go v-"+Z.veh;
+  clearTimeout(playTrans.t); playTrans.t=setTimeout(()=>{ t.className=""; t.innerHTML=""; }, 1300);
+}
+
+/* ---- welcome screen ---- */
+function showEntry(z, auto){
+  const e=document.getElementById("zentry"); if(!e) return; const Z=ZONES[z], s=skinOf(z), L=LK();
+  if(Z.calm) return;
+  e.innerHTML=`<div class="zecard"><span class="zbig" aria-hidden="true">${Z.g}</span>
+    <h2>${esc(Z.en)}</h2><span class="ar" dir="rtl" lang="ar">${esc(Z.ar)}</span>
+    <p>${esc(Z.hi[0])}</p><span class="ar" dir="rtl" lang="ar">${esc(Z.hi[1])}</span>
+    <span class="zskn">🎨 This week's look: <b>${esc(s.n)}</b> · <span dir="rtl" lang="ar">شكل الأسبوع: ${esc(s.ar)}</span></span>
+    <div class="row"><button class="btn" data-zx="close">Let's go! يلا 🚀</button>${L.kid&&L.force[z]==null?`<button class="btn alt" data-zx="looks">🎨 Change look</button>`:""}</div></div>`;
+  e.hidden=false; e.dataset.z=z;
+  if(auto) try{ speak(Z.hi[0]); }catch(_){}
+}
+function closeEntry(){ const e=document.getElementById("zentry"); if(e){ e.hidden=true; e.innerHTML=""; } }
+function showLooks(z){
+  const e=document.getElementById("zentry"); if(!e) return; const Z=ZONES[z], L=LK(), cur=skinIdx(z);
+  const locked = L.force[z]!=null || !L.kid;
+  e.innerHTML=`<div class="zecard"><span class="zbig" aria-hidden="true" style="font-size:3.4rem">${Z.g}</span>
+    <h2>${esc(Z.en)}</h2>
+    ${locked?`<p>${L.force[z]!=null?"Baba picked this look 🔒":"Looks change by themselves every week ✨"}</p><span class="ar" dir="rtl" lang="ar">${L.force[z]!=null?"بابا اختار الشكل ده 🔒":"الشكل بيتغير لوحده كل أسبوع ✨"}</span>`
+      :`<p>Pick a look for this week!</p><span class="ar" dir="rtl" lang="ar">اختاري شكل للأسبوع ده! وكل أسبوع هيتغير لوحده.</span>`}
+    <div class="zlooks">${Z.skins.map((s,i)=>`<button class="zlook" data-zx="${locked?"close":"pick"}" data-i="${i}" aria-pressed="${i===cur}" ${locked&&i!==cur?"disabled style=\"opacity:.45\"":""}><span class="zsw" style="background:radial-gradient(circle at 35% 30%,${s.c[4]} 0 18%,${s.c[3]} 19% 55%,${s.c[0]} 56%)"></span><span>${esc(s.n)}</span><small dir="rtl" lang="ar">${esc(s.ar)}</small></button>`).join("")}</div>
+    <div class="row"><button class="btn" data-zx="close">Done ✓ تمام</button></div></div>`;
+  e.hidden=false; e.dataset.z=z;
+}
+
+/* ---- background music (WebAudio, generated, no files) ---- */
+const MZ = {
+  galaxy:{root:60, sc:[0,2,4,7,9], bpm:76, lead:"sine", bass:"triangle", prog:[[0,5,3,4],[0,3,5,4],[5,3,0,4]], dens:.45, oct:12, perc:0},
+  math:{root:62, sc:[0,3,5,7,10], bpm:108, lead:"square", bass:"sawtooth", prog:[[0,5,3,6],[0,3,6,5]], dens:.65, oct:12, perc:1, arp:1},
+  english:{root:65, sc:[0,2,4,5,7,9,11], bpm:84, lead:"sine", bass:"triangle", prog:[[0,3,4,0],[0,5,3,4],[0,4,5,3]], dens:.5, oct:24, perc:0, meter:3},
+  arabic:{root:62, sc:[0,1,4,5,7,8,10], bpm:80, lead:"triangle", bass:"sine", prog:[[0,0,3,0],[0,3,4,0],[0,5,4,0]], dens:.6, oct:12, perc:2},
+  shop:{root:67, sc:[0,2,4,7,9], bpm:112, lead:"triangle", bass:"square", prog:[[0,3,4,0],[0,5,3,4]], dens:.55, oct:12, perc:1},
+  town:{root:60, sc:[0,2,4,5,7,9,11], bpm:100, lead:"triangle", bass:"triangle", prog:[[0,3,4,0],[0,5,3,4],[3,4,0,0]], dens:.5, oct:12, perc:1},
+  salon:{root:57, sc:[0,2,3,5,7,9,10], bpm:88, lead:"sine", bass:"sine", prog:[[0,3,6,2],[0,5,1,4]], dens:.4, oct:12, perc:3, sev:1},
+  coffee:{root:58, sc:[0,2,4,5,7,9,11], bpm:72, lead:"triangle", bass:"sine", prog:[[0,5,1,4],[3,2,1,4]], dens:.4, oct:12, perc:3, sev:1},
+  studio:{root:64, sc:[0,2,4,7,9], bpm:116, lead:"square", bass:"triangle", prog:[[0,4,5,3],[0,3,4,4]], dens:.6, oct:12, perc:1},
+  coding:{root:57, sc:[0,3,5,7,10], bpm:120, lead:"square", bass:"square", prog:[[0,0,5,6],[0,3,0,4]], dens:.7, oct:12, perc:1, arp:1},
+  parent:{root:60, sc:[0,2,4,7,9], bpm:56, lead:"sine", bass:"sine", prog:[[0,3,5,4]], dens:.2, oct:12, perc:0},
+};
+const rng = seed => () => { seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+const mf = m => 440*Math.pow(2,(m-69)/12);
+const MUS = {ctx:null, out:null, z:null, song:null, step:0, next:0, timer:null};
+function tuneSeed(z){ const M=MU(); const b = M.every==="never"?0 : M.every==="week"?weekNo() : M.every==="visit"?(MUS.visit ||= Math.floor(Math.random()*1e6)) : dayNo(); return H(z)+b*7919+M.n*104729; }
+function makeSong(z){
+  const P=MZ[z]||MZ.galaxy, r=rng(tuneSeed(z)), sc=P.sc, meter=P.meter||4, per=meter*2, bars=8;
+  const prog=P.prog[Math.floor(r()*P.prog.length)], deg=d=>sc[((d%sc.length)+sc.length)%sc.length]+12*Math.floor(d/sc.length);
+  const lead=[], bass=[], pad=[], perc=[]; let pos=Math.floor(r()*sc.length)+sc.length;
+  for(let b=0;b<bars;b++){ const ch=prog[b%prog.length];
+    pad.push([deg(ch),deg(ch+2),deg(ch+4)].concat(P.sev?[deg(ch+6)]:[]));
+    for(let i=0;i<per;i++){
+      if(P.arp){ lead.push(i%2===0||r()<.5 ? deg(ch + [0,2,4,7][i%4]) + P.oct : null); }
+      else { const strong=i%2===0; if(r()<P.dens*(strong?1.2:.7)){ if(strong && r()<.6){ const tones=[ch,ch+2,ch+4,ch+sc.length]; pos=tones[Math.floor(r()*tones.length)]; } else pos+=Math.floor(r()*3)-1; pos=Math.max(0,Math.min(sc.length*2+2,pos)); lead.push(deg(pos)+P.oct-12); } else lead.push(null); }
+      bass.push(i===0 ? deg(ch)-12 : (meter===4&&i===4 ? deg(ch+(r()<.5?4:0))-12 : (meter===3&&(i===2||i===4)? deg(ch+2)-12 : null)));
+      perc.push(P.perc===2 ? ([1,0,0,2,0,1,2,0][i%8]||0) : P.perc===1 ? (i%4===0?1:i%2===0?2:0) : P.perc===3 ? (i%2===1?2:0) : 0);
+    } }
+  return {P, lead, bass, pad, perc, per, len:bars*per, dt:60/P.bpm/2};
+}
+function note(f, t, d, type, vol, out){
+  const c=MUS.ctx, o=c.createOscillator(), g=c.createGain(); o.type=type; o.frequency.value=f;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.02); g.gain.exponentialRampToValueAtTime(.0005,t+d);
+  o.connect(g).connect(out||MUS.out); o.start(t); o.stop(t+d+.05);
+}
+function hit(kind, t){
+  const c=MUS.ctx;
+  if(kind===1){ const o=c.createOscillator(), g=c.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(50,t+.15); g.gain.setValueAtTime(.35,t); g.gain.exponentialRampToValueAtTime(.001,t+.18); o.connect(g).connect(MUS.out); o.start(t); o.stop(t+.2); }
+  else { const n=c.createBufferSource(), len=c.sampleRate*.05, buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len); n.buffer=buf; const f=c.createBiquadFilter(); f.type="highpass"; f.frequency.value=5000; const g=c.createGain(); g.gain.value=.12; n.connect(f).connect(g).connect(MUS.out); n.start(t); }
+}
+function tick(){
+  const c=MUS.ctx, s=MUS.song; if(!c||!s) return;
+  while(MUS.next < c.currentTime+.25){
+    const i=MUS.step%s.len, t=MUS.next, root=s.P.root;
+    if(i%s.per===0){ const ch=s.pad[Math.floor(i/s.per)]; ch.forEach(m=>note(mf(root+m),t,s.dt*s.per*1.05,"sine",.05)); }
+    if(s.lead[i]!=null) note(mf(root+s.lead[i]),t,s.dt*(s.P.arp?1.2:1.8),s.P.lead,s.P.lead==="square"?.07:.16);
+    if(s.bass[i]!=null) note(mf(root+s.bass[i]),t,s.dt*2.5,s.P.bass,s.P.bass==="sawtooth"||s.P.bass==="square"?.06:.18);
+    if(s.perc[i]) hit(s.perc[i],t);
+    MUS.step++; MUS.next+=s.dt;
+  }
+}
+function musStart(z){
+  const M=MU(); if(!M.on) return;
+  try{
+    if(!MUS.ctx){ MUS.ctx=new (window.AudioContext||window.webkitAudioContext)(); const lp=MUS.ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=2600; MUS.master=MUS.ctx.createGain(); MUS.master.gain.value=0; lp.connect(MUS.master).connect(MUS.ctx.destination); MUS.out=lp; }
+    const c=MUS.ctx; if(c.state==="suspended") c.resume();
+    const vol=.04+.032*M.vol; const g=MUS.master.gain;
+    if(MUS.z!==z || !MUS.song){ g.cancelScheduledValues(c.currentTime); g.setValueAtTime(g.value,c.currentTime); g.linearRampToValueAtTime(0,c.currentTime+.3);
+      const go=()=>{ MUS.z=z; MUS.song=makeSong(z); MUS.step=0; MUS.next=c.currentTime+.05; g.cancelScheduledValues(c.currentTime); g.setValueAtTime(0,c.currentTime); g.linearRampToValueAtTime(vol,c.currentTime+1.2); };
+      if(MUS.song) setTimeout(go,320); else go(); }
+    else { g.cancelScheduledValues(c.currentTime); g.setValueAtTime(g.value,c.currentTime); g.linearRampToValueAtTime(vol,c.currentTime+.4); }
+    if(!MUS.timer) MUS.timer=setInterval(tick,90);
+  }catch(e){}
+}
+function musStop(){ try{ if(MUS.ctx){ const g=MUS.master.gain, c=MUS.ctx; g.cancelScheduledValues(c.currentTime); g.setValueAtTime(g.value,c.currentTime); g.linearRampToValueAtTime(0,c.currentTime+.4); } }catch(e){} clearInterval(MUS.timer); MUS.timer=null; MUS.song=null; MUS.z=null; }
+window.Music15 = {start:musStart, stop:musStop, song:makeSong};
+document.addEventListener("visibilitychange", ()=>{ if(!MUS.ctx) return; if(document.hidden) MUS.ctx.suspend(); else if(MU().on) MUS.ctx.resume(); });
+/* the browser only allows sound after a tap, so a saved "music on" starts on the first touch */
+document.addEventListener("pointerdown", ()=>{ if(MU().on && !MUS.timer) musStart(ZCUR||"galaxy"); }, {capture:true});
+
+/* ---- game flavour: the zone guide sits in the game bar and cheers ---- */
+function gameGuide(z){
+  const top=document.querySelector(".game .gtop"); if(!top || top.querySelector(".zguide")) return; const Z=ZONES[z]; if(Z.calm) return;
+  const el=document.createElement("span"); el.className="zguide"; el.innerHTML=`<span class="zgf" aria-hidden="true">${Z.g}</span><span class="zsay"></span>`; top.appendChild(el);
+  const ch=document.getElementById("cheer"); if(!ch) return;
+  new MutationObserver(()=>{ if(!ch.textContent || ch.className.includes("no")) return; el.querySelector(".zsay").textContent=Z.praise[Math.floor(Math.random()*Z.praise.length)]; el.classList.remove("hop"); void el.offsetWidth; el.classList.add("hop"); clearTimeout(el.t); el.t=setTimeout(()=>el.classList.remove("hop"),1200); }).observe(ch,{childList:true,characterData:true,subtree:true});
+}
+
+/* ---- grown-ups settings card ---- */
+function parentCard(){
+  const host=document.querySelector(".parent .grid2"); if(!host || document.getElementById("zset")) return;
+  const L=LK(), M=MU(), wk=weekNo();
+  const rows=Object.entries(ZONES).map(([z,Z])=>{ const auto=Z.skins[L.rot?(wk+H(z))%Z.skins.length:0];
+    return `<div class="zrow"><span>${Z.g} ${esc(Z.en)}</span><select data-zs="force" data-z="${z}"><option value="">Auto (now: ${esc(auto.n)})</option>${Z.skins.map((s,i)=>`<option value="${i}" ${String(L.force[z])===String(i)?"selected":""}>${esc(s.n)}</option>`).join("")}</select></div>`; }).join("");
+  const card=document.createElement("div"); card.className="card zset"; card.id="zset";
+  card.innerHTML=`<h2>🎨 Looks, worlds and music</h2>
+    <p class="hint">Every zone has its own look, guide and music. Looks change by themselves every Saturday so the app keeps feeling new. شكل كل عالم بيتغير لوحده كل سبت.</p>
+    <label><input type="checkbox" data-zs="rot" ${L.rot?"checked":""}> Change looks every week by themselves</label>
+    <label><input type="checkbox" data-zs="kid" ${L.kid?"checked":""}> ${esc(S.child.name||"Child")} can pick this week's look</label>
+    <label><input type="checkbox" data-zs="trans" ${L.trans?"checked":""}> Rocket, train and cloud rides between worlds</label>
+    <label><input type="checkbox" data-zs="intro" ${L.intro?"checked":""}> Welcome screen when entering a world (once a day)</label>
+    <h3 style="margin-top:6px">Look for each zone</h3>${rows}
+    <h3 style="margin-top:6px">🎵 Background music</h3>
+    <p class="hint">Soft music made inside the app (no downloads). It is off until someone taps 🎶 at the top. موسيقى هادية، مقفولة لحد ما حد يدوس 🎶.</p>
+    <label><input type="checkbox" data-zs="mon" ${M.on?"checked":""}> Music on</label>
+    <div class="zrow"><span>Volume</span><input type="range" min="1" max="10" value="${M.vol}" data-zs="vol"></div>
+    <div class="zrow"><span>New tune</span><select data-zs="every">${[["visit","Every time the app opens"],["day","Every day"],["week","Every week"],["never","Keep the same tune"]].map(([v,t])=>`<option value="${v}" ${M.every===v?"selected":""}>${t}</option>`).join("")}</select></div>`;
+  host.appendChild(card);
+}
+document.addEventListener("change", e=>{
+  const d=e.target.dataset; if(!d || !d.zs) return; const L=LK(), M=MU(), v=e.target;
+  if(d.zs==="force"){ if(v.value==="") delete L.force[d.z]; else L.force[d.z]=+v.value; }
+  else if(["rot","kid","trans","intro"].includes(d.zs)) L[d.zs]=v.checked;
+  else if(d.zs==="mon"){ M.on=v.checked; M.on?musStart(ZCUR||"parent"):musStop(); musBtn(); }
+  else if(d.zs==="vol"){ M.vol=+v.value; if(M.on) musStart(ZCUR||"parent"); }
+  else if(d.zs==="every"){ M.every=v.value; if(M.on){ MUS.song=null; MUS.z=null; musStart(ZCUR||"parent"); } }
+  save(); zApply(ZCUR||"parent", true);
+});
+
+/* ---- clicks on our own buttons ---- */
+document.addEventListener("click", e=>{
+  const t=e.target.closest("[data-zx]"); if(!t) { const en=document.getElementById("zentry"); if(en && !en.hidden && e.target===en) closeEntry(); return; }
+  e.stopPropagation(); e.preventDefault();
+  const a=t.dataset.zx, z=ZCUR||"galaxy", M=MU(), L=LK();
+  if(a==="close") return closeEntry();
+  if(a==="looks"){ try{sfx.tap();}catch(_){} return showLooks(z); }
+  if(a==="pick"){ L.pick[z]={w:weekNo(), i:+t.dataset.i}; save(); zApply(z,true); try{sfx.ok();}catch(_){} return showLooks(z); }
+  if(a==="music"){ M.on=!M.on; save(); musBtn(); if(M.on){ musStart(z); toast("Music on 🎵 الموسيقى اشتغلت"); } else { musStop(); toast("Music off الموسيقى اتقفلت"); } if(view.name==="parent") render(); return; }
+  if(a==="nexttune"){ M.n=(M.n||0)+1; save(); MUS.song=null; MUS.z=null; musStart(z); return toast("New tune 🎶 مزيكا جديدة"); }
+}, true);
+
+/* ---- hook into the app's render ---- */
+const baseRender = render;
+render = function(){
+  const r = baseRender.apply(this, arguments);
+  try{
+    ensureDock(); musBtn();
+    const z=zoneOf(), L=LK();
+    if(z!==ZCUR){
+      const first = ZCUR===null; ZCUR=z; LASTZ=z;
+      if(!first && L.trans) playTrans(z);
+      zApply(z);
+      if(MU().on && MUS.ctx) musStart(z);
+      const wantIntro = !first && L.intro && !ZONES[z].calm && L.seen[z]!==today() && S.child && S.child.name;
+      if(wantIntro){ L.seen[z]=today(); save(); setTimeout(()=>showEntry(z,true), L.trans?1050:50); }
+      else if(z==="parent") closeEntry();
+    } else zApply(z);
+    if(view.name==="game") gameGuide(z);
+    if(view.name==="parent") parentCard();
+  }catch(e){ console.error("v15 zones", e); }
+  return r;
+};
+window.Zones15 = {zoneOf, skinOf, skinIdx, weekNo, apply:zApply, entry:showEntry, looks:showLooks, trans:playTrans};
+try{ render(); }catch(e){}
+})();
+</script>
+<!--v15z-end-->
 </body></html><script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
