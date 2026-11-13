@@ -4,7 +4,55 @@
 <meta name="theme-color" content="#0f0a2e">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
-<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}</style>
+<style>html{padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);margin:0}body{margin:0}/* My Business (v12) */
+.bizworld{height:max(320px,calc(100vh - 290px))}
+.bzspots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.bzspots .tile,.tile small.ar,.tile small{display:inline-flex}
+.tile small.ar{display:block;font-size:.85rem;font-weight:700;opacity:.85;width:100%}
+.tile.sm{flex-wrap:wrap;font-size:1.15rem;min-height:54px;padding:8px 14px}
+.bzorb{display:grid!important;place-items:center;font-size:2.4rem;background:radial-gradient(circle at 35% 30%,#fff8,#ff9f43 45%)}
+.bztrack .lvl{align-self:flex-start}
+.bzbar{display:block;height:10px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}.bzbar i{display:block;height:100%;background:var(--mint)}
+.bzhero{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:18px;align-items:center;padding:18px;border-radius:26px;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);margin:8px 0 6px}
+.bzsign{aspect-ratio:1;border-radius:22px;background:var(--bc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.3);font-family:var(--display);font-size:1.3rem;text-align:center;padding:10px;box-shadow:inset 0 -10px 0 rgba(0,0,0,.18)}
+.bzlogo{font-size:3.4rem;width:86px;height:86px;border-radius:50%;background:#fffaf0;display:grid;place-items:center;text-shadow:none}
+.bzown{display:inline-flex;gap:6px;align-items:center}.bzown input{max-width:200px}
+.bzstages{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:6px 0 14px}
+.bzstage{padding:8px 4px;border-radius:16px;background:var(--panel);border:2px solid var(--line);text-align:center;display:flex;flex-direction:column;opacity:.6}
+.bzstage span{font-size:1.6rem}.bzstage b{font-size:.9rem}.bzstage small{font-size:.8rem;color:var(--muted)}
+.bzstage.now{opacity:1;border-color:var(--star)}.bzstage.done{opacity:1;border-color:var(--mint)}
+.bzitems{display:grid;gap:10px;margin-bottom:14px}
+.bzitem{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;padding:12px 16px;border-radius:20px;background:var(--panel2);border:2px solid var(--line)}
+.bzitem.done{border-color:var(--mint)}.bzitem.locked{opacity:.6}
+.bzie{font-size:2rem}.bzcheck{font-size:1.4rem}
+.bzitem .ar,.bzproj .ar,.card .ar{display:block}
+.bzproj.ready{border:3px solid var(--star)}
+.studio{display:grid;grid-template-columns:minmax(220px,360px) 1fr;gap:18px;align-items:start}
+.studiopv{position:sticky;top:8px;display:grid;gap:8px}
+.studioctl{display:grid;gap:12px;min-width:0}
+.bzpost{position:relative;width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;box-shadow:0 6px 0 rgba(0,0,0,.28)}
+.bzpost.story{aspect-ratio:9/16;max-width:300px;margin:0 auto}
+.bzph{position:absolute;inset:12% 7% 12% 7%;border-radius:12px;overflow:hidden}.bzpost.story .bzph{inset:18% 7% 18% 7%}
+.bzph svg{width:100%;height:100%;display:block}
+.bzempty{width:100%;height:100%;display:grid;place-items:center;font-size:3rem;background:rgba(0,0,0,.08)}
+.bztx{position:absolute;left:6%;right:6%;text-align:center;font-weight:800;font-size:clamp(1rem,4.6vw,1.7rem);line-height:1.1}
+.bztx.top{top:1.5%}.bztx.bottom{bottom:1.5%}
+.bzpost.story .bztx.top{top:5%}.bzpost.story .bztx.bottom{bottom:5%}
+.bzbadge{position:absolute;display:flex;align-items:center;gap:4px;padding:3px 10px 3px 3px;border-radius:99px;color:#fff;font-size:.8rem;font-weight:800;max-width:62%}
+.bzbadge span{width:26px;height:26px;border-radius:50%;background:#fffaf0;display:grid;place-items:center;font-size:1rem;flex:none}
+.bzbadge b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bzbadge.tl{top:2%;left:2%}.bzbadge.tr{top:2%;right:2%}.bzbadge.bl{bottom:2%;left:2%}.bzbadge.br{bottom:2%;right:2%}
+.bzst{position:absolute;font-style:normal;font-size:1.8rem}.bzst.s0{top:16%;right:9%}.bzst.s1{bottom:16%;left:9%}.bzst.s2{top:46%;left:4%}
+.bzpost.small .bztx{font-size:.75rem}.bzpost.small .bzbadge{font-size:.55rem;padding:2px 6px 2px 2px}.bzpost.small .bzbadge span{width:16px;height:16px;font-size:.6rem}.bzpost.small .bzst{font-size:1rem}
+.bzthumb{width:110px;height:110px;border-radius:16px;overflow:hidden;border:4px solid var(--line);padding:0;background:none}.bzthumb[aria-pressed="true"]{border-color:var(--star)}.bzthumb svg{width:100%;height:100%;display:block}
+.bzgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.bzgi{padding:0;background:none;border:0}
+.hopts{display:grid;gap:8px;margin-top:6px}.hopts .tile{justify-content:flex-start;text-align:left;background:#fffaf0;color:#2a1a4a}
+.hreq{padding:10px 14px;border-radius:16px;background:#4f9dff;color:#fff;font-weight:800;font-size:1.1rem}
+.bzpend{display:grid;gap:6px;padding:12px;border-radius:16px;border:2px solid var(--star)}
+.bzprow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-radius:12px;background:rgba(255,255,255,.06)}
+@media (max-width:700px){.bzhero{grid-template-columns:1fr}.bzsign{max-width:200px;margin:0 auto;width:100%}.studio{grid-template-columns:1fr}.studiopv{position:static;max-width:340px;margin:0 auto;width:100%}.bzstage b{font-size:.75rem}.bzstage small{display:none}.bzthumb{width:86px;height:86px}}
+</style>
 <title>Star Academy</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -762,7 +810,7 @@ function fresh(){ return { v:VERSION, updatedAt:0, child:{name:""}, stars:0, spe
 let S = fresh();
 try { const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch(e){}
 if(!S.shop || typeof S.shop!=="object") S.shop = fresh().shop;
-if(!S.chat || typeof S.chat!=="object") S.chat = fresh().chat; S.chat.topics=Object.assign(fresh().chat.topics,S.chat.topics||{}); S.chat.log ||= [];
+if(!S.chat || typeof S.chat!=="object") S.chat = fresh().chat; S.chat.ai = false; S.chat.topics=Object.assign(fresh().chat.topics,S.chat.topics||{}); S.chat.log ||= [];
 let DB=null, DOC=null, ASSETS=null, SAMPLE=null, cloudState="local";
 let writing=Promise.resolve(), saveTimer=null;
 function save(){
@@ -776,8 +824,8 @@ function save(){
 async function initCloud(){
   if(!window.claude || !window.claude.use) return;
   try {
-    const [db,user,assets,sample] = await Promise.all([claude.use("db"),claude.use("user"),claude.use("assets"),claude.use("sample")]);
-    ASSETS = assets; SAMPLE = sample;
+    const [db,user,assets] = await Promise.all([claude.use("db"),claude.use("user"),claude.use("assets")]);
+    ASSETS = assets; SAMPLE = null; /* Baba's rule: no live AI anywhere in the child's app */
     if(!db || !user) return;
     const id = await user.id(); if(!id) return;
     DOC = db.doc("data/users/"+id+"/state");
@@ -804,7 +852,7 @@ const sfx = { ok:()=>tone([660,880,1320]), no:()=>tone([300,220],.16), win:()=>t
 const playedSec = () => S.play[today()]||0;
 const allowedMin = () => S.limitMin + (S.extra.date===today()?S.extra.min:0);
 const timeUp = () => S.limitMin>0 && playedSec() >= allowedMin()*60;
-setInterval(()=>{ if((view.name==="game"||(view.name==="shop"&&SG)) && !document.hidden){ S.play[today()] = playedSec()+15; save(); } }, 15000);
+setInterval(()=>{ if((view.name==="game"||(view.name==="shop"&&(SG||LS))||(view.name==="biz"&&BZ.screen!=="map")) && !document.hidden){ S.play[today()] = playedSec()+15; save(); } }, 15000);
 
 /* ---------------- Progress model ---------------- */
 function sk(id){ return S.skills[id] ||= {level:1, best:[0,0,0], correct:0, attempts:0, last:0}; }
@@ -836,6 +884,7 @@ function navTabs(active){
   const n=openHw();
   return `<nav class="nav">
     <button class="tab" data-go="home" aria-current="${active==="home"}">🪐 Learn</button>
+    <button class="tab" data-go="biz" aria-current="${active==="biz"}">💼 My Business</button>
     <button class="tab" data-go="explore" aria-current="${active==="explore"}">🚀 Explore</button>
     <button class="tab" data-go="base" aria-current="${active==="base"}">🏠 My Home</button>
     <button class="tab" data-go="homework" aria-current="${active==="homework"}">📒 Homework${n?`<span class="badge">${n}</span>`:""}</button>
@@ -849,11 +898,12 @@ function render(){
   renderDock();
   const st = $("#stage");
   if(!S.child.name && view.name!=="parent" && view.name!=="pin") return st.innerHTML = vSetup();
-  const fn = {home:vHome, unit:vUnit, game:vGame, result:vResult, stickers:vStickers, dress:vDress, homework:vHomework, parent:vParent, pin:vPin, rest:vRest, challenges:vChallenges, nova:vNova, explore:vExplore, base:vBase, shop:vShop}[view.name] || vHome;
-  stopWorld();
+  const fn = {home:vHome, unit:vUnit, game:vGame, result:vResult, stickers:vStickers, dress:vDress, homework:vHomework, parent:vParent, pin:vPin, rest:vRest, challenges:vChallenges, nova:vNova, explore:vExplore, base:vBase, shop:vShop, biz:vBiz}[view.name] || vHome;
+  stopWorld(); stopBizMap();
   st.innerHTML = fn();
   if(view.name==="game") afterGame();
   if(view.name==="explore") startWorld();
+  if(view.name==="biz" && BZ.screen==="map") startBizMap();
   syncTimer();
 }
 
@@ -1333,6 +1383,7 @@ function vParent(){
     <textarea id="reportTxt" readonly rows="8" style="font:inherit;font-size:.85rem;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--space2);color:var(--ink);width:100%;box-sizing:border-box">${esc(reportText())}</textarea>
     <button class="btn sm" data-act="copyreport" style="align-self:flex-start">Copy report</button>
     <p class="hint">Copy the report and paste it in your chat with Claude to get next week's plan and new questions.</p></div>
+  ${bizParentCard()}
   ${shopParentCard()}
   <div class="card"><h2>📈 Progress</h2>
     <p style="margin:0">Total stars: <b>${S.stars}</b> · Stickers: <b>${S.stickers.length}/${STICKERS.length}</b>${recAcc!==null?` · Last ${recent.length} answers: <b>${recAcc}% right first time</b>`:""}</p>
@@ -1587,7 +1638,7 @@ function lessonDone(){
     <div class="bigstars">${"★".repeat(LS.stars)}<span class="e">${"★".repeat(3-LS.stars)}</span></div>
     <p style="margin:0;font-size:1.15rem">${LS.first} of ${LS.total} right the first time. Now you know something new!</p>
     ${LS.newStickers.length?`<div><div class="newsticker">${LS.newStickers.join(" ")}</div><b>New sticker for your album!</b></div>`:""}
-    <div class="row">${nx?`<button class="btn" data-ls="${nx}">Next lesson: ${lessonDefs()[nx].title} ${lessonDefs()[nx].e}</button>`:""}<button class="btn alt" data-ls="${LS.id}">Again</button><button class="btn alt" data-sx="home">Star Shop</button></div></div>`;
+    <div class="row">${nx?`<button class="btn" data-ls="${nx}">Next lesson: ${lessonDefs()[nx].title} ${lessonDefs()[nx].e}</button>`:""}<button class="btn alt" data-ls="${LS.id}">Again</button><button class="btn alt" data-sx="home">${FROM_BIZ?"My Business 💼":"Star Shop"}</button></div></div>`;
 }
 function lessonClick(d,t){
   const st=LS.steps[LS.i];
@@ -1982,7 +2033,7 @@ function quizDone(){
     <div class="bigstars">${"★".repeat(o.stars)}<span class="e">${"★".repeat(3-o.stars)}</span></div>${lv}
     <p style="margin:0;font-size:1.15rem">${I.en} ${o.first} of ${o.total} right the first time.</p><span class="ar" dir="rtl" lang="ar">${I.ar}</span>
     ${o.newStickers.length?`<div><div class="newsticker">${o.newStickers.join(" ")}</div><b>New sticker for your album!</b></div>`:""}
-    <div class="row">${nx?`<button class="btn" data-sg="${nx.n}">Next: ${nx.t} ${nx.e}</button>`:""}<button class="btn alt" data-sg="${n}">Play again</button><button class="btn alt" data-sx="home">Star Shop</button></div></div>`;
+    <div class="row">${nx?`<button class="btn" data-sg="${nx.n}">Next: ${nx.t} ${nx.e}</button>`:""}<button class="btn alt" data-sg="${n}">Play again</button><button class="btn alt" data-sx="home">${FROM_BIZ?"My Business 💼":"Star Shop"}</button></div></div>`;
 }
 function quizMisses(){
   const c={}; (S.shop.log||[]).filter(x=>x.g>=4 && !x.ok).forEach(x=>{ c[x.k]=(c[x.k]||0)+1; });
@@ -1998,7 +2049,7 @@ function shopDone(){
     <p style="margin:0;font-size:1.15rem">${SG.g===3?`A good post has a clear photo, short words you can read, and your logo. ${o.first} of ${o.total} right the first time.`:SG.g===1?`<b>${esc(S.shop.name)}</b> has a name, a color and a logo. That is called a <b>brand</b>!`:`Your best photo is now in the shop window. ${o.first} of ${o.total} right the first time.`}</p>
     <span class="ar" dir="rtl" lang="ar">${SG.g===3?"البوست الحلو: صورة واضحة وكلام قصير يتقري ولوجو المحل!":SG.g===1?"محلك بقى ليه اسم ولون ولوجو، ده اسمه براند!":"أحلى صورة بقت في فاترينة المحل!"}</span>
     ${o.newStickers.length?`<div><div class="newsticker">${o.newStickers.join(" ")}</div><b>New sticker for your album!</b></div>`:""}
-    <div class="row">${SG.g===1?`<button class="btn" data-sg="2">Next: Best Photo 📸</button>`:SG.g===2?`<button class="btn" data-sg="3">Next: Make a Post 🖼️</button><button class="btn alt" data-sg="2">Play again</button>`:`<button class="btn" data-sg="3">Play again</button>`}<button class="btn alt" data-sx="home">Star Shop</button></div>
+    <div class="row">${SG.g===1?`<button class="btn" data-sg="2">Next: Best Photo 📸</button>`:SG.g===2?`<button class="btn" data-sg="3">Next: Make a Post 🖼️</button><button class="btn alt" data-sg="2">Play again</button>`:`<button class="btn" data-sg="3">Play again</button>`}<button class="btn alt" data-sx="home">${FROM_BIZ?"My Business 💼":"Star Shop"}</button></div>
   </div>`;
 }
 function shopFinish(stars){
@@ -2046,7 +2097,7 @@ function shopClick(t, d){
   switch(d.sx){
     case "theme": S.shop.theme=d.v; save(); sfx.tap(); render(); speak(`${SHOP_THEMES[d.v].label} world!`); break;
     case "say": if(SG) speak(SG.say,true); break;
-    case "quit": case "home": SG=null; LS=null; go({name:"home", subject:"shop"}); break;
+    case "quit": case "home": SG=null; LS=null; if(FROM_BIZ){ go({name:"biz"}); } else go({name:"home", subject:"shop"}); break;
     case "type": SG.o.type=d.v; sfx.ok(); speak(`${SHOP_TYPES[d.v].label}! Great idea!`); setTimeout(shopNext, 900); break;
     case "next": sfx.tap(); shopNext(); break;
     case "merch": { const m=SG.merch[+d.v];
@@ -2240,10 +2291,10 @@ function novaParentCard(){
   const C=S.chat, name=esc(S.child.name), L=C.log.slice(-40).reverse(), flagged=C.log.filter(x=>x.flag).length;
   const T={space:"Space",animals:"Animals",stories:"Stories",shop:"Shop talk",school:"School help",fun:"Jokes & fun"};
   return `<div class="card"><h2>💬 Nova chat (safe helper)</h2>
-    <p class="hint">A friendly helper ${name} can talk to. It is <b>off</b> until you turn it on. Her messages are checked first: private info, bad words and scary words never reach the AI, and you see everything below. Online, answers come from Claude with strict child-safety rules; offline, Nova uses pre-written answers.</p>
+    <p class="hint">A friendly helper ${name} can talk to. It is <b>off</b> until you turn it on. Nova only uses pre-written answers inside the app: no real AI and no internet. Her messages are checked for private info, bad words and scary words, and you see everything below.</p>
     <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="novaOn" ${C.on?"checked":""} style="width:24px;height:24px"> Turn Nova on for ${name}</label>
     <label>Messages per day<select id="novaDaily">${[5,10,20,40].map(n=>`<option value="${n}" ${C.daily===n?"selected":""}>${n}</option>`).join("")}</select></label>
-    <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="novaAi" ${C.ai?"checked":""} style="width:24px;height:24px"> Use Claude for answers when online (otherwise pre-written answers)</label>
+    <p class="hint" dir="rtl" lang="ar" style="margin:0">نوفا بترد بردود جاهزة بس، مفيش Claude حقيقي ولا إنترنت.</p>
     <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="novaAr" ${C.ar?"checked":""} style="width:24px;height:24px"> Add an Arabic line under each answer</label>
     <div><b>Allowed topics</b><div class="themes" style="margin-top:6px">${Object.entries(T).map(([k,v])=>`<label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" data-nvt="${k}" ${C.topics[k]?"checked":""} style="width:22px;height:22px"> ${v}</label>`).join("")}</div></div>
     ${flagged?`<p style="margin:0;color:var(--bad);font-weight:800">⚠️ ${flagged} message${flagged>1?"s":""} flagged. Please read them below.</p>`:""}
@@ -2253,11 +2304,426 @@ function novaParentCard(){
   </div>`;
 }
 
+/* ---------------- My Business (v12): Mariam's two businesses on a walkable map ----------------
+   Worlds: a hair salon (like Baba's Hair Force One) and an online coffee-bean shop (beans in bags).
+   9 tracks x 5 stages. A stage ends with a project that a grown-up approves in the grown-ups area.
+   Post Studio + Gallery, and a pretend smart helper (preset requests, preset answers, nothing leaves the app). */
+const BIZ_WORLDS = {
+  salon:{e:"💈", en:"My Salon", ar:"الصالون بتاعي", color:"#4f9dff", like:"A hair salon, like Baba's Hair Force One", likeAr:"صالون حلاقة زي Hair Force One بتاع بابا",
+    names:["Star Cuts","Comet Cuts","Rocket Barber","Shiny Hair"], logos:["💈","✂️","🪮","💇‍♂️","⭐","👑"],
+    usp:[["Fast and always on time","سريع ودايمًا في معاده"],["Super clean","نضيف جدًا"],["Kind to kids","لطيف مع الأطفال"],["Cool new styles","قصات جديدة وشيك"]],
+    photos:["chair","tools","happy","front"]},
+  coffee:{e:"☕", en:"My Coffee Beans", ar:"متجر البن بتاعي", color:"#a86d42", like:"Coffee beans in bags, sold online and sent to homes", likeAr:"بن قهوة في عبوات، بيتباع أونلاين وبيتشحن للبيوت",
+    names:["Star Beans","Moon Coffee","Rocket Roast","Galaxy Beans"], logos:["☕","🫘","⭐","🌙","🚀","🪐"],
+    usp:[["Fresh every week","طازة كل أسبوع"],["Fast delivery","توصيل سريع"],["Strong, yummy taste","طعم قوي وحلو"],["Pretty gift bags","عبوات هدايا حلوة"]],
+    photos:["bag","beans","cup","box"]},
+};
+const BIZ_COLORS = [...SHOP_COLORS, ["#8b5a3c","Brown"], ["#2b2b3a","Black"]];
+const STAGES = [["⭐","Discover","اكتشاف"],["🪐","Try","تجربة"],["☀️","On my own","لوحدي"],["🌌","Plan","خطة"],["🚀","Real work","شغل حقيقي"]];
+const TRACKS = [
+  {id:"brand", e:"🎨", en:"Brand", ar:"البراند والميزة", items:[{k:"brand",w:"salon"},{k:"sg",n:1}],
+    proj:["Give your salon a name, a color, a logo and a reason to visit","اعملي لصالونك اسم ولون ولوجو وسبب الناس تيجي عشانه"]},
+  {id:"posts", e:"🖼️", en:"Posts", ar:"البوستات", items:[{k:"sg",n:2},{k:"sg",n:3},{k:"sg",n:4},{k:"sg",n:5},{k:"studio"}],
+    proj:["Make 3 posts and keep them in your gallery","اعملي 3 بوستات واحفظيهم في المعرض"], need:()=>bizS().gallery.length>=3},
+  {id:"ai", e:"🤖", en:"Smart Helper", ar:"المساعد الذكي", items:[{k:"ls",id:"ai"},{k:"hlesson"},{k:"helper"}],
+    proj:["Ask the helper clearly 3 times and pick a good answer","اطلبي من المساعد بوضوح 3 مرات واختاري إجابة صح"], need:()=>bizS().helper.good>=3},
+  {id:"ads", e:"📣", en:"Ads", ar:"الإعلانات", items:[{k:"ls",id:"ads"},{k:"sg",n:6},{k:"sg",n:7},{k:"sg",n:9}],
+    proj:["Finish the ads games","خلّصي ألعاب الإعلانات"]},
+  {id:"ops", e:"📦", en:"Customers", ar:"العملاء والشحن", items:[{k:"sg",n:8}],
+    proj:["Answer customers nicely","ردّي على العملاء بلطف"]},
+  {id:"web", e:"💻", en:"Websites", ar:"المواقع", soon:"Next update", soonAr:"في التحديث الجاي"},
+  {id:"money", e:"💰", en:"Money", ar:"الحسابات والمرتبات", soon:"Coming soon", soonAr:"قريب"},
+  {id:"video", e:"🎬", en:"Video & Character", ar:"الفيديو والكاركتر", soon:"Coming soon", soonAr:"قريب"},
+  {id:"grow", e:"🌱", en:"Grow the Business", ar:"تطوير البيزنس", soon:"Coming soon", soonAr:"قريب"},
+];
+function bizS(){ const B = S.biz ||= {};
+  B.salon ||= {name:"",color:"",logo:"",usp:""}; B.coffee ||= {name:"",color:"",logo:"",usp:""};
+  B.open ||= {salon:true, coffee:false}; B.stage ||= {}; B.pending ||= {}; B.approved ||= [];
+  B.gallery ||= []; B.helper ||= {lesson:false, good:0, asks:0, saved:[], log:[]}; B.daily ||= {date:"",posts:0};
+  return B; }
+const stageOf = id => bizS().stage[id] || 1;
+const bi = (en, ar, big) => `<b${big?' style="font-size:1.2rem"':""}>${esc(en)}</b>${ar?`<span class="ar" dir="rtl" lang="ar">${esc(ar)}</span>`:""}`;
+const brandOf = w => { const b=bizS()[w], W=BIZ_WORLDS[w]; return {name:b.name||W.names[0], color:b.color||W.color, logo:b.logo||W.e, set:!!b.name, usp:b.usp}; };
+let BZ = {screen:"map"}, FROM_BIZ = false, BZMAP = null;
+
+function itemInfo(it){
+  const B=bizS(), G=S.shop.games||{}, L=S.shop.lessons||{};
+  if(it.k==="sg"){ const g=SHOP_GAMES.find(x=>x.n===it.n); return {e:g.e, en:`Game ${g.n}: ${g.t}`, ar:g.ar, done:!!G[it.n], lock:it.n>1&&!G[it.n-1]?`Play game ${it.n-1} first`:"", act:`data-sg="${it.n}"`}; }
+  if(it.k==="ls"){ const d=lessonDefs()[it.id]; return {e:d.e, en:`Baba's Classroom: ${d.title}`, ar:d.ar, done:!!L[it.id], act:`data-ls="${it.id}"`}; }
+  if(it.k==="brand") return {e:BIZ_WORLDS[it.w].e, en:`Brand ${BIZ_WORLDS[it.w].en.replace("My ","my ")}`, ar:"اعملي البراند بتاع "+BIZ_WORLDS[it.w].ar, done:!!(B[it.w].name&&B[it.w].usp), act:`data-bz="brand" data-v="${it.w}"`};
+  if(it.k==="studio") return {e:"🎨", en:"Post Studio: make a post", ar:"استوديو البوستات: اعملي بوست", done:B.gallery.length>0, act:`data-bz="studio"`};
+  if(it.k==="hlesson") return {e:"🤖", en:"Meet the smart helper", ar:"اتعرفي على المساعد الذكي", done:B.helper.lesson, act:`data-bz="hlesson"`};
+  if(it.k==="helper") return {e:"💬", en:"Ask the helper", ar:"اطلبي من المساعد", done:B.helper.good>0, act:`data-bz="helper"`};
+}
+function trackState(T){
+  if(T.soon) return {soon:true};
+  const infos=T.items.map(itemInfo), done=infos.filter(i=>i.done).length, all=done===infos.length && (!T.need || T.need());
+  return {infos, done, total:infos.length, ready:all, pending:!!bizS().pending[T.id], stage:stageOf(T.id)};
+}
+
+/* ---------- Views ---------- */
+function vBiz(){
+  bizS();
+  const f = {map:bizMapView, world:bizWorldView, track:bizTrackView, brand:bizBrandView, studio:studioView, gallery:galleryView, helper:helperView, hlesson:hLessonView}[BZ.screen] || bizMapView;
+  return f();
+}
+function bizBack(to, label){ return `<button class="back" data-bz="${to||"map"}">← ${label||"Map"}</button>`; }
+function bizMapView(){
+  const B=bizS();
+  const spots=[["salon","💈","My Salon","الصالون"],["coffee","☕","Coffee Beans","متجر البن"],["studio","🎨","Post Studio","استوديو البوستات"],["gallery","🖼️","My Gallery","المعرض"],["helper","🤖","Smart Helper","المساعد الذكي"]];
+  return `${navTabs("biz")}
+  <div class="hello"><div><h1>My Business 💼</h1><p>Walk to a place to go inside. <span class="ar" dir="rtl" lang="ar" style="display:inline">امشي لأي مكان عشان تدخليه.</span></p></div></div>
+  <canvas id="bizmap" class="world bizworld" aria-label="Business town map: walk to a building"></canvas>
+  <div class="bzspots">${spots.map(([k,e,en,ar])=>{ const lock=k==="coffee"&&!B.open.coffee; return `<button class="tile sm" data-bz="${lock?"lockedw":k==="salon"||k==="coffee"?"world":k}" data-v="${k}">${e} ${en}${lock?" 🔒":""}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`; }).join("")}</div>`;
+}
+function bizWorldView(){
+  const w=BZ.w||"salon", W=BIZ_WORLDS[w], br=brandOf(w);
+  const tracks = TRACKS.map(T=>{ const s=trackState(T);
+    if(s.soon) return `<button class="planet locked bztrack" data-bz="soon" data-v="${T.id}"><span class="orb bzorb">${T.e}</span><h3>${T.en}</h3><span class="ar" dir="rtl" lang="ar">${T.ar}</span><span class="hint">🔒 ${T.soon} · ${T.soonAr}</span></button>`;
+    const st=STAGES[s.stage-1];
+    return `<button class="planet bztrack" data-bz="track" data-v="${T.id}"><span class="orb bzorb">${T.e}</span><h3>${T.en}</h3><span class="ar" dir="rtl" lang="ar">${T.ar}</span>
+      <span class="lvl">${st[0]} Stage ${s.stage}: ${st[1]}</span><span class="bzbar"><i style="width:${Math.round(s.done/s.total*100)}%"></i></span>
+      <span class="hint">${s.pending?"✉️ Waiting for Baba":s.ready?"🎁 Project ready!":`${s.done} / ${s.total} done`}</span></button>`; }).join("");
+  return `${navTabs("biz")}${bizBack()}
+  <div class="bzhero" style="--bc:${br.color}">
+    <div class="bzsign"><span class="bzlogo">${br.logo}</span><b>${esc(br.name)}</b></div>
+    <div style="min-width:0">${bi(W.en+" "+W.e, W.ar, true)}<p class="hint" style="margin:6px 0 0">${esc(W.like)}<span class="ar" dir="rtl" lang="ar">${esc(W.likeAr)}</span></p>
+      ${br.usp?`<p style="margin:8px 0 0">⭐ Why people come: <b>${esc(br.usp)}</b></p>`:""}
+      <div class="row" style="justify-content:flex-start;margin-top:10px"><button class="btn sm" data-bz="brand" data-v="${w}">${br.set?"✏️ Change my brand":"🎨 Make my brand"}</button><button class="btn sm alt" data-bz="studio" data-v="${w}">🖼️ Make a post</button></div></div>
+  </div>
+  <h2 style="font-size:1.6rem;margin:14px 0 4px">What I learn here</h2><p class="hint" style="margin:0 0 10px">Every track has 5 stages. Finish a stage, send the project to Baba, and the next stage opens! <span class="ar" dir="rtl" lang="ar" style="display:inline">كل مسار فيه 5 مراحل. خلّصي المرحلة وابعتي المشروع لبابا، والمرحلة الجاية تتفتح!</span></p>
+  <div class="planets">${tracks}</div>`;
+}
+function bizTrackView(){
+  const T=TRACKS.find(x=>x.id===BZ.t), s=trackState(T);
+  const steps=STAGES.map((st,i)=>`<div class="bzstage ${i+1<s.stage?"done":i+1===s.stage?"now":""}"><span>${st[0]}</span><b>${st[1]}</b><small dir="rtl" lang="ar">${st[2]}</small></div>`).join("");
+  const body = s.stage>1 ? `<div class="card" style="text-align:center">${bi(`Stage ${s.stage} opens with the next update! ✨`,"المرحلة دي هتتفتح مع التحديث الجاي!",true)}<p class="hint" style="margin:0">You can still play stage 1 games for more stars.</p></div>` : "";
+  const items = s.infos.map(i=>`<button class="bzitem ${i.done?"done":""} ${i.lock?"locked":""}" ${i.act}><span class="bzie">${i.e}</span><span style="min-width:0">${bi(i.en,i.ar)}${i.lock?`<small class="hint">🔒 ${esc(i.lock)}</small>`:""}</span><span class="bzcheck">${i.done?"✅":"▶️"}</span></button>`).join("");
+  const proj = `<div class="card bzproj ${s.ready?"ready":""}"><h3 style="margin:0">🎁 Stage project · مشروع المرحلة</h3>${bi(T.proj[0],T.proj[1])}
+    ${s.pending?`<p style="margin:0;font-weight:800;color:var(--mint)">✉️ Sent! Waiting for Baba to say yes. <span class="ar" dir="rtl" lang="ar">اتبعت! مستنيين بابا يوافق.</span></p>`
+    : s.ready&&s.stage===1?`<button class="btn" data-bz="send" data-v="${T.id}">✉️ Send to Baba</button>`
+    : s.stage>1?`<p class="hint" style="margin:0">✅ Baba said yes!</p>`:`<p class="hint" style="margin:0">Finish everything above first. <span class="ar" dir="rtl" lang="ar" style="display:inline">خلّصي كل اللي فوق الأول.</span></p>`}</div>`;
+  return `${navTabs("biz")}${bizBack("world", BIZ_WORLDS[BZ.w||"salon"].en)}
+  <div class="hello"><div><h1>${T.e} ${T.en}</h1><p class="ar" dir="rtl" lang="ar">${T.ar}</p></div></div>
+  <div class="bzstages">${steps}</div>${body}
+  <div class="bzitems">${items}</div>${proj}`;
+}
+
+/* ---------- Brand builder (name, color, logo, unique selling point) ---------- */
+function bizBrandView(){
+  const w=BZ.w||"salon", W=BIZ_WORLDS[w], o=BZ.o;
+  const sec=(t,ar,inner)=>`<div class="card"><h3 style="margin:0">${t}</h3><span class="ar" dir="rtl" lang="ar">${ar}</span><div class="tiles">${inner}</div></div>`;
+  return `${navTabs("biz")}${bizBack("world", W.en)}
+  <div class="bzhero" style="--bc:${o.color||W.color}"><div class="bzsign"><span class="bzlogo">${o.logo||"❔"}</span><b>${esc(o.name||"Your name here")}</b></div>
+    <div>${bi("Make your brand!","اعملي البراند بتاعك!",true)}<p class="hint" style="margin:6px 0 0">A brand is your name, your color, your logo, and why people choose you. It looks the SAME everywhere.<span class="ar" dir="rtl" lang="ar">البراند هو الاسم واللون واللوجو، وليه الناس بتختارك. ولازم يبان نفس الشكل في كل حتة.</span></p>
+    ${o.usp?`<p style="margin:8px 0 0">⭐ ${esc(o.usp)}</p>`:""}</div></div>
+  ${sec("1. Name","الاسم", W.names.map(n=>`<button class="tile sm" data-bz="bname" data-v="${esc(n)}" aria-pressed="${o.name===n}">${esc(n)}</button>`).join("")+`<span class="bzown"><input type="text" id="bzName" maxlength="18" placeholder="Or type a name" autocomplete="off"><button class="btn sm alt" data-bz="bnameown">✓</button></span>`)}
+  ${sec("2. Color","اللون", BIZ_COLORS.map(([c,n])=>`<button class="tile sm" data-bz="bcolor" data-v="${c}" aria-pressed="${o.color===c}" aria-label="${n}"><span class="paint" style="background:${c}"></span></button>`).join(""))}
+  ${sec("3. Logo","اللوجو", W.logos.map(l=>`<button class="tile emo" data-bz="blogo" data-v="${l}" aria-pressed="${o.logo===l}">${l}</button>`).join(""))}
+  ${sec("4. Why do people choose you?","ليه الناس تختارك؟ (دي الميزة اللي تفرقك عن غيرك)", W.usp.map(([en,ar])=>`<button class="tile sm" data-bz="busp" data-v="${esc(en)}" aria-pressed="${o.usp===en}">${esc(en)}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`).join(""))}
+  <div class="row"><button class="btn" data-bz="bsave" ${o.name&&o.color&&o.logo&&o.usp?"":"disabled"}>✅ Save my brand</button></div>`;
+}
+
+/* ---------- Post Studio ---------- */
+const STUDIO_TEXT = {
+  salon:[["Fresh cuts today!","قصات جديدة النهارده!"],["New look, big smile!","لوك جديد وضحكة كبيرة!"],["Book your haircut now!","احجز قصتك دلوقتي!"],["Cool hair for cool kids!","شعر شيك لأطفال شيك!"]],
+  coffee:[["Fresh beans today!","بن طازة النهارده!"],["Coffee to your door!","القهوة لحد باب البيت!"],["Smell the fresh coffee!","شم ريحة القهوة الطازة!"],["A gift for coffee lovers!","هدية لحبايب القهوة!"]],
+};
+const STUDIO_BG = ["#fffaf0","#ffe6f2","#e6f0ff","#e9fff5","#fff6d6","#2a1d6e","#1b1b24"];
+const STUDIO_STICK = ["⭐","✨","💖","🎉","🔥","🌟","💯","🎁"];
+const FONTS = {round:["Round","'Baloo 2',sans-serif"], bold:["Bold","Impact,'Arial Black',sans-serif"], hand:["Hand","'Comic Sans MS','Chalkboard SE',cursive"]};
+function bizPhoto(kind, w){
+  const br=brandOf(w), c=br.color, L=br.logo, N=esc(br.name);
+  const S0=`<svg viewBox="0 0 160 160" aria-hidden="true" preserveAspectRatio="xMidYMid slice">`;
+  const sc = {
+    chair:`<rect width="160" height="160" fill="#e9f1ff"/><rect y="112" width="160" height="48" fill="#d6dce8"/>${[0,1,2,3,4,5,6,7].map(i=>`<rect x="${i*20}" y="${112+(i%2)*12}" width="20" height="12" fill="#b9c2d4"/>`).join("")}<rect x="18" y="18" width="56" height="62" rx="8" fill="#cbe9ff" stroke="#fff" stroke-width="5"/><rect x="124" y="20" width="14" height="70" rx="7" fill="#fff"/><rect x="124" y="30" width="14" height="10" fill="#e33"/><rect x="124" y="50" width="14" height="10" fill="#36f"/><rect x="124" y="70" width="14" height="10" fill="#e33"/><rect x="64" y="66" width="44" height="40" rx="10" fill="${c}"/><rect x="58" y="96" width="56" height="14" rx="6" fill="${c}"/><rect x="82" y="110" width="8" height="22" fill="#777"/><ellipse cx="86" cy="134" rx="24" ry="6" fill="#555"/>`,
+    tools:`<rect width="160" height="160" fill="${c}" opacity=".35"/><circle cx="80" cy="80" r="56" fill="#fff" opacity=".7"/><text x="62" y="98" font-size="56" text-anchor="middle">✂️</text><text x="104" y="98" font-size="50" text-anchor="middle">🪮</text>`,
+    happy:`<rect width="160" height="160" fill="#fdf3e6"/><circle cx="80" cy="84" r="58" fill="${c}" opacity=".3"/><text x="80" y="112" font-size="76" text-anchor="middle">💇‍♂️</text><text x="30" y="40" font-size="22">✨</text><text x="122" y="52" font-size="20">✨</text>`,
+    front:`<rect width="160" height="160" fill="#bfe8ff"/><rect y="124" width="160" height="36" fill="#9a9a9a"/><rect x="22" y="44" width="116" height="84" fill="${c}"/><rect x="22" y="34" width="116" height="18" fill="#fff"/><text x="80" y="48" font-size="12" font-weight="800" text-anchor="middle" fill="#222">${L} ${N}</text><rect x="34" y="66" width="44" height="40" fill="#e8f7ff"/><rect x="92" y="66" width="34" height="62" fill="#5b3b25"/><text x="56" y="96" font-size="26" text-anchor="middle">💈</text>`,
+    bag:`<rect width="160" height="160" fill="#f6ead9"/><path d="M48 40 L112 40 L120 140 L40 140 Z" fill="${c}"/><path d="M48 40 L60 28 L100 28 L112 40 Z" fill="${c}" opacity=".75"/><rect x="54" y="66" width="52" height="46" rx="6" fill="#fffaf0"/><text x="80" y="90" font-size="20" text-anchor="middle">${L}</text><text x="80" y="106" font-size="8.5" font-weight="800" text-anchor="middle" fill="#3a2a1a">${N}</text><text x="26" y="146" font-size="18">🫘</text><text x="124" y="146" font-size="18">🫘</text>`,
+    beans:`<rect width="160" height="160" fill="#5b3b25"/>${[[30,40],[70,30],[110,44],[40,80],[86,74],[126,90],[30,124],[74,120],[116,132]].map(([x,y])=>`<text x="${x}" y="${y}" font-size="26" text-anchor="middle">🫘</text>`).join("")}<circle cx="80" cy="84" r="30" fill="${c}" opacity=".85"/><text x="80" y="96" font-size="32" text-anchor="middle">${L}</text>`,
+    cup:`<rect width="160" height="160" fill="#fdf3e6"/><rect y="108" width="160" height="52" fill="#c98b5a"/><text x="80" y="118" font-size="78" text-anchor="middle">☕</text><text x="128" y="132" font-size="20">🫘</text><text x="24" y="132" font-size="20">🫘</text>`,
+    box:`<rect width="160" height="160" fill="#dff4ff"/><rect y="118" width="160" height="42" fill="#8fd17a"/><text x="54" y="122" font-size="58" text-anchor="middle">📦</text><text x="116" y="124" font-size="54" text-anchor="middle">🚚</text><rect x="30" y="20" width="100" height="22" rx="11" fill="${c}"/><text x="80" y="35" font-size="10" font-weight="800" text-anchor="middle" fill="#fff">${L} ${N}</text>`,
+  }[kind] || "";
+  return S0+sc+"</svg>";
+}
+function bizPost(o, small){
+  const br=brandOf(o.w), dark=["#2a1d6e","#1b1b24"].includes(o.bg);
+  const st=(o.st||[]).map((e,i)=>`<i class="bzst s${i}">${e}</i>`).join("");
+  return `<div class="bzpost ${o.size==="story"?"story":""} ${small?"small":""}" style="background:${o.bg||"#fffaf0"}">
+    <div class="bzph">${o.photo?bizPhoto(o.photo,o.w):`<div class="bzempty">📷</div>`}</div>
+    ${o.text?`<div class="bztx ${o.pos||"top"}" style="font-family:${FONTS[o.font||"round"][1]};color:${dark?"#fff":"#2a1a4a"}">${esc(o.text)}</div>`:""}
+    ${o.logo?`<div class="bzbadge ${o.logo}" style="background:${br.color}"><span>${br.logo}</span><b>${esc(br.name)}</b></div>`:""}${st}</div>`;
+}
+function studioNew(w){ return {w, size:"sq", bg:"#fffaf0", photo:"", text:"", pos:"top", font:"round", logo:"", st:[], tab:"photo"}; }
+function studioView(){
+  const B=bizS(), o=BZ.o, W=BIZ_WORLDS[o.w];
+  const worlds=Object.keys(BIZ_WORLDS).filter(k=>B.open[k]);
+  const saved=B.helper.saved.filter(x=>x.w===o.w).slice(-3).reverse();
+  const tabs=[["photo","📷 Photo","الصورة"],["words","🔤 Words","الكلام"],["look","🎨 Colors","الألوان"],["logo","🏷️ Logo","اللوجو"],["fun","✨ Stickers","ستيكرز"]];
+  let panel="";
+  if(o.tab==="photo") panel=`<div class="tiles">${W.photos.map(p=>`<button class="bzthumb" data-bz="sphoto" data-v="${p}" aria-pressed="${o.photo===p}">${bizPhoto(p,o.w)}</button>`).join("")}</div>
+    <div class="tiles"><button class="tile sm" data-bz="ssize" data-v="sq" aria-pressed="${o.size==="sq"}">⬛ Square post</button><button class="tile sm" data-bz="ssize" data-v="story" aria-pressed="${o.size==="story"}">📱 Tall story</button></div>`;
+  if(o.tab==="words") panel=`${saved.length?`<p style="margin:0">🤖 From your helper <span class="ar" dir="rtl" lang="ar" style="display:inline">من المساعد</span></p><div class="tiles">${saved.map(x=>`<button class="tile sm" data-bz="stext" data-v="${esc(x.en)}" aria-pressed="${o.text===x.en}">🤖 ${esc(x.en)}</button>`).join("")}</div>`:""}
+    <div class="tiles">${STUDIO_TEXT[o.w].map(([en,ar])=>`<button class="tile sm" data-bz="stext" data-v="${esc(en)}" aria-pressed="${o.text===en}">${esc(en)}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`).join("")}</div>
+    <div class="tiles"><button class="tile sm" data-bz="spos" data-v="top" aria-pressed="${o.pos==="top"}">⬆️ Words on top</button><button class="tile sm" data-bz="spos" data-v="bottom" aria-pressed="${o.pos==="bottom"}">⬇️ Words at the bottom</button></div>
+    <div class="tiles">${Object.entries(FONTS).map(([k,f])=>`<button class="tile sm" data-bz="sfont" data-v="${k}" aria-pressed="${o.font===k}" style="font-family:${f[1]}">${f[0]}</button>`).join("")}</div>`;
+  if(o.tab==="look") panel=`<div class="tiles">${STUDIO_BG.map(c=>`<button class="tile sm" data-bz="sbg" data-v="${c}" aria-pressed="${o.bg===c}"><span class="paint" style="background:${c}"></span></button>`).join("")}</div>`;
+  if(o.tab==="logo") panel=`<p class="hint" style="margin:0">Put your logo in a corner, so people know it's yours! <span class="ar" dir="rtl" lang="ar" style="display:inline">حطي اللوجو في ركن عشان الناس تعرف إنه بتاعك!</span></p><div class="tiles">${[["tl","↖️ Top left"],["tr","↗️ Top right"],["bl","↙️ Bottom left"],["br","↘️ Bottom right"],["","🚫 No logo"]].map(([k,l])=>`<button class="tile sm" data-bz="slogo" data-v="${k}" aria-pressed="${o.logo===k}">${l}</button>`).join("")}</div>`;
+  if(o.tab==="fun") panel=`<p class="hint" style="margin:0">Up to 3 stickers. Not too many! <span class="ar" dir="rtl" lang="ar" style="display:inline">لحد 3 بس، مش كتير!</span></p><div class="tiles">${STUDIO_STICK.map(e=>`<button class="tile emo" data-bz="sst" data-v="${e}" aria-pressed="${o.st.includes(e)}">${e}</button>`).join("")}</div>`;
+  return `${navTabs("biz")}${bizBack(BZ.from||"map", BZ.from==="world"?W.en:"Map")}
+  <div class="hello"><div><h1>Post Studio 🎨</h1><p>${bi("Make a post for "+brandOf(o.w).name+"!","اعملي بوست لـ"+brandOf(o.w).name+"!")}</p></div></div>
+  ${worlds.length>1?`<div class="tiles" style="margin-bottom:10px">${worlds.map(k=>`<button class="tile sm" data-bz="sworld" data-v="${k}" aria-pressed="${o.w===k}">${BIZ_WORLDS[k].e} ${esc(brandOf(k).name)}</button>`).join("")}</div>`:""}
+  <div class="studio"><div class="studiopv">${bizPost(o)}<div class="cheer" id="cheer" aria-live="polite"></div></div>
+    <div class="studioctl"><div class="themes">${tabs.map(([k,en,ar])=>`<button class="tab sm" data-bz="stab" data-v="${k}" aria-current="${o.tab===k}">${en}<small class="ar" dir="rtl" lang="ar" style="display:block;font-size:.8rem">${ar}</small></button>`).join("")}</div>
+      <div class="card" style="gap:10px">${panel}</div>
+      <div class="row"><button class="btn" data-bz="ssave">✅ Check and save</button><button class="btn alt sm" data-bz="snew">🆕 New post</button></div></div></div>`;
+}
+function studioCheck(o){
+  if(!o.photo) return ["Pick a photo first! 📷","اختاري صورة الأول!"];
+  if(!o.text) return ["Add some words, so people know what you sell. 🔤","ضيفي كلام عشان الناس تعرف بتبيعي إيه."];
+  if(!o.logo) return ["Put your logo on it! People must know it's from you. 🏷️","حطي اللوجو! لازم الناس تعرف إنه منك."];
+  if(o.logo && ((o.pos==="top"&&o.logo[0]==="t") || (o.pos==="bottom"&&o.logo[0]==="b"))) return ["The logo and the words are on the same side. Move one of them! ↕️","اللوجو والكلام في نفس الناحية. حركي واحد فيهم!"];
+  return null;
+}
+function galleryView(){
+  const B=bizS(), G=B.gallery.slice().reverse();
+  const big = BZ.big ? B.gallery.find(p=>p.id===BZ.big) : null;
+  return `${navTabs("biz")}${bizBack()}
+  <div class="hello"><div><h1>My Gallery 🖼️</h1><p>${bi(`${B.gallery.length} posts`,"كل البوستات اللي عملتيها")}</p></div></div>
+  ${big?`<div class="sheet"><div class="phone"><div class="who"><i>${brandOf(big.w).logo}</i>${esc(brandOf(big.w).name)}</div>${bizPost(big)}</div><button class="btn alt sm" data-bz="gclose">Close</button></div>`:""}
+  ${G.length?`<div class="bzgal">${G.map(p=>`<button class="bzgi" data-bz="gopen" data-v="${p.id}">${bizPost(p,true)}</button>`).join("")}</div>`
+   :`<div class="empty">No posts yet. Go to the Post Studio! <span class="ar" dir="rtl" lang="ar">لسه مفيش بوستات. روحي استوديو البوستات!</span><br><br><button class="btn" data-bz="studio">🎨 Post Studio</button></div>`}`;
+}
+
+/* ---------- The pretend smart helper: preset requests in, preset answers out. Nothing leaves the app. ---------- */
+const H_WHAT = [["headline","a headline","عنوان للبوست"],["idea","a post idea","فكرة بوست"],["color","a color idea","فكرة ألوان"],["reply","a reply to a customer","رد على عميل"]];
+const H_HOW = [["short","short","قصير"],["funny","funny","مضحك"],["kids","for kids","للأطفال"],["gift","for a gift","للهدايا"]];
+const H_BANK = {
+  "headline|salon|short":[["Fresh cuts today!","قصات جديدة النهارده!"],["Sharp hair, happy day!","شعر حلو، يوم حلو!"],["New look in 20 minutes!","لوك جديد في 20 دقيقة!"]],
+  "headline|salon|funny":[["Snip snip hooray!","قص قص هييه!"],["Your hair called. It misses us!","شعرك اتصل، وحشناه!"],["Hair so cool, it's a rule!","شعر شيك ده قانون!"]],
+  "headline|salon|kids":[["Little stars get cool cuts!","النجوم الصغيرة بتقص هنا!"],["Brave kids, cool hair!","أطفال شجعان وشعر شيك!"],["A haircut and a sticker!","قصة شعر وستيكر هدية!"]],
+  "headline|salon|gift":[["Give Baba a fresh cut!","هادي بابا بقصة جديدة!"],["A gift card for a new look!","كارت هدية للوك جديد!"],["The best gift: a great haircut!","أحلى هدية: قصة حلوة!"]],
+  "headline|coffee|short":[["Fresh beans today!","بن طازة النهارده!"],["Coffee to your door!","القهوة لحد بابك!"],["Roasted this week!","متحمص الأسبوع ده!"]],
+  "headline|coffee|funny":[["Beans so good, they dance!","بن حلو لدرجة إنه بيرقص!"],["Wake up! Coffee is here!","اصحى! القهوة وصلت!"],["Our beans say good morning!","البن بتاعنا بيقولك صباح الخير!"]],
+  "headline|coffee|kids":[["Mama's happy coffee!","قهوة ماما السعيدة!"],["Baba's morning hug in a bag!","حضن الصبح لبابا في عبوة!"],["Make Mama smile with coffee!","فرّحي ماما بالقهوة!"]],
+  "headline|coffee|gift":[["A gift for coffee lovers!","هدية لحبايب القهوة!"],["Pretty bags, yummy beans!","عبوات حلوة وبن جميل!"],["Send coffee to a friend!","ابعت قهوة لصاحبك!"]],
+  "idea|salon":[["Show a before-and-after haircut","وري قبل وبعد القصة"],["Show the barber smiling with the tools","وري الحلاق بيضحك ومعاه أدواته"],["Show a happy customer with a new cut","وري زبون مبسوط بقصته الجديدة"]],
+  "idea|coffee":[["Show the coffee bag next to a cup","وري عبوة البن جنب فنجان"],["Show beans pouring into the bag","وري البن وهو بينزل في العبوة"],["Show the box arriving at a home","وري الكرتونة وهي واصلة البيت"]],
+  "color|salon":[["Blue and white, clean and cool","أزرق وأبيض، نضيف وشيك"],["Black and gold, fancy","أسود ودهبي، فخم"],["Your brand color with white","لون البراند بتاعك مع الأبيض"]],
+  "color|coffee":[["Brown and cream, like coffee","بني وكريمي زي القهوة"],["Green and brown, fresh","أخضر وبني، طازة"],["Your brand color with brown","لون البراند بتاعك مع البني"]],
+  "reply|salon":[["Yes! We are open today from 12 to 10. Book your time 💈","أيوه! فاتحين النهارده من 12 لـ10. احجز معادك"],["Thank you! Your haircut is booked for 5 o'clock. See you! ✂️","شكرًا! حجزنا لك الساعة 5. نشوفك!"],["Sorry you waited. Next time you get a free hair wash! 💛","آسفين على الانتظار. المرة الجاية غسيل شعر هدية!"]],
+  "reply|coffee":[["Your order is on the way! It arrives tomorrow 📦","طلبك في الطريق! هيوصل بكرة"],["Thank you! We will send a new bag today. Sorry! 💛","شكرًا! هنبعتلك عبوة جديدة النهارده. آسفين!"],["Yes! We have big bags and small bags ☕","أيوه! عندنا عبوات كبيرة وصغيرة"]],
+};
+const H_OOPS = { salon:[["Fresh coffee beans!","بن قهوة طازة!"],"Oops! That one is about COFFEE, not your salon. Helpers can make mistakes. Good checking! 🔎","أوبس! ده عن القهوة مش الصالون. المساعد ممكن يغلط، شاطرة إنك راجعتي!"],
+  coffee:[["Cool haircuts today!","قصات شعر النهارده!"],"Oops! That one is about HAIRCUTS, not coffee. Helpers can make mistakes. Good checking! 🔎","أوبس! ده عن قص الشعر مش القهوة. المساعد ممكن يغلط، شاطرة إنك راجعتي!"],
+  reply:[["Wait.","استنى."],"Hmm, 'Wait.' is not kind to a customer. Helpers can make mistakes. Pick a kind one! 💛","كلمة استنى مش لطيفة مع العميل. المساعد ممكن يغلط، اختاري رد لطيف!"] };
+function hNew(){ return {what:"", about:"", how:"", msgs:[], opts:null, busy:false}; }
+function helperView(){
+  const B=bizS(), H=BZ.h, worlds=Object.keys(BIZ_WORLDS).filter(k=>B.open[k]);
+  if(!B.helper.lesson) return `${navTabs("biz")}${bizBack()}<div class="sheet"><div style="font-size:4rem">🤖</div>${bi("First, meet the smart helper!","الأول، اتعرفي على المساعد الذكي!",true)}<button class="btn" data-bz="hlesson">Start · ابدأي</button></div>`;
+  const chip=(slot,v,en,ar)=>`<button class="tile sm" data-bz="hslot" data-s="${slot}" data-v="${v}" aria-pressed="${H[slot]===v}">${en}<small class="ar" dir="rtl" lang="ar">${ar}</small></button>`;
+  const reqEn = `I want ${H.what?H_WHAT.find(x=>x[0]===H.what)[1]:"…"}${H.about?` for my ${H.about==="salon"?"salon":"coffee shop"}`:""}${H.how?`, ${H_HOW.find(x=>x[0]===H.how)[1]}`:""}.`;
+  return `${navTabs("biz")}${bizBack()}
+  <div class="novawrap"><div class="novahead"><span class="nface">🤖</span><div><b style="font-family:var(--display);font-size:1.4rem">Bolt, the smart helper</b><div class="hint">A computer helper inside your app. It is not a person. <span class="ar" dir="rtl" lang="ar" style="display:inline">مساعد كمبيوتر جوه التطبيق، مش إنسان.</span></div></div></div>
+  <div class="novabox" id="hBox">${H.msgs.length?"":`<div class="nb n"><span>Hi ${esc(S.child.name)}! Build your request with the buttons, then tap Send. The clearer you ask, the better I help!<small class="ar" dir="rtl" lang="ar">أهلاً! ركّبي طلبك بالزراير ودوسي ابعتي. كل ما تطلبي بوضوح، كل ما أساعدك أحسن!</small></span></div>`}
+    ${H.msgs.map(m=>`<div class="nb ${m.r}"><span>${esc(m.en)}${m.ar?`<small class="ar" dir="rtl" lang="ar">${esc(m.ar)}</small>`:""}</span></div>`).join("")}
+    ${H.busy?`<div class="nb n"><span>Bolt is thinking… ✨</span></div>`:""}
+    ${H.opts&&!H.busy?`<div class="hopts">${H.opts.map((o,i)=>`<button class="tile sm" data-bz="hpick" data-v="${i}">${esc(o.en)}<small class="ar" dir="rtl" lang="ar">${esc(o.ar)}</small></button>`).join("")}</div>`:""}</div>
+  ${H.opts?"":`<div class="card" style="gap:8px;margin-top:10px">
+    <b>1. What do you need? <span class="ar" dir="rtl" lang="ar" style="display:inline">عايزة إيه؟</span></b><div class="tiles">${H_WHAT.map(([v,en,ar])=>chip("what",v,en,ar)).join("")}</div>
+    <b>2. For which business? <span class="ar" dir="rtl" lang="ar" style="display:inline">لأنهي بيزنس؟</span></b><div class="tiles">${worlds.map(k=>chip("about",k,BIZ_WORLDS[k].e+" "+brandOf(k).name,BIZ_WORLDS[k].ar)).join("")}</div>
+    ${H.what==="headline"?`<b>3. How should it be? <span class="ar" dir="rtl" lang="ar" style="display:inline">يكون عامل إزاي؟</span></b><div class="tiles">${H_HOW.map(([v,en,ar])=>chip("how",v,en,ar)).join("")}</div>`:""}
+    <div class="hreq">💬 ${esc(reqEn)}</div>
+    <div class="row"><button class="btn" data-bz="hsend">Send ➜ ابعتي</button><button class="btn alt sm" data-bz="hclear">Clear</button></div></div>`}
+  <p class="hint" style="margin:6px 0 0;text-align:center">Bolt lives inside the app and never goes on the internet. <span class="ar" dir="rtl" lang="ar" style="display:inline">المساعد عايش جوه التطبيق ومش بيخرج على الإنترنت.</span></p></div>`;
+}
+function hSend(){
+  const H=BZ.h, B=bizS();
+  const reqEn = `I want ${H.what?H_WHAT.find(x=>x[0]===H.what)[1]:"something"}${H.about?` for my ${H.about==="salon"?"salon":"coffee shop"}`:""}${H.how?`, ${H_HOW.find(x=>x[0]===H.how)[1]}`:""}.`;
+  H.msgs.push({r:"u", en:reqEn}); B.helper.asks++;
+  const ask=(en,ar)=>{ H.msgs.push({r:"n",en,ar}); B.helper.log.push({t:Date.now(), q:reqEn, a:"(asked to be clearer)"}); sfx.no(); save(); render(); };
+  if(!H.what) return ask("What do you need? A headline, an idea, a color or a reply? Tell me and I can help!","محتاجة إيه؟ عنوان ولا فكرة ولا ألوان ولا رد؟ قوليلي وأنا أساعدك!");
+  if(!H.about) return ask("For which business? Your salon or your coffee beans?","لأنهي بيزنس؟ الصالون ولا البن؟");
+  if(H.what==="headline" && !H.how) return ask("How should it be? Short, funny, for kids or for a gift?","يكون عامل إزاي؟ قصير ولا مضحك ولا للأطفال ولا هدية؟");
+  const key = H.what==="headline" ? `headline|${H.about}|${H.how}` : `${H.what}|${H.about}`;
+  const good=(H_BANK[key]||[]).map(x=>({en:x[0],ar:x[1],ok:true}));
+  const oops = H.what==="reply" ? H_OOPS.reply : H_OOPS[H.about];
+  const opts = good.slice(0,2); if(Math.random()<.6) opts.push({en:oops[0][0], ar:oops[0][1], ok:false, why:oops[1], whyAr:oops[2]}); else opts.push(good[2]);
+  H.opts=shuffle(opts); H.busy=true; H.req=reqEn; render();
+  setTimeout(()=>{ if(BZ.h!==H) return; H.busy=false; H.msgs.push({r:"n", en:"Here are 3 ideas! Pick the best one. Check it first!", ar:"دي 3 أفكار! اختاري أحسن واحدة. وراجعيها الأول!"}); sfx.ok(); render(); const b=$("#hBox"); if(b) b.scrollTop=b.scrollHeight; }, 1300);
+  render();
+}
+function hPick(i){
+  const H=BZ.h, B=bizS(), o=H.opts[i];
+  B.helper.log.push({t:Date.now(), q:H.req, a:o.en, ok:o.ok?1:0}); if(B.helper.log.length>80) B.helper.log=B.helper.log.slice(-80);
+  if(!o.ok){ H.msgs.push({r:"n", en:o.why, ar:o.whyAr}); H.opts=H.opts.filter(x=>x!==o); sfx.no(); save(); render(); return; }
+  B.helper.good++; H.msgs.push({r:"u", en:"I choose: "+o.en});
+  let extra="";
+  if(H.what==="headline"){ B.helper.saved.push({w:H.about, en:o.en, ar:o.ar}); if(B.helper.saved.length>20) B.helper.saved.shift(); extra=" I saved it in your Post Studio! 🎨"; }
+  H.msgs.push({r:"n", en:"Great choice!"+extra, ar:"اختيار حلو!"+(extra?" حفظته في استوديو البوستات!":"")});
+  const ns = B.helper.good<=3 ? addStars(1) : []; if(ns.length) toast("New sticker! "+ns.join(" "));
+  Object.assign(H,{what:"",about:"",how:"",opts:null}); sfx.win(); save(); render(); const b=$("#hBox"); if(b) b.scrollTop=b.scrollHeight;
+}
+const HLESSON = [
+  {e:"🤖", en:"A smart helper is a computer program. It is NOT a person. It reads what you write and gives you ideas.", ar:"المساعد الذكي برنامج كمبيوتر، مش إنسان. بيقرا اللي بتكتبيه ويديكي أفكار."},
+  {e:"👨‍💻", en:"Baba works with a smart helper called Claude. He tells it what he needs, and it helps him make posts and ads.", ar:"بابا بيشتغل مع مساعد ذكي اسمه Claude. بيقوله محتاج إيه، وهو بيساعده يعمل بوستات وإعلانات."},
+  {e:"🎯", en:"The secret: ask CLEARLY. Say WHAT you want, for WHICH business, and HOW it should be.", ar:"السر: اطلبي بوضوح. قولي عايزة إيه، ولأنهي بيزنس، ويكون عامل إزاي."},
+  {q:true, en:"Which request is clearer?", ar:"أنهي طلب أوضح؟", c:[["I want a short headline for my salon.","عايزة عنوان قصير للصالون بتاعي.",1],["Give me something.","اديني أي حاجة.",0,"That's not clear. The helper doesn't know what you need!","مش واضح. المساعد مش هيعرف إنتي محتاجة إيه!"]]},
+  {e:"🔎", en:"Smart helpers can make MISTAKES. So we always CHECK the answer before we use it.", ar:"المساعد ممكن يغلط. عشان كده بنراجع الإجابة دايمًا قبل ما نستخدمها."},
+  {q:true, en:"You asked for a salon headline. The helper wrote: 'Fresh coffee beans!' Is it right?", ar:"طلبتي عنوان للصالون. المساعد كتب: بن قهوة طازة! صح؟", c:[["No! It is about coffee, not my salon.","لأ! ده عن القهوة مش الصالون.",1],["Yes, it's perfect.","أيوه، تمام.",0,"Look again! Coffee is not haircuts.","بصي تاني! القهوة مش قص شعر."]]},
+  {e:"🏠", en:"Our helper Bolt lives INSIDE your app. It never goes on the internet. Let's try it!", ar:"المساعد بولت عايش جوه التطبيق. عمره ما بيخرج على الإنترنت. يلا نجربه!"},
+];
+function hLessonView(){
+  const L=BZ.l, st=HLESSON[L.i];
+  const dots=HLESSON.map((_,k)=>`<i class="${k<L.i?"ok":""} ${k===L.i?"now":""}"></i>`).join("");
+  return `<div class="game shopgame"><div class="gtop"><button class="back" style="margin:0" data-bz="map">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">Meet the smart helper 🤖</b><div class="dots">${dots}</div></div>
+  <div class="sheet">${st.q?`${bi(st.en,st.ar,true)}<div class="tiles" style="justify-content:center">${L.ch.map((c,i)=>`<button class="tile sm" data-bz="hlq" data-v="${i}" ${L.wrong.includes(i)?"disabled":""}>${esc(c[0])}<small class="ar" dir="rtl" lang="ar">${esc(c[1])}</small></button>`).join("")}</div>`
+    :`<div style="font-size:4.2rem">${st.e}</div>${bi(st.en,st.ar,true)}<div class="row"><button class="say" data-bz="hlsay" aria-label="Read it aloud">🔈</button><button class="btn" data-bz="hlnext">${L.i===HLESSON.length-1?"Let's try! يلا":"Next ➜ التالي"}</button></div>`}
+  <div class="cheer" id="cheer" aria-live="polite"></div></div></div>`;
+}
+function hlSetup(){ const st=HLESSON[BZ.l.i]; BZ.l.wrong=[]; BZ.l.ch=st.q?shuffle(st.c):null; }
+
+/* ---------- Walkable business map ---------- */
+function startBizMap(){
+  const c=$("#bizmap"); if(!c||!c.getContext) return;
+  const B=bizS(), dpr=Math.min(2,window.devicePixelRatio||1), r0=c.getBoundingClientRect();
+  const w=Math.max(280,r0.width), h=Math.max(240,r0.height); c.width=w*dpr; c.height=h*dpr; const ctx=c.getContext("2d"); ctx.scale(dpr,dpr);
+  const tall=h>w*1.1;
+  const P = tall ? {salon:[.28,.17], coffee:[.74,.17], studio:[.26,.5], gallery:[.74,.5], helper:[.5,.78]} : {salon:[.17,.3], coffee:[.5,.22], studio:[.83,.3], gallery:[.27,.78], helper:[.73,.78]};
+  const sz=Math.max(46,Math.min(w,h)*.12);
+  const sb=brandOf("salon"), cb=brandOf("coffee");
+  const bl=[{k:"salon",e:sb.logo,c:sb.color,lab:sb.name,ar:"الصالون"},{k:"coffee",e:cb.logo,c:cb.color,lab:cb.name,ar:"متجر البن",lock:!B.open.coffee},{k:"studio",e:"🎨",c:"#ff7ac6",lab:"Post Studio",ar:"استوديو البوستات"},{k:"gallery",e:"🖼️",c:"#3fd9a8",lab:"Gallery",ar:"المعرض"},{k:"helper",e:"🤖",c:"#6cc8ff",lab:"Smart Helper",ar:"المساعد"}]
+    .map(b=>Object.assign(b,{x:P[b.k][0]*w, y:P[b.k][1]*h}));
+  const stars=Array.from({length:10},()=>({x:rnd(24,w-24),y:rnd(24,h-24),got:false,p:Math.random()*6}));
+  const me={x:w*.5,y:h*.5,tx:w*.5,ty:h*.5,face:1};
+  const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(avatarSVG(S.avatar).replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" '));
+  const st=BZMAP={stop:false}; let drag=false,last=performance.now(),got=0,bump=0;
+  const setT=e=>{ const r=c.getBoundingClientRect(); me.tx=Math.max(20,Math.min(w-20,e.clientX-r.left)); me.ty=Math.max(30,Math.min(h-10,e.clientY-r.top-18)); };
+  c.addEventListener("pointerdown",e=>{drag=true;setT(e);try{c.setPointerCapture(e.pointerId);}catch(_){}});
+  c.addEventListener("pointermove",e=>{if(drag)setT(e);}); c.addEventListener("pointerup",()=>drag=false); c.addEventListener("pointercancel",()=>drag=false);
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function frame(t){
+    if(st.stop) return;
+    const dt=Math.min(.05,(t-last)/1000); last=t; const sp=230; let moving=false;
+    const dx=me.tx-me.x, dy=me.ty-me.y, d=Math.hypot(dx,dy); if(d>4){ const s=Math.min(d,sp*dt); me.x+=dx/d*s; me.y+=dy/d*s; moving=true; if(Math.abs(dx)>2) me.face=dx<0?-1:1; }
+    for(const s of stars) if(!s.got&&Math.hypot(me.x-s.x,me.y-s.y)<30){ s.got=true; got++; tone([880,1320],.08); }
+    for(const b of bl) if(Math.abs(me.x-b.x)<sz*.6 && me.y>b.y-sz*.4 && me.y<b.y+sz*.9){
+      if(b.lock){ if(t-bump>1500){ bump=t; sfx.no(); toast("🔒 Ask Baba to open it · اطلبي من بابا يفتحه"); } me.tx=me.x=b.x; me.ty=me.y=b.y+sz*1.05; continue; }
+      st.stop=true; sfx.ok(); setTimeout(()=>bizOpen(b.k),300); return; }
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle="rgba(255,255,255,.12)"; ctx.lineWidth=18; ctx.lineCap="round"; ctx.beginPath(); bl.forEach((b,i)=>{ if(i===0) ctx.moveTo(b.x,b.y+sz*.75); else ctx.lineTo(b.x,b.y+sz*.75); }); ctx.stroke();
+    for(const s of stars){ if(s.got) continue; ctx.globalAlpha=still?1:.6+.4*Math.sin(t/300+s.p); ctx.font="20px sans-serif"; ctx.textAlign="center"; ctx.fillText("⭐",s.x,s.y+7); }
+    ctx.globalAlpha=1;
+    for(const b of bl){ const x=b.x-sz/2, y=b.y-sz/2;
+      ctx.fillStyle=b.lock?"#5a5470":b.c; ctx.fillRect(x,y+sz*.25,sz,sz*.75);
+      ctx.fillStyle="#fffaf0"; ctx.beginPath(); ctx.moveTo(x-8,y+sz*.28); ctx.lineTo(b.x,y-sz*.12); ctx.lineTo(x+sz+8,y+sz*.28); ctx.closePath(); ctx.fill();
+      ctx.fillStyle="#3b2a1a"; ctx.fillRect(b.x-sz*.13,y+sz*.6,sz*.26,sz*.4);
+      ctx.font=Math.round(sz*.42)+"px sans-serif"; ctx.textAlign="center"; ctx.fillText(b.lock?"🔒":b.e,b.x,y+sz*.5);
+      ctx.fillStyle="#f6f3ff"; ctx.font="800 "+(w<500?11:14)+"px Nunito, sans-serif"; const lab=b.lab.length>18?b.lab.slice(0,17)+"…":b.lab; ctx.fillText(lab,b.x,y+sz+16);
+      ctx.fillStyle="#bdb6ee"; ctx.font="700 "+(w<500?10:12)+"px sans-serif"; ctx.fillText(b.ar,b.x,y+sz+31); }
+    const bob=moving&&!still?Math.sin(t/90)*3:0;
+    ctx.fillStyle="rgba(0,0,0,.28)"; ctx.beginPath(); ctx.ellipse(me.x,me.y+2,22,7,0,0,6.3); ctx.fill();
+    ctx.save(); ctx.translate(me.x,me.y-34+bob); ctx.scale(me.face,1); if(img.complete&&img.naturalWidth) ctx.drawImage(img,-26,-6,52,65); ctx.restore();
+    ctx.fillStyle="#f6f3ff"; ctx.font="800 16px Nunito, sans-serif"; ctx.textAlign="left"; ctx.fillText("✨ "+got+" / "+stars.length,14,24);
+    if(got===stars.length && !st.bonus){ st.bonus=true; const ns=addStars(1); save(); toast("+1 star! ⭐"+(ns.length?" "+ns.join(" "):"")); renderDock(); }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function stopBizMap(){ if(BZMAP){ BZMAP.stop=true; BZMAP=null; } }
+function bizOpen(k){
+  if(timeUp()) return go({name:"rest"});
+  if(k==="salon"||k==="coffee"){ BZ={screen:"world", w:k}; }
+  else if(k==="studio"){ BZ={screen:"studio", from:"map", o:studioNew("salon")}; }
+  else if(k==="gallery") BZ={screen:"gallery"};
+  else if(k==="helper"){ BZ={screen:"helper", h:hNew()}; }
+  go({name:"biz"});
+}
+
+/* ---------- Clicks ---------- */
+function bizClick(d, t){
+  const B=bizS(), v=d.v;
+  switch(d.bz){
+    case "map": BZ={screen:"map"}; sfx.tap(); return go({name:"biz"}), true;
+    case "world": sfx.tap(); BZ={screen:"world", w:v||BZ.w||"salon"}; go({name:"biz"}); return true;
+    case "lockedw": sfx.no(); toast("🔒 Ask Baba to open it · اطلبي من بابا يفتحه"); return true;
+    case "soon": sfx.tap(); toast("Coming soon ✨ · قريب"); return true;
+    case "track": sfx.tap(); BZ={screen:"track", w:BZ.w||"salon", t:v}; go({name:"biz"}); return true;
+    case "brand": { sfx.tap(); const w=v||BZ.w||"salon", b=B[w]; BZ={screen:"brand", w, o:{name:b.name,color:b.color,logo:b.logo,usp:b.usp}}; go({name:"biz"}); return true; }
+    case "bname": case "bcolor": case "blogo": case "busp": BZ.o[{bname:"name",bcolor:"color",blogo:"logo",busp:"usp"}[d.bz]]=v; sfx.ok(); render(); return true;
+    case "bnameown": { const n=($("#bzName")||{}).value; const x=String(n||"").replace(/[<>]/g,"").trim().slice(0,18); if(x){ BZ.o.name=x; sfx.ok(); render(); } return true; }
+    case "bsave": { const w=BZ.w, first=!B[w].name; Object.assign(B[w], BZ.o); const ns=first?addStars(2):[]; save(); sfx.win();
+      toast(`${BZ.o.name} has a brand! ⭐`+(ns.length?" "+ns.join(" "):"")); speak(`${BZ.o.name} has a brand!`,true); BZ={screen:"world", w}; go({name:"biz"}); return true; }
+    case "studio": { if(timeUp()) return go({name:"rest"}), true; sfx.tap(); const w=(v&&B.open[v])?v:(BZ.w&&B.open[BZ.w]?BZ.w:"salon"); BZ={screen:"studio", from:BZ.screen==="world"?"world":"map", w:BZ.w||w, o:studioNew(w)}; go({name:"biz"}); return true; }
+    case "stab": BZ.o.tab=v; sfx.tap(); render(); return true;
+    case "sworld": BZ.o=studioNew(v); BZ.w=v; sfx.tap(); render(); return true;
+    case "sphoto": BZ.o.photo=v; sfx.ok(); render(); return true;
+    case "ssize": BZ.o.size=v; sfx.tap(); render(); return true;
+    case "stext": BZ.o.text=v; sfx.ok(); render(); return true;
+    case "spos": BZ.o.pos=v; sfx.tap(); render(); return true;
+    case "sfont": BZ.o.font=v; sfx.tap(); render(); return true;
+    case "sbg": BZ.o.bg=v; sfx.tap(); render(); return true;
+    case "slogo": BZ.o.logo=v; sfx.ok(); render(); return true;
+    case "sst": { const a=BZ.o.st; if(a.includes(v)) BZ.o.st=a.filter(x=>x!==v); else if(a.length<3) a.push(v); else { sfx.no(); cheer("3 stickers is enough! 🙂 كفاية 3",true); return true; } sfx.tap(); render(); return true; }
+    case "snew": BZ.o=studioNew(BZ.o.w); sfx.tap(); render(); return true;
+    case "ssave": { const p=studioCheck(BZ.o);
+      if(p){ sfx.no(); cheer(p[0]+"  "+p[1],true); speak(p[0],true); return true; }
+      const o=Object.assign({}, BZ.o, {id:uid(), t:Date.now()}); delete o.tab; B.gallery.push(o); if(B.gallery.length>60) B.gallery.shift();
+      if(B.daily.date!==today()) B.daily={date:today(),posts:0}; B.daily.posts++;
+      const ns = B.daily.posts<=3 ? addStars(1) : []; save(); sfx.win();
+      BZ={screen:"gallery", big:o.id}; go({name:"biz"}); toast("Saved in your gallery! ⭐ اتحفظ في المعرض"+(ns.length?" "+ns.join(" "):""));
+      speak(`Super duper, ${S.child.name}! Your post is in your gallery!`,true); return true; }
+    case "gopen": BZ.big=v; sfx.tap(); render(); window.scrollTo(0,0); return true;
+    case "gclose": BZ.big=null; render(); return true;
+    case "helper": if(timeUp()) return go({name:"rest"}), true; sfx.tap(); BZ={screen:"helper", h:hNew()}; go({name:"biz"}); return true;
+    case "hslot": BZ.h[d.s]=BZ.h[d.s]===v?"":v; if(d.s==="what"&&v!=="headline") BZ.h.how=""; sfx.tap(); render(); return true;
+    case "hclear": Object.assign(BZ.h,{what:"",about:"",how:""}); render(); return true;
+    case "hsend": if(BZ.h.busy) return true; hSend(); return true;
+    case "hpick": hPick(+v); return true;
+    case "hlesson": if(timeUp()) return go({name:"rest"}), true; sfx.tap(); BZ={screen:"hlesson", l:{i:0}}; hlSetup(); go({name:"biz"}); return true;
+    case "hlsay": { const st=HLESSON[BZ.l.i]; speak(st.en,true); return true; }
+    case "hlnext": if(BZ.l.i<HLESSON.length-1){ BZ.l.i++; hlSetup(); sfx.tap(); render(); } else { const first=!B.helper.lesson; B.helper.lesson=true; const ns=first?addStars(2):[]; save(); sfx.win(); BZ={screen:"helper", h:hNew()}; go({name:"biz"}); toast("Lesson done! ⭐"+(ns.length?" "+ns.join(" "):"")); } return true;
+    case "hlq": { const c=BZ.l.ch[+v];
+      if(c[2]){ sfx.ok(); cheer("Yes! ⭐ صح!"); setTimeout(()=>{ if(BZ.screen!=="hlesson") return; if(BZ.l.i<HLESSON.length-1){ BZ.l.i++; hlSetup(); render(); } },1300); }
+      else { BZ.l.wrong.push(+v); sfx.no(); render(); cheer(c[3]+"  "+c[4],true); } return true; }
+    case "send": { const T=TRACKS.find(x=>x.id===v); if(!trackState(T).ready) return true; B.pending[v]=Date.now(); save(); sfx.win(); toast("Sent to Baba! ✉️ اتبعت لبابا"); render(); return true; }
+    /* grown-ups area */
+    case "papprove": { delete B.pending[v]; B.stage[v]=Math.min(5,stageOf(v)+1); B.approved.push({t:Date.now(), track:v, stage:B.stage[v]}); const T=TRACKS.find(x=>x.id===v);
+      addStars(5); S.cheers.push(`Baba said YES to your ${T.en} project! Stage ${B.stage[v]} is open 🪐 (+5 stars)`); save(); sfx.win(); render(); return true; }
+    case "pnotyet": delete B.pending[v]; S.cheers.push(`Baba says: try your ${TRACKS.find(x=>x.id===v).en} project one more time 💪`); save(); render(); return true;
+    case "pstage": { const [id,dir]=v.split(":"); B.stage[id]=Math.max(1,Math.min(5,stageOf(id)+(+dir))); save(); render(); return true; }
+    case "popen": B.open[v]=!B.open[v]; save(); render(); return true;
+    case "pdel": B.gallery=B.gallery.filter(p=>p.id!==v); save(); render(); return true;
+  }
+  return false;
+}
+
+/* ---------- Grown-ups card ---------- */
+function bizParentCard(){
+  const B=bizS(), name=esc(S.child.name);
+  const pend=Object.keys(B.pending);
+  return `<div class="card"><h2>💼 My Business (${name}'s salon and coffee beans)</h2>
+    <p class="hint" dir="rtl" lang="ar">هنا بتوافق على مشاريع المراحل، وتفتح أو تقفل المراحل والعوالم بنفسك. كل حاجة جوه التطبيق، ومفيش Claude حقيقي ولا إنترنت.</p>
+    ${pend.length?pend.map(id=>{ const T=TRACKS.find(x=>x.id===id); return `<div class="bzpend"><b>✉️ ${T.e} ${T.en}: ${esc(T.proj[0])}</b><span dir="rtl" lang="ar">${esc(T.proj[1])}</span>
+      <div class="row" style="justify-content:flex-start"><button class="btn sm" data-bz="papprove" data-v="${id}">✅ Approve · موافق</button><button class="btn sm alt" data-bz="pnotyet" data-v="${id}">Not yet · لسه</button></div></div>`; }).join("")
+      :`<p class="hint" style="margin:0">No projects waiting. · مفيش مشاريع مستنية.</p>`}
+    <details><summary style="cursor:pointer;font-weight:800">Tracks and stages · المسارات والمراحل</summary><div style="display:grid;gap:6px;margin-top:8px">
+      ${TRACKS.map(T=>{ const s=trackState(T), sg=stageOf(T.id); return `<div class="bzprow"><span>${T.e} ${T.en}${T.soon?" (soon)":` · ${s.done}/${s.total}`}</span><span class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn sm alt" data-bz="pstage" data-v="${T.id}:-1" aria-label="Lower stage">−</button><b>${STAGES[sg-1][0]} ${sg}</b><button class="btn sm alt" data-bz="pstage" data-v="${T.id}:1" aria-label="Raise stage">+</button></span></div>`; }).join("")}</div></details>
+    <button class="btn sm ${B.open.coffee?"alt":""}" style="align-self:flex-start" data-bz="popen" data-v="coffee">${B.open.coffee?"☕ Coffee-beans shop is OPEN · tap to close (متجر البن مفتوح)":"☕ Open the coffee-beans shop now · افتح متجر البن"}</button>
+    <details><summary style="cursor:pointer;font-weight:800">Gallery (${B.gallery.length}) · المعرض</summary><div class="bzgal" style="margin-top:8px">${B.gallery.slice().reverse().map(p=>`<div style="position:relative">${bizPost(p,true)}<button class="btn sm danger" style="position:absolute;top:4px;right:4px;padding:4px 10px" data-bz="pdel" data-v="${p.id}" aria-label="Delete post">✕</button></div>`).join("")||`<span class="hint">No posts yet.</span>`}</div></details>
+    <details><summary style="cursor:pointer;font-weight:800">Smart helper log (${B.helper.log.length}) · سجل المساعد</summary><div style="max-height:220px;overflow:auto;margin-top:8px;display:grid;gap:6px">${B.helper.log.slice(-30).reverse().map(x=>`<div style="padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.07)"><small>${new Date(x.t).toLocaleString()}</small><div>${esc(x.q)} → <b>${esc(x.a)}</b>${x.ok===0?" ❌":x.ok?" ✅":""}</div></div>`).join("")||`<span class="hint">Nothing yet.</span>`}</div></details>
+  </div>`;
+}
+
 /* ---------------- Events ---------------- */
 document.addEventListener("click", e=>{
   const t = e.target.closest("button"); if(!t) return;
   const d = t.dataset;
   if(d.nv && novaClick(d)) return;
+  if(d.bz && bizClick(d,t)) return;
+  if(d.go){ FROM_BIZ = false; if(d.go==="biz") BZ={screen:"map"}; }
+  if((d.sg||d.ls) && view.name==="biz") FROM_BIZ = true;
   if((d.sg||d.sx||d.drag||d.ls) && shopClick(t,d)) return;
   if(d.go){ sfx.tap(); return go({name:d.go, subject:view.subject||"math"}); }
   if(d.subject){ sfx.tap(); const s=SUBJECTS.find(x=>x.id===d.subject); if(s.soon) speak(`${s.name} is coming soon!`); return go({name:"home", subject:d.subject}); }
