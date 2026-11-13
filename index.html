@@ -282,7 +282,7 @@ th{color:var(--muted);font-weight:800;font-size:.8rem;letter-spacing:.06em;text-
   .planets{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
   .planet{min-height:150px;padding:14px}.planet .orb{width:64px;height:64px}.planet .ring{top:40px;width:100px}
   .missions{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .game{max-width:1180px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"top top" "tbar tbar" "q q" "vis ch" "cheer cheer";gap:12px 28px}
+  .game{max-width:1180px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"top top" "q q" "vis ch" "cheer cheer";gap:12px 28px}
   .gtop{grid-area:top}.game > .q{grid-area:q}.game .visual{grid-area:vis;min-height:0}
   .game .choices{grid-area:ch;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center}
   .game .cheer{grid-area:cheer;min-height:34px}
@@ -1643,7 +1643,6 @@ function vGame(){
   return `<div class="game themed" ${thStyle(T)}>${thDeco(T)}
     <div class="gtop"><button class="back" style="margin:0" data-act="quit">← Stop</button><b style="font-family:var(--display);font-size:1.3rem">${d.name} · Level ${game.level}</b><span class="lvl">${T.icon} ${T.tag}</span>
       <div class="dots">${Array.from({length:game.rounds||ROUND},(_,i)=>`<i class="${i<game.results.length?(game.results[i]?"ok":"miss"):""} ${i===game.i?"now":""}"></i>`).join("")}</div></div>
-    <div class="tbar ${S.timer===false?"off":""}" id="tbar" aria-hidden="true"><i></i></div>
     <div class="q"><button class="say ${q.listen?"listen":""}" data-act="say" aria-label="Read it aloud">🔈</button><h2 dir="auto" ${q.lang==="ar"?'lang="ar" class="lar"':""}>${esc(q.text)}${q.sub?`<small class="lsub" dir="auto">${esc(q.sub)}</small>`:""}</h2></div>
     <div class="visual">${q.visual}</div>
     ${body}
@@ -1669,7 +1668,8 @@ function qSeconds(q){
 }
 function shopSeconds(){ const t=SG.cur.t, base={pick:25,multi:35,tap:30,seq:40}[t]||30; return Math.max(15,Math.round(base*Math.max(.5,1-.04*((SG.lvl||1)-1))*(S.tspeed||1))); }
 function syncTimer(){
-  if(S.timer===false){ timerStop(); return; }
+  /* v19: no answer time limit, Mariam takes all the time she needs */
+  timerStop(); return;
   if(view.name==="game" && game && game.q && !game.locked){ timerArm(game.q, qSeconds(game.q), mathTimeout); return; }
   if(view.name==="shop" && typeof SG!=="undefined" && SG && SG.cur && SG.step!=="done" && SG.g>=4 && ["pick","multi","tap","seq"].includes(SG.cur.t)){ timerArm(SG.cur, shopSeconds(), shopTimeout); return; }
   timerStop();
@@ -2020,8 +2020,6 @@ function vParent(){
       <button class="btn sm alt" data-act="savename" style="align-self:flex-start">Save name</button>
       <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="soundIn" ${S.sound?"checked":""} style="width:24px;height:24px"> Sounds on (voice speaks only when she wins, or when she taps 🔈)</label>
       <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="autoVoiceIn" ${S.autoVoice?"checked":""} style="width:24px;height:24px"> Also read every question aloud automatically</label>
-      <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="timerIn" ${S.timer!==false?"checked":""} style="width:24px;height:24px"> Time ruler on questions</label>
-      <label>Ruler speed<select id="tspeedIn"><option value="1.5" ${S.tspeed===1.5?"selected":""}>Relaxed (more time)</option><option value="1" ${(S.tspeed||1)===1?"selected":""}>Normal</option><option value="0.75" ${S.tspeed===.75?"selected":""}>Fast (less time)</option></select></label>
       <button class="btn sm alt" data-act="changepin" style="align-self:flex-start">Change PIN</button>
       <p class="cloud">${cloudState==="saved"?"Progress is saved to your Claude account.":cloudState==="error"?"Couldn't reach cloud saving; progress is kept on this tablet.":"Progress is kept on this tablet."}</p>
     </div>
@@ -2598,7 +2596,7 @@ function budgetClick(kind,v){
 }
 function vQuiz(){
   const r=SG.cur, t=r.t; if(t==="budget") return vBudget();
-  const head=guideBox(r.g,r.a)+(["pick","multi","tap","seq"].includes(t)&&S.timer!==false?`<div class="tbar" id="tbar" aria-hidden="true"><i></i></div>`:"")+(r.vis?`<div class="qvis">${r.vis}</div>`:"");
+  const head=guideBox(r.g,r.a)+(r.vis?`<div class="qvis">${r.vis}</div>`:"");
   if(t==="multi") return `${head}<div class="reasons">${r.ch.map((c,i)=>`<button class="reason" data-sx="qsel" data-v="${i}" aria-pressed="${r.sel.includes(i)}">${esc(c.en)}${c.ar?`<small dir="rtl" lang="ar">${esc(c.ar)}</small>`:""}</button>`).join("")}</div><div class="row"><button class="btn" data-sx="qcheck">Check ✔</button></div>`;
   if(t==="chips"){ const txt=r.sel.map(i=>r.chips[i].w).join(" ")||"…";
     return `${head}<div class="shopplay"><div class="qpost">${postHTML({text:txt,logo:S.shop.logo,pos:"top"})}</div><div><div class="tiles">${r.chips.map((c,i)=>`<button class="tile" data-sx="chip" data-v="${i}" aria-pressed="${r.sel.includes(i)}">${esc(c.w)}</button>`).join("")}</div>
