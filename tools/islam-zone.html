@@ -99,7 +99,8 @@ const AR = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
 const AUDIO_BASE = "https://cdn.islamic.network/quran/audio/64/";
 const RECITERS = {"ar.husary":"الشيخ محمود خليل الحصري (مرتّل)", "ar.alafasy":"الشيخ مشاري راشد العفاسي (مرتّل)"};
 const INT = [0,1,2,4,7,14,30];
-const AUDIO_CACHE = "isl-audio-v1";
+const AUDIO_CACHE = "isl-audio-v2";
+try{ caches.delete("isl-audio-v1"); }catch(e){}
 
 /* ---------- sources (shown FIRST on every religious screen) ---------- */
 const SRC = {
@@ -149,23 +150,32 @@ function giveStar(key){
 const AUD = new Audio(); AUD.preload = "auto";
 let PLAYTOK = 0; const OBJ = {};
 const aurl = g => AUDIO_BASE + I().rec + "/" + g + ".mp3";
+/* Get one ayah file into the device cache. Prefer a readable (CORS) copy; if the CDN refuses CORS, keep an opaque copy that the service worker serves. Never accept a non-audio answer. */
+async function cacheOne(url){
+  const c = await caches.open(AUDIO_CACHE); let r = await c.match(url);
+  if(r){ if(r.type==="opaque") return r; const ct=r.headers.get("content-type")||""; if(/audio|mpeg|octet/i.test(ct)) return r; await c.delete(url); r=null; }
+  if(!navigator.onLine) return null;
+  try{ const f = await fetch(url, {mode:"cors", cache:"no-store"}); const ct=f.headers.get("content-type")||"";
+    if(f.ok && /audio|mpeg|octet/i.test(ct)){ await c.put(url, f.clone()); return f; } }catch(e){}
+  try{ const f = await fetch(url, {mode:"no-cors"}); if(f.type==="opaque"){ await c.put(url, f.clone()); return f; } }catch(e){}
+  return null;
+}
 async function srcFor(url){
   if(OBJ[url]) return OBJ[url];
   try{
     if("caches" in window){
-      const c = await caches.open(AUDIO_CACHE); let r = await c.match(url);
-      if(!r){ const f = await fetch(url, {mode:"cors"}); if(f.ok){ await c.put(url, f.clone()); r=f; } }
-      if(r){ const b = await r.blob(); OBJ[url]=URL.createObjectURL(b); return OBJ[url]; }
+      const r = await cacheOne(url);
+      if(r && r.type!=="opaque"){ const b = await r.clone().blob(); if(b.size>500){ OBJ[url]=URL.createObjectURL(b); return OBJ[url]; } }
     }
   }catch(e){}
-  return url;
+  return url; /* plays straight from the internet, or from the cached copy via the service worker */
 }
 function stopAud(){ PLAYTOK++; try{ AUD.pause(); }catch(e){} try{ speechSynthesis.cancel(); }catch(e){} }
 function playG(g){
   return new Promise(async res=>{
     if(!S.sound){ toast("🔇 الصوت مقفول. دوسي على السماعة فوق عشان تسمعي"); return res(false); }
     const tok = PLAYTOK; const s = await srcFor(aurl(g)); if(tok!==PLAYTOK) return res(false);
-    AUD.onended = ()=>res(true); AUD.onerror = ()=>{ toast("الصوت محتاج نت أول مرة 📶 اطلبي من بابا يحمّل الصوت"); res(false); };
+    AUD.onended = ()=>res(true); AUD.onerror = ()=>{ toast(navigator.onLine?"الصوت بيتحمّل… دوسي تاني كمان شوية 🌙":"مفيش نت دلوقتي، والآية دي لسه ما اتحمّلتش 📶"); res(false); };
     AUD.src = s; AUD.play().catch(()=>res(false));
   });
 }
@@ -542,14 +552,28 @@ document.addEventListener("click", async e=>{
   if(a==="p-del"){ await RDB.del("dua:"+d.k); toast("اتمسح التسجيل"); return rr(); }
 }, true);
 
+let DLRUN=null;
+function allGs(){ const gs=[1]; ISD.sur.forEach(s=>s.a.forEach((_,i)=>gs.push(s.g+i))); return gs; }
+function dlRun(){
+  if(DLRUN) return DLRUN;
+  const x=I(), rec=x.rec, gs=allGs(); const st={ok:0, bad:0, n:gs.length, rec};
+  DLRUN = (async()=>{
+    for(const g of gs){ if(I().rec!==rec) break; let r=null; try{ r=await cacheOne(AUDIO_BASE+rec+"/"+g+".mp3"); }catch(e){} r?st.ok++:st.bad++; DLST=st; const b=document.getElementById("isl-dlbtn"); if(b) b.textContent=`⬇️ ${AR(st.ok+st.bad)} / ${AR(st.n)}`; }
+    if(!st.bad && st.ok===st.n){ I().dl[rec]=today(); save(); }
+    DLRUN=null; const b=document.getElementById("isl-dlbtn");
+    if(b){ b.disabled=false; b.textContent = st.bad ? `⚠️ اتحمّل ${AR(st.ok)} وفاضل ${AR(st.bad)}، دوس تاني` : `✅ الصوت كله متحمّل (${AR(st.ok)} آية)`; }
+    return st;
+  })();
+  return DLRUN;
+}
+let DLST=null;
 async function downloadAll(btn){
   if(!navigator.onLine){ toast("محتاجين نت للتحميل 📶"); return; }
-  const gs=[1]; ISD.sur.forEach(s=>s.a.forEach((_,i)=>gs.push(s.g+i)));
-  let ok=0, bad=0; btn.disabled=true;
-  for(const g of gs){ const u=aurl(g); try{ const c=await caches.open(AUDIO_CACHE); let r=await c.match(u); if(!r){ const f=await fetch(u,{mode:"cors"}); if(f.ok){ await c.put(u,f); ok++; } else bad++; } else ok++; }catch(e){ bad++; } btn.textContent=`⬇️ ${ok+bad} / ${gs.length}`; }
-  I().dl[I().rec]= bad? "" : today(); save();
-  btn.disabled=false; btn.textContent = bad ? `⚠️ اتحمّل ${ok} وفشل ${bad}. جرّب تاني` : `✅ الصوت كله متحمّل (${ok})`;
+  btn.disabled=true; return dlRun();
 }
+/* auto: download everything quietly the first time the app is open with internet */
+function autoDl(){ try{ const x=I(); if(!x.on || x.dl[x.rec] || !navigator.onLine || !("caches" in window)) return; dlRun(); }catch(e){} }
+setTimeout(autoDl, 4000); window.addEventListener("online", ()=>setTimeout(autoDl, 2000));
 async function recToggle(k, btn){
   if(RECORDER && RECORDER.state==="recording"){ RECORDER.stop(); return; }
   try{
@@ -571,7 +595,7 @@ function parentHTML(){
     <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" data-islp="on" ${x.on?"checked":""} style="width:24px;height:24px"> إظهار تبويب "ديني" لـ${esc(S.child.name||"")}</label>
     <label>القارئ<select data-islp="rec">${Object.entries(RECITERS).map(([k,v])=>`<option value="${k}" ${x.rec===k?"selected":""}>${v}</option>`).join("")}</select></label>
     <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" data-islp="ttsT" ${x.ttsT?"checked":""} style="width:24px;height:24px"> قراءة "المعنى" بصوت الجهاز الآلي (القرآن نفسه دايمًا بصوت الشيخ)</label>
-    <div class="row" style="gap:10px;align-items:center;flex-wrap:wrap"><button class="ib" data-isl="p-dl">⬇️ حمّل صوت كل السور للاستخدام بدون نت</button><span class="hint">${x.dl[x.rec]?"آخر تحميل: "+esc(x.dl[x.rec]):"لسه ما اتحمّلش (كل آية بتتحفظ أول ما تتسمع)"}</span></div>
+    <div class="row" style="gap:10px;align-items:center;flex-wrap:wrap"><button class="ib" id="isl-dlbtn" data-isl="p-dl" ${DLRUN?"disabled":""}>${DLRUN&&DLST?`⬇️ ${AR(DLST.ok+DLST.bad)} / ${AR(DLST.n)}`:x.dl[x.rec]?"✅ الصوت كله متحمّل، حمّل تاني":"⬇️ حمّل صوت كل السور للاستخدام بدون نت"}</button><span class="hint">${x.dl[x.rec]?"اتحمّل يوم "+esc(x.dl[x.rec])+" ويشتغل من غير نت":"بيتحمّل لوحده أول ما التابلت يكون على نت"}</span></div>
     <p class="hint">أيام فيها نشاط آخر 7 أيام: <b>${act}</b> · دروس خلصت: <b>${Object.keys(x.l).length} من ${LESSONS.length}</b> · أذكار النهارده: <b>${Object.keys(x.dz[today()]||{}).length} من ${DUAS.length}</b></p>
     <div style="overflow-x:auto"><table><tr><td>السورة</td><td>المرحلة</td><td>المراجعة الجاية</td><td>نشاط</td><td>سمّعت لبابا/ماما</td><td></td></tr>${rows}</table></div>
     <h3 style="margin:8px 0 0">🎙️ سجّل الأذكار بصوتك</h3><p class="hint">التسجيل بيفضل على التابلت ده بس، ومريم تسمعه من زرار "صوت بابا/ماما".</p>
@@ -580,7 +604,7 @@ function parentHTML(){
 }
 document.addEventListener("change", e=>{
   const k=e.target.dataset && e.target.dataset.islp; if(!k) return; const x=I();
-  if(k==="on"||k==="ttsT") x[k]=e.target.checked; else if(k==="rec"){ x.rec=e.target.value; for(const u in OBJ){ try{URL.revokeObjectURL(OBJ[u]);}catch(_){} delete OBJ[u]; } }
+  if(k==="on"||k==="ttsT") x[k]=e.target.checked; else if(k==="rec"){ x.rec=e.target.value; for(const u in OBJ){ try{URL.revokeObjectURL(OBJ[u]);}catch(_){} delete OBJ[u]; } setTimeout(autoDl,500); }
   save(); render();
 });
 function reportLines(){
