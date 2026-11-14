@@ -1,0 +1,311 @@
+<!--v20cls-start-->
+<style id="v20cls">
+/* v20: Classroom with Baba (private kid <-> Baba messages). Everything scoped under .cls */
+.cls{position:relative;z-index:1}
+.cls .chero{display:flex;gap:16px;align-items:center;padding:18px 20px;border-radius:26px;background:linear-gradient(135deg,#3b2a9a,#1d1457);border:1px solid var(--line);margin-bottom:16px}
+.cls .chero .who{font-size:3.4rem;line-height:1;animation:clsFloat 5s ease-in-out infinite}
+.cls .chero h1{margin:0;font-size:1.9rem}
+.cls .ar{display:block;font-family:"Baloo Bhaijaan 2","Noto Naskh Arabic",system-ui,sans-serif;color:var(--muted);font-size:1.05rem}
+.cls .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 18px}
+.cls .bigact{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;border-radius:28px;border:2px solid var(--line);background:linear-gradient(165deg,var(--panel2),var(--panel));color:var(--ink);font-family:var(--display);font-size:1.35rem;font-weight:800;padding:14px;text-align:center}
+.cls .bigact .e{font-size:3.4rem;line-height:1}
+.cls .bigact.n{border-color:var(--star)} .cls .bigact.v{border-color:var(--pink)} .cls .bigact.w{border-color:var(--mint)}
+.cls .bigact:active,.cls .nud:active,.cls .chip:active{transform:scale(.96)}
+.cls .panel{background:linear-gradient(165deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:26px;padding:18px;margin:0 0 18px;display:flex;flex-direction:column;gap:12px}
+.cls .panel h2{margin:0;font-size:1.5rem}
+.cls .nuds{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.cls .nud{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 10px;border-radius:22px;background:var(--space2);border:2px solid var(--line);color:var(--ink);font-family:var(--display);font-size:1.15rem;font-weight:700;min-height:120px;justify-content:center}
+.cls .nud .e{font-size:2.8rem;line-height:1}
+.cls .chips{display:flex;flex-wrap:wrap;gap:10px}
+.cls .chip{padding:12px 16px;border-radius:999px;background:var(--space2);border:2px solid var(--line);color:var(--ink);font-family:var(--display);font-size:1.15rem;font-weight:700;min-height:52px}
+.cls .chip[aria-pressed=true]{background:var(--star);color:#2a1d00;border-color:var(--star)}
+.cls .ask{border-color:var(--star);box-shadow:0 0 0 3px rgba(255,212,71,.25)}
+.cls .rec{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.cls .recbtn{width:150px;height:150px;border-radius:50%;border:6px solid #fff3;background:radial-gradient(circle at 35% 30%,#ff9ad6,#e0338f);font-size:3.6rem;color:#fff;display:flex;align-items:center;justify-content:center}
+.cls .recbtn.on{animation:clsPulse 1s ease-in-out infinite;background:radial-gradient(circle at 35% 30%,#ffb199,#e04a33)}
+.cls .bar{width:100%;max-width:420px;height:14px;border-radius:999px;background:var(--space2);overflow:hidden}
+.cls .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--star),var(--pink));width:0%}
+.cls .msgs{display:flex;flex-direction:column;gap:12px}
+.cls .b{max-width:82%;padding:14px 16px;border-radius:24px;display:flex;flex-direction:column;gap:6px;word-break:break-word}
+.cls .b.baba{align-self:flex-start;background:linear-gradient(160deg,#2f6fd6,#24439c);border-bottom-left-radius:8px}
+.cls .b.kid{align-self:flex-end;background:linear-gradient(160deg,#c2378a,#7a2a9a);border-bottom-right-radius:8px}
+.cls .b .lab{font-size:.95rem;font-weight:800;opacity:.9}
+.cls .b .tx{font-size:1.35rem;font-weight:700;line-height:1.45}
+.cls .b .big{font-size:2.6rem;line-height:1}
+.cls .b .tm{font-size:.8rem;opacity:.7}
+.cls .b.new{box-shadow:0 0 0 3px var(--star)}
+.cls .play{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;background:#fff;color:#22124f;font-family:var(--display);font-size:1.2rem;font-weight:800;border:0;min-height:56px;align-self:flex-start}
+.cls .read{align-self:flex-start;padding:6px 12px;border-radius:999px;background:#fff3;color:#fff;border:0;font-size:1rem;min-height:40px}
+.cls .row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cls textarea{font:inherit;font-size:1.3rem;padding:14px;border-radius:18px;border:2px solid var(--line);background:var(--space2);color:var(--ink);width:100%;box-sizing:border-box;resize:none}
+.cls .note{background:rgba(255,212,71,.1);border:1.5px dashed var(--star);border-radius:18px;padding:12px 14px;font-size:1.05rem;line-height:1.6}
+#clsPing{position:fixed;right:16px;bottom:18px;z-index:60;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:999px;background:linear-gradient(135deg,#ffd447,#ff7ac6);color:#2b0a30;font-family:var(--display);font-size:1.25rem;font-weight:800;border:3px solid #fff;box-shadow:0 10px 30px #0008;animation:clsBounce 1.6s ease-in-out infinite}
+#clsPing[hidden]{display:none}
+.clsp .lnk{word-break:break-all;background:var(--space2);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:.9rem}
+.clsp #clsQR{background:#fff;padding:10px;border-radius:12px;width:max-content}
+@keyframes clsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes clsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes clsBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media (max-width:640px){.cls .acts{grid-template-columns:1fr}.cls .bigact{min-height:96px;flex-direction:row;gap:14px}.cls .b{max-width:94%}}
+@media (prefers-reduced-motion:reduce){.cls *,#clsPing{animation:none!important}}
+</style>
+<button id="clsPing" hidden type="button">💌 <span>Message from Baba!</span></button>
+<script>
+(function(){
+"use strict";
+const API="https://qdrflcbkagssdifapcxj.supabase.co/rest/v1/rpc/", KEYP="sb_publishable_TZzLdkbRsmqK5eFC3hFRGw_0MP0oKO4", CK="sa-cls-v1";
+const e2 = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const CLS = (()=>{ let c={}; try{ c=JSON.parse(localStorage.getItem(CK)||"{}")||{}; }catch(_){} return Object.assign({on:true, kid:"", baba:"", lastId:0, msgs:[], seenUpto:0, answered:0}, c); })();
+function csave(){ CLS.msgs = CLS.msgs.slice(-80); try{ localStorage.setItem(CK, JSON.stringify(CLS)); }catch(_){} }
+async function rpc(fn, args){
+  const r = await fetch(API+fn, {method:"POST", headers:{"Content-Type":"application/json", apikey:KEYP, Authorization:"Bearer "+KEYP}, body:JSON.stringify(args)});
+  const t = await r.text(); let j=null; try{ j=JSON.parse(t); }catch(_){}
+  if(!r.ok) throw new Error((j&&j.message)||("HTTP "+r.status));
+  return j;
+}
+/* ---------- data ---------- */
+const NUDGES=[["👋","Come see me!","تعالى شوفني!"],["❤️","I love you, Baba!","بحبك يا بابا!"],["🤗","I miss you!","وحشتني!"],["⭐","I finished my homework!","خلصت الواجب!"],["🏠","Look at my house!","تعالى شوف بيتي!"],["🙋","I need help","محتاجة مساعدة"]];
+const ANSWERS=[["📚","I studied","ذاكرت"],["➕","Math","رياضة"],["🔤","English","إنجليزي"],["🅰️","Arabic","عربي"],["🌙","Quran","قرآن"],["🎨","I drew","رسمت"],["🏠","I built my house","بنيت بيتي"],["⚽","I played","لعبت"],["🍽️","I ate","أكلت"],["😴","I rested","ارتحت"],["😊","Happy","مبسوطة"],["😢","Sad","زعلانة"]];
+let CS={mode:"", sel:{}, rec:null, err:"", sending:false};
+const paired = () => !!CLS.kid;
+const enabled = () => CLS.on !== false;
+const babaMsgs = () => CLS.msgs.filter(m=>m.sender==="baba");
+const unread = () => babaMsgs().filter(m=>m.id>CLS.seenUpto).length;
+function pendingAsk(){ const a=[...CLS.msgs].reverse().find(m=>m.kind==="ask"); if(!a) return null; if(CLS.msgs.some(m=>m.sender==="kid"&&m.id>a.id&&(m.kind==="answer"||m.kind==="voice"))||CLS.answered>=a.id) return null; return a; }
+function parts(m){ return String(m.body||"").split("|"); }
+function fmtTime(t){ try{ const d=new Date(t); const now=new Date(); const s=d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}); return d.toDateString()===now.toDateString()? s : d.toLocaleDateString([], {weekday:"short"})+" "+s; }catch(_){ return ""; } }
+/* ---------- sync ---------- */
+let polling=false, pollT=null, failN=0;
+async function poll(){
+  if(!paired() || !enabled() || polling) return schedule();
+  if(document.hidden || navigator.onLine===false) return schedule();
+  polling=true;
+  try{
+    const r = await rpc("kc_list", {p_token:CLS.kid, p_after:CLS.lastId});
+    failN=0;
+    const fresh = (r.msgs||[]).filter(m=>!CLS.msgs.some(x=>x.id===m.id));
+    if(fresh.length){
+      const before = unread();
+      CLS.msgs.push(...fresh); CLS.msgs.sort((a,b)=>a.id-b.id);
+      CLS.lastId = Math.max(CLS.lastId, ...fresh.map(m=>m.id)); csave();
+      const got = unread() > before;
+      if(view && view.name==="babachat"){ markSeen(); if(!CS.rec && !CS.mode) render(); else if(got) toast("💌 Message from Baba!"); }
+      else if(got) announce();
+    }
+  }catch(err){
+    failN++;
+    if(/not paired/.test(err.message)){ CLS.kid=""; CLS.baba=""; csave(); }
+  }finally{ polling=false; schedule(); }
+}
+function schedule(){ clearTimeout(pollT); const inRoom = view && view.name==="babachat"; pollT=setTimeout(poll, inRoom?6000:Math.min(20000*(1+failN),120000)); }
+function markSeen(){
+  const top = Math.max(0, ...babaMsgs().map(m=>m.id));
+  if(top>CLS.seenUpto){ CLS.seenUpto=top; csave(); rpc("kc_seen",{p_token:CLS.kid, p_upto:top}).catch(()=>{}); }
+  updatePing();
+}
+function chime(){ if(!S.sound) return; try{ const A=new (window.AudioContext||window.webkitAudioContext)(); [784,988,1319].forEach((f,i)=>{ const o=A.createOscillator(), g=A.createGain(); o.frequency.value=f; o.type="sine"; g.gain.setValueAtTime(.0001,A.currentTime+i*.14); g.gain.exponentialRampToValueAtTime(.25,A.currentTime+i*.14+.02); g.gain.exponentialRampToValueAtTime(.0001,A.currentTime+i*.14+.4); o.connect(g).connect(A.destination); o.start(A.currentTime+i*.14); o.stop(A.currentTime+i*.14+.45); }); setTimeout(()=>A.close(),1500); }catch(_){} }
+function announce(){ updatePing(); chime(); try{ if(navigator.vibrate) navigator.vibrate([120,80,120]); }catch(_){} }
+function updatePing(){
+  const n = enabled()&&paired() ? unread() : 0, p=document.getElementById("clsPing");
+  if(p){ const busy = view && ["babachat","game","pin","parent"].includes(view.name); p.hidden = !n || busy; }
+  document.querySelectorAll('.tab[data-go="babachat"]').forEach(t=>{ let b=t.querySelector(".badge"); if(n){ if(!b){ b=document.createElement("span"); b.className="badge"; t.appendChild(b);} b.textContent=n; } else if(b) b.remove(); });
+}
+document.getElementById("clsPing").addEventListener("click", ()=>{ go({name:"babachat"}); });
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden){ clearTimeout(pollT); poll(); } });
+window.addEventListener("online", ()=>{ clearTimeout(pollT); poll(); });
+
+/* ---------- voice recording ---------- */
+function pickMime(){
+  if(!window.MediaRecorder || !MediaRecorder.isTypeSupported) return "";
+  for(const m of ["audio/mp4;codecs=mp4a.40.2","audio/mp4","audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus"]) if(MediaRecorder.isTypeSupported(m)) return m;
+  return "";
+}
+const MAXS=60;
+async function recStart(){
+  CS.err="";
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder){ CS.err="nosupport"; return render(); }
+  let st;
+  try{ st = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:true, autoGainControl:true}}); }
+  catch(err){ CS.err = (err && (err.name==="NotAllowedError"||err.name==="SecurityError")) ? "denied" : (err && err.name==="NotFoundError") ? "nomic" : "other"; return render(); }
+  const mime=pickMime(); let mr;
+  try{ mr = new MediaRecorder(st, Object.assign({audioBitsPerSecond:32000}, mime?{mimeType:mime}:{})); }catch(_){ try{ mr=new MediaRecorder(st); }catch(err2){ st.getTracks().forEach(x=>x.stop()); CS.err="nosupport"; return render(); } }
+  const ch=[]; const R = CS.rec = {mr, st, ch, t0:Date.now(), blob:null, url:"", state:"on", timer:null};
+  mr.ondataavailable = ev => { if(ev.data && ev.data.size) ch.push(ev.data); };
+  mr.onstop = () => { st.getTracks().forEach(x=>x.stop()); clearInterval(R.timer); R.dur=Math.max(1,Math.round((Date.now()-R.t0)/1000)); R.blob=new Blob(ch,{type:(mr.mimeType||mime||"audio/webm").split(";")[0]}); R.url=URL.createObjectURL(R.blob); R.state= R.blob.size>200 ? "done" : "empty"; render(); };
+  try{ mr.start(500); }catch(_){ mr.start(); }
+  R.timer = setInterval(()=>{ const s=(Date.now()-R.t0)/1000; const i=document.querySelector("#clsBar i"), l=document.getElementById("clsSec"); if(i) i.style.width=Math.min(100,s/MAXS*100)+"%"; if(l) l.textContent=Math.floor(s)+"s"; if(s>=MAXS) recStop(); }, 250);
+  render();
+}
+function recStop(){ const R=CS.rec; if(R && R.mr && R.mr.state!=="inactive"){ try{ R.mr.stop(); }catch(_){} } }
+function recDrop(){ const R=CS.rec; if(!R) return; clearInterval(R.timer); try{ if(R.mr.state!=="inactive") R.mr.stop(); }catch(_){} try{ R.st.getTracks().forEach(x=>x.stop()); }catch(_){} if(R.url) URL.revokeObjectURL(R.url); CS.rec=null; }
+const b64 = blob => new Promise((ok,no)=>{ const fr=new FileReader(); fr.onload=()=>ok(String(fr.result).split(",")[1]||""); fr.onerror=no; fr.readAsDataURL(blob); });
+
+/* ---------- sending ---------- */
+async function send(kind, body, extra){
+  if(CS.sending) return; CS.sending=true;
+  try{
+    const r = await rpc("kc_send", Object.assign({p_token:CLS.kid, p_kind:kind, p_body:body||""}, extra||{}));
+    CLS.msgs.push({id:r.id, sender:"kid", kind, body:body||"", has_audio:kind==="voice", dur:extra&&extra.p_dur, created_at:new Date().toISOString(), mine:1});
+    CLS.lastId=Math.max(CLS.lastId,r.id); csave();
+    try{ sfx.win && sfx.win(); }catch(_){}
+    toast("🚀 Sent to Baba! · وصلت لبابا");
+    return true;
+  }catch(err){ toast(navigator.onLine===false ? "📶 No internet. Try again later · مفيش نت" : "😕 Could not send. Try again · جربي تاني"); return false; }
+  finally{ CS.sending=false; }
+}
+/* ---------- playing ---------- */
+const AUD={}; let NOW=null;
+async function playMsg(id, btn){
+  try{
+    if(NOW){ NOW.pause(); NOW=null; }
+    let url=AUD[id];
+    if(!url){
+      if(btn) btn.textContent="⏳ ...";
+      const r = await rpc("kc_audio", {p_token:CLS.kid, p_id:+id});
+      if(!r || !r.audio){ toast("This voice message is old and was cleared · الرسالة دي اتمسحت"); if(btn) btn.textContent="🔇"; return; }
+      const bin=atob(r.audio), u8=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);
+      url = AUD[id] = URL.createObjectURL(new Blob([u8], {type:(r.mime||"audio/webm").split(";")[0]}));
+    }
+    const a = NOW = new Audio(url);
+    if(btn) btn.textContent="🔊 Playing…";
+    a.onended = () => { if(btn) btn.textContent="▶️ Play again"; };
+    await a.play();
+  }catch(err){ toast("😕 Can't play it now. Check the internet · اتأكدي من النت"); if(btn) btn.textContent="▶️ Play"; }
+}
+function readAloud(txt){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(txt); const ar=/[؀-ۿ]/.test(txt); u.lang= ar?"ar-EG":"en-GB"; const vs=speechSynthesis.getVoices(); const v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith(ar?"ar":"en")); if(v) u.voice=v; u.rate=.9; speechSynthesis.speak(u); }catch(_){}
+}
+/* ---------- views ---------- */
+function bubble(m){
+  const mine = m.sender==="kid", p=parts(m), isNew = !mine && m.id>CLS.seenUpto;
+  let inner="";
+  if(m.kind==="nudge") inner = `<span class="big">${e2(p[0])}</span><span class="tx" dir="auto">${e2(p[1]||"")}</span>${p[2]?`<span class="ar" dir="rtl" style="color:#fff">${e2(p[2])}</span>`:""}`;
+  else if(m.kind==="ask") inner = `<span class="tx" dir="auto">❓ ${e2(p[0])}</span>${p[1]?`<span class="ar" style="color:#fffc" dir="auto">${e2(p[1])}</span>`:""}`;
+  else if(m.kind==="voice") inner = m.has_audio===false&&!AUD[m.id] ? `<span class="tx">🎙️ (old voice, cleared)</span>` : `<button class="play" data-cls="play" data-id="${m.id}">▶️ Play${m.dur?` · ${m.dur}s`:""}</button>`;
+  else inner = `<span class="tx" dir="auto">${e2(m.body)}</span>`;
+  const lab = mine ? "Me · أنا" : (m.kind==="voice"||m.kind==="text") ? "💌 Message from Baba · رسالة من بابا" : "👨 Baba · بابا";
+  const canRead = !mine && (m.kind==="text"||m.kind==="ask"||m.kind==="nudge");
+  return `<div class="b ${mine?"kid":"baba"} ${isNew?"new":""}"><span class="lab">${lab}</span>${inner}${canRead?`<button class="read" data-cls="read" data-id="${m.id}">🔊 Read it to me</button>`:""}<span class="tm">${fmtTime(m.created_at)}${mine&&m.seen?" · 👀 Baba saw it":""}</span></div>`;
+}
+function errNote(){
+  if(!CS.err) return "";
+  const t = { denied:["The microphone is blocked. Ask Baba or Mama to allow it: tap the 🔒 lock next to the web address, then Microphone, then Allow. You can still send a nudge or write!","المايك مقفول. خلّي بابا أو ماما يفتحوه: اضغط على القفل 🔒 جنب العنوان، بعدين Microphone وبعدين Allow. وتقدري تبعتي نكزة أو تكتبي."],
+    nomic:["No microphone found on this tablet. Send a nudge or write instead.","مفيش مايك على التابلت ده. ابعتي نكزة أو اكتبي."],
+    nosupport:["This tablet can't record here. Send a nudge or write instead.","التابلت ده مش بيسجل هنا. ابعتي نكزة أو اكتبي."],
+    other:["The microphone didn't start. Try again.","المايك ما اشتغلش. جربي تاني."] }[CS.err];
+  return `<div class="note">🎙️ ${e2(t[0])}<span class="ar" dir="rtl">${e2(t[1])}</span></div>`;
+}
+function recPanel(){
+  const R=CS.rec;
+  if(!R) return `<div class="panel rec"><h2>🎙️ Talk to Baba · كلّمي بابا</h2><button class="recbtn" data-cls="recgo" aria-label="Start recording">🎙️</button><p style="margin:0;font-size:1.2rem">Tap the big button and talk!<span class="ar">اضغطي على الزرار الكبير واتكلمي</span></p>${errNote()}<button class="btn sm alt" data-cls="close">✖ Close</button></div>`;
+  if(R.state==="on") return `<div class="panel rec"><h2>🔴 Talking… <span id="clsSec">0s</span></h2><button class="recbtn on" data-cls="recstop" aria-label="Stop recording">⏹️</button><div class="bar" id="clsBar"><i></i></div><p style="margin:0;font-size:1.2rem">Tap to stop · اضغطي عشان توقفي</p></div>`;
+  if(R.state==="empty") return `<div class="panel rec"><h2>🤔 I didn't hear anything</h2><button class="btn" data-cls="recagain">🎙️ Try again · تاني</button><button class="btn sm alt" data-cls="close">✖ Close</button></div>`;
+  return `<div class="panel rec"><h2>👂 Listen, then send · اسمعي وبعدين ابعتي</h2><audio controls src="${R.url}" style="width:100%;max-width:420px"></audio>
+    <div class="row2" style="justify-content:center"><button class="btn" data-cls="recsend" ${CS.sending?"disabled":""}>🚀 Send to Baba · ابعتي</button><button class="btn alt" data-cls="recagain">🔁 Again · تاني</button><button class="btn sm alt" data-cls="close">🗑️</button></div></div>`;
+}
+function askPanel(a){
+  const p=parts(a), n=Object.keys(CS.sel).filter(k=>CS.sel[k]).length;
+  return `<div class="panel ask"><h2>❓ Baba asks · بابا بيسأل</h2><p class="tx" style="margin:0;font-size:1.5rem;font-weight:800" dir="auto">${e2(p[0])}${p[1]?`<span class="ar" dir="auto">${e2(p[1])}</span>`:""}</p>
+    <button class="read" style="background:var(--space2)" data-cls="read" data-id="${a.id}">🔊 Read it to me</button>
+    <p style="margin:0">Tap what you did, then send! · اختاري اللي عملتيه</p>
+    <div class="chips">${ANSWERS.map((x,i)=>`<button class="chip" data-cls="pick" data-i="${i}" aria-pressed="${!!CS.sel[i]}">${x[0]} ${e2(x[1])} · ${e2(x[2])}</button>`).join("")}</div>
+    <div class="row2"><button class="btn" data-cls="answer" ${n?"":"disabled"}>🚀 Send my answer · ابعتي</button><button class="btn alt" data-cls="mode" data-m="voice">🎙️ Tell Baba by voice</button></div></div>`;
+}
+function vBabaChat(){
+  const head = `${navTabs("babachat")}<div class="cls"><div class="chero"><span class="who">👨‍👧</span><div><h1>Classroom with Baba</h1><span class="ar" dir="rtl">كلاس روم بابا 💌</span></div></div>`;
+  if(!paired()) return head + `<div class="panel"><h2>🔗 Not connected yet · لسه مش متوصل</h2><p style="margin:0;font-size:1.2rem">Ask Baba or Mama to open the grown-ups area 🔒 and tap <b>Connect Baba's phone</b>.<span class="ar" dir="rtl">خلّي بابا أو ماما يفتحوا منطقة الكبار 🔒 ويدوسوا "وصّل موبايل بابا".</span></p></div></div>`;
+  const a = pendingAsk();
+  let mid="";
+  if(CS.mode==="nudge") mid = `<div class="panel"><h2>👋 Send Baba a nudge · ابعتي نكزة</h2><div class="nuds">${NUDGES.map((x,i)=>`<button class="nud" data-cls="nudge" data-i="${i}"><span class="e">${x[0]}</span>${e2(x[1])}<span class="ar" dir="rtl">${e2(x[2])}</span></button>`).join("")}</div><button class="btn sm alt" data-cls="close">✖ Close</button></div>`;
+  else if(CS.mode==="voice") mid = recPanel();
+  else if(CS.mode==="write") mid = `<div class="panel"><h2>✏️ Write to Baba · اكتبي لبابا</h2><textarea id="clsTxt" rows="3" maxlength="300" dir="auto" placeholder="I love you Baba ❤️"></textarea><div class="row2"><button class="btn" data-cls="sendtxt" ${CS.sending?"disabled":""}>🚀 Send · ابعتي</button><button class="btn sm alt" data-cls="close">✖ Close</button></div></div>`;
+  else if(a) mid = askPanel(a);
+  const acts = `<div class="acts"><button class="bigact n" data-cls="mode" data-m="nudge"><span class="e">👋</span>Nudge Baba<span class="ar">نكزة لبابا</span></button><button class="bigact v" data-cls="mode" data-m="voice"><span class="e">🎙️</span>Talk to Baba<span class="ar">كلّمي بابا</span></button><button class="bigact w" data-cls="mode" data-m="write"><span class="e">✏️</span>Write<span class="ar">اكتبي</span></button></div>`;
+  const list = CLS.msgs.slice(-30);
+  const msgs = list.length ? `<div class="msgs">${list.map(bubble).join("")}</div>` : `<div class="panel" style="text-align:center"><span style="font-size:3rem">💫</span><p style="margin:0;font-size:1.2rem">No messages yet. Send Baba your first nudge!<span class="ar">لسه مفيش رسايل. ابعتي لبابا أول نكزة!</span></p></div>`;
+  return head + acts + mid + `<h2 style="font-size:1.5rem;margin:6px 0 12px">💬 Messages · الرسايل</h2>` + msgs + `</div>`;
+}
+/* ---------- parent area ---------- */
+function babaLink(){ if(!CLS.baba) return ""; const base = location.href.split("#")[0].split("?")[0].replace(/index\.html$/,"").replace(/[^/]*$/,""); return base + "baba.html#k=" + CLS.baba; }
+function parentHTML(){
+  const link=babaLink(), on=enabled();
+  return `<div class="card clsp" id="cls-parent"><h2>💌 Classroom with Baba · كلاس روم بابا</h2>
+  <p class="hint">A private place where ${e2(S.child.name||"your child")} and Baba send nudges, voice and short messages. Only this tablet and Baba's phone link can see them. No strangers, no AI. Voice messages are deleted after 14 days.</p>
+  <label style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" data-clsp="on" ${on?"checked":""} style="width:24px;height:24px"> Show the 💌 Baba tab</label>
+  ${paired() ? `<p style="margin:0"><b>✅ Connected.</b> Open this link on Baba's phone (once is enough, it remembers):</p>
+    ${link?`<div class="lnk" id="clsLink">${e2(link)}</div><div id="clsQR"></div>
+    <div class="row" style="justify-content:flex-start;gap:8px"><button class="btn sm" data-cls="pshare">📲 Send link (WhatsApp…)</button><button class="btn sm alt" data-cls="pcopy">📋 Copy</button></div>`:`<p class="hint">The link isn't saved on this tablet. Make a new one:</p>`}
+    <div class="row" style="justify-content:flex-start;gap:8px"><button class="btn sm alt" data-cls="prot">🔄 New Baba link (old one stops)</button><button class="btn sm alt" data-cls="punpair">🗑️ Disconnect and delete all messages</button></div>`
+  : `<button class="btn" data-cls="ppair" ${navigator.onLine===false?"disabled":""}>🔗 Connect Baba's phone</button><p class="hint">Needs internet. You'll get a link to open on Baba's phone.</p>`}
+  </div>`;
+}
+let QRL=null;
+function drawQR(){
+  const box=document.getElementById("clsQR"), link=babaLink(); if(!box||!link) return;
+  const doIt=()=>{ try{ box.innerHTML=""; new QRCode(box,{text:link,width:200,height:200,correctLevel:QRCode.CorrectLevel.M}); }catch(_){ box.remove(); } };
+  if(window.QRCode) return doIt();
+  if(!QRL){ QRL=new Promise((ok,no)=>{ const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
+  QRL.then(doIt).catch(()=>{ box.remove(); });
+}
+/* ---------- clicks ---------- */
+document.addEventListener("click", async ev=>{
+  const t = ev.target.closest("[data-cls]"); if(!t) return;
+  ev.stopPropagation(); const k=t.dataset.cls;
+  try{ sfx.tap && sfx.tap(); }catch(_){}
+  if(k==="mode"){ if(CS.rec) recDrop(); CS.mode=t.dataset.m; CS.err=""; render(); if(CS.mode==="write") setTimeout(()=>{ const x=document.getElementById("clsTxt"); if(x) x.focus(); },50); return; }
+  if(k==="close"){ recDrop(); CS.mode=""; CS.err=""; return render(); }
+  if(k==="nudge"){ const x=NUDGES[+t.dataset.i]; t.disabled=true; if(await send("nudge", x.join("|"))){ CS.mode=""; } return render(); }
+  if(k==="sendtxt"){ const v=(document.getElementById("clsTxt")||{}).value||""; if(!v.trim()) return toast("✏️ Write something first · اكتبي حاجة الأول"); if(await send("text", v.trim().slice(0,300))){ CS.mode=""; } return render(); }
+  if(k==="pick"){ const i=t.dataset.i; CS.sel[i]=!CS.sel[i]; return render(); }
+  if(k==="answer"){ const a=pendingAsk(); const picks=ANSWERS.filter((_,i)=>CS.sel[i]).map(x=>x[0]+" "+x[2]); if(!picks.length) return; let body=picks.join(" · "); try{ const m=Math.round(playedSec()/60); if(m) body+=`\n(Star Academy today: ${m} min, ⭐ ${S.stars})`; }catch(_){} if(await send("answer", body)){ CS.sel={}; if(a) CLS.answered=a.id; csave(); } return render(); }
+  if(k==="recgo") return recStart();
+  if(k==="recstop") return recStop();
+  if(k==="recagain"){ recDrop(); return recStart(); }
+  if(k==="recsend"){ const R=CS.rec; if(!R||!R.blob) return; if(R.blob.size>1150000) return toast("Too long, try a shorter one · أقصر شوية"); CS.sending=true; render(); CS.sending=false; const data=await b64(R.blob); const a=pendingAsk(); const ok=await send("voice","",{p_audio:data,p_mime:R.blob.type||"audio/webm",p_dur:R.dur}); if(ok){ const m=CLS.msgs[CLS.msgs.length-1]; AUD[m.id]=R.url; CS.rec=null; CS.mode=""; if(a){ CLS.answered=a.id; csave(); } } return render(); }
+  if(k==="play") return playMsg(t.dataset.id, t);
+  if(k==="read"){ const m=CLS.msgs.find(x=>String(x.id)===t.dataset.id); if(!m) return; const p=parts(m); return readAloud(m.kind==="nudge" ? (p[2]||p[1]) : m.kind==="ask" ? p.join(". ") : m.body); }
+  /* parent */
+  if(k==="ppair"){ t.disabled=true; t.textContent="⏳ Connecting…"; try{ const r=await rpc("kc_pair_create",{p_kid_name:S.child.name||""}); CLS.kid=r.kid; CLS.baba=r.baba; CLS.msgs=[]; CLS.lastId=0; CLS.seenUpto=0; CLS.on=true; csave(); toast("✅ Connected! Now open the link on Baba's phone"); }catch(err){ toast("😕 Could not connect: "+err.message); } render(); return; }
+  if(k==="prot"){ if(!confirm("Make a new link? The old link on Baba's phone will stop working.")) return; try{ const r=await rpc("kc_rotate_baba",{p_token:CLS.kid}); CLS.baba=r.baba; csave(); toast("✅ New link ready"); }catch(err){ toast("😕 "+err.message); } return render(); }
+  if(k==="punpair"){ if(!confirm("Disconnect Baba's phone and delete ALL classroom messages? This can't be undone.")) return; try{ await rpc("kc_unpair",{p_token:CLS.kid}); }catch(err){ if(!/not paired/.test(err.message)) return toast("😕 "+err.message); } CLS.kid=""; CLS.baba=""; CLS.msgs=[]; CLS.lastId=0; CLS.seenUpto=0; csave(); toast("Disconnected"); return render(); }
+  if(k==="pcopy"){ try{ await navigator.clipboard.writeText(babaLink()); toast("📋 Copied"); }catch(_){ toast("Long-press the link to copy it"); } return; }
+  if(k==="pshare"){ const url=babaLink(); try{ if(navigator.share){ await navigator.share({title:"Classroom with "+(S.child.name||"Mariam"), text:"افتح اللينك ده على موبايلك عشان تكلم "+(S.child.name||"مريم"), url}); return; } }catch(_){ return; } location.href="https://wa.me/?text="+encodeURIComponent(url); return; }
+}, true);
+document.addEventListener("change", ev=>{ const k=ev.target.dataset && ev.target.dataset.clsp; if(k==="on"){ CLS.on=ev.target.checked; csave(); render(); } });
+
+/* ---------- hook into the app ---------- */
+const baseNav = navTabs;
+navTabs = function(active){
+  const h = baseNav.apply(this, arguments);
+  if(!enabled()) return h;
+  const n = paired()? unread():0;
+  return h.replace("</nav>", `<button class="tab" data-go="babachat" aria-current="${active==="babachat"}">💌 Baba${n?`<span class="badge">${n}</span>`:""}</button></nav>`);
+};
+let CPREV={name:"home", subject:"math"};
+const baseRender = render;
+render = function(){
+  const inC = view && view.name==="babachat";
+  if(!inC && CS.rec){ recDrop(); CS.mode=""; }
+  let r;
+  if(inC){ const real=view; view=CPREV; try{ r=baseRender.apply(this, arguments); } finally { view=real; } }
+  else { if(view && view.name && !["explore","game","result","biz","shop","parent","pin","rest","islam"].includes(view.name)) CPREV={name:view.name, subject:view.subject||"math", unit:view.unit}; r=baseRender.apply(this, arguments); }
+  try{
+    if(inC){
+      if(!enabled()){ view={name:"home", subject:"math"}; return render(); }
+      document.body.classList.remove("islz");
+      $("#stage").innerHTML = vBabaChat(); markSeen();
+      const ms=document.querySelector(".cls .msgs"); if(ms && !CS.mode) ms.lastElementChild && ms.lastElementChild.scrollIntoView({block:"nearest"});
+    }
+    if(view.name==="parent"){ const host=document.querySelector(".parent"); if(host && !document.getElementById("cls-parent")){ host.insertAdjacentHTML("beforeend", parentHTML()); drawQR(); } }
+    updatePing();
+  }catch(err){ console.error("v20 classroom", err); }
+  return r;
+};
+const _go = go;
+go = function(v){ const from=view&&view.name; const r=_go.apply(this, arguments); if(v && v.name==="babachat" && from!=="babachat"){ CS.mode=""; CS.sel={}; clearTimeout(pollT); poll(); } return r; };
+window.Classroom20 = {CLS, poll, rpc};
+try{ render(); }catch(_){}
+setTimeout(poll, 1500);
+})();
+</script>
+<!--v20cls-end-->

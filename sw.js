@@ -1,4 +1,4 @@
-const V="star-academy-v19";const FILES=["./","index.html","manifest.webmanifest","icon-192.png","icon-512.png"];
+const V="star-academy-v20";const FILES=["./","index.html","baba.html","manifest.webmanifest","icon-192.png","icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
 /* keep caches named isl-* : they hold the downloaded Quran audio */
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V&&!k.startsWith("isl-")).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});

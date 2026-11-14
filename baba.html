@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f0a2e">
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<title>كلاس روم بابا</title>
+<style>
+:root{--space:#0f0a2e;--space2:#1d1457;--panel:#2a1d6e;--panel2:#3b2a9a;--ink:#f6f3ff;--muted:#bdb6ee;--star:#ffd447;--pink:#ff7ac6;--mint:#5ef2c8;--sky:#6cc8ff;--line:rgba(255,255,255,.14)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(900px 500px at 80% -10%,#3b2a9a 0%,transparent 60%),var(--space);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,"Noto Naskh Arabic",sans-serif;display:flex;flex-direction:column}
+button{font:inherit;cursor:pointer;color:inherit}
+header{display:flex;align-items:center;gap:10px;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top));background:rgba(15,10,46,.92);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+header .av{font-size:2rem}
+header h1{font-size:1.15rem;margin:0}
+header small{color:var(--muted);display:block;font-size:.8rem}
+header .sp{flex:1}
+.ib{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:.9rem}
+main{flex:1;overflow-y:auto;padding:14px 16px 8px;display:flex;flex-direction:column;gap:10px}
+.b{max-width:85%;padding:10px 14px;border-radius:18px;display:flex;flex-direction:column;gap:4px;word-break:break-word;line-height:1.5}
+.b.kid{align-self:flex-start;background:linear-gradient(160deg,#c2378a,#7a2a9a);border-bottom-right-radius:6px}
+.b.baba{align-self:flex-end;background:linear-gradient(160deg,#2f6fd6,#24439c);border-bottom-left-radius:6px}
+.b .lab{font-size:.75rem;opacity:.85;font-weight:700}
+.b .big{font-size:2rem;line-height:1.1}
+.b .tm{font-size:.7rem;opacity:.7}
+.b.new{box-shadow:0 0 0 2px var(--star)}
+.play{align-self:flex-start;background:#fff;color:#22124f;border:0;border-radius:999px;padding:8px 14px;font-weight:800}
+.day{align-self:center;color:var(--muted);font-size:.75rem;padding:2px 10px;border-radius:999px;background:var(--space2)}
+.empty{margin:auto;text-align:center;color:var(--muted);padding:30px 10px}
+footer{border-top:1px solid var(--line);background:rgba(15,10,46,.96);padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.quick{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.quick button{flex:none;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:.9rem;white-space:nowrap}
+.quick button.ask{border-color:var(--star)}
+.comp{display:flex;gap:8px;align-items:flex-end}
+.comp textarea{flex:1;font:inherit;font-size:1rem;padding:10px 12px;border-radius:18px;border:1px solid var(--line);background:var(--space2);color:var(--ink);resize:none;max-height:120px;min-height:44px}
+.rnd{width:48px;height:48px;flex:none;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.send{background:var(--star);color:#2a1d00}
+.mic{background:var(--pink);color:#fff}
+.mic.on{background:#e04a33;animation:p 1s infinite}
+@keyframes p{50%{transform:scale(1.1)}}
+.recbar{display:flex;align-items:center;gap:10px;background:var(--panel);border-radius:16px;padding:8px 12px}
+.recbar audio{flex:1;min-width:0;height:40px}
+.gate{margin:auto;max-width:420px;text-align:center;padding:24px;display:flex;flex-direction:column;gap:12px}
+.gate .big{font-size:3.5rem}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:130px;background:#000c;color:#fff;padding:10px 16px;border-radius:12px;z-index:20;font-size:.95rem;max-width:90%}
+.toast[hidden]{display:none}
+.note{background:rgba(255,212,71,.1);border:1px dashed var(--star);border-radius:12px;padding:8px 10px;font-size:.85rem}
+</style>
+</head>
+<body>
+<header><span class="av">👧</span><div><h1 id="ttl">كلاس روم بابا</h1><small id="sub">رسايل خاصة بينك وبين بنتك</small></div><span class="sp"></span><button class="ib" id="bell" hidden>🔔 تنبيهات</button></header>
+<main id="list"></main>
+<footer id="foot" hidden>
+  <div class="quick" id="quick"></div>
+  <div id="recUI"></div>
+  <div class="comp" id="comp"><textarea id="txt" rows="1" maxlength="500" placeholder="اكتب رسالة لبنتك…"></textarea><button class="rnd mic" id="mic" aria-label="سجل فويس">🎙️</button><button class="rnd send" id="snd" aria-label="ابعت">➤</button></div>
+</footer>
+<div class="toast" id="toast" hidden></div>
+<script>
+"use strict";
+const API="https://qdrflcbkagssdifapcxj.supabase.co/rest/v1/rpc/", KEYP="sb_publishable_TZzLdkbRsmqK5eFC3hFRGw_0MP0oKO4", TK="sa-baba-token", CK="sa-baba-cache";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let TOKEN="";
+try{ const m=location.hash.match(/k=([a-f0-9]{40,})/); if(m){ localStorage.setItem(TK,m[1]); history.replaceState(null,"",location.pathname); } TOKEN=localStorage.getItem(TK)||""; }catch(_){ const m=location.hash.match(/k=([a-f0-9]{40,})/); if(m) TOKEN=m[1]; }
+let C={msgs:[],lastId:0,seenUpto:0,name:""}; try{ C=Object.assign(C,JSON.parse(localStorage.getItem(CK)||"{}")); }catch(_){}
+function csave(){ C.msgs=C.msgs.slice(-200); try{ localStorage.setItem(CK,JSON.stringify(C)); }catch(_){} }
+async function rpc(fn,args){ const r=await fetch(API+fn,{method:"POST",headers:{"Content-Type":"application/json",apikey:KEYP,Authorization:"Bearer "+KEYP},body:JSON.stringify(args)}); const t=await r.text(); let j=null; try{ j=JSON.parse(t); }catch(_){} if(!r.ok) throw new Error((j&&j.message)||("HTTP "+r.status)); return j; }
+function toast(t){ const e=$("#toast"); e.textContent=t; e.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>e.hidden=true,2600); }
+const KID=()=>C.name||"مريم";
+const QUICK=[
+  ["ask","❓ عملتي إيه النهارده؟","عملتي إيه النهارده؟|What did you do today?"],
+  ["ask","📚 ذاكرتي إيه؟","ذاكرتي إيه النهارده؟|What did you study today?"],
+  ["ask","🍽️ أكلتي؟","أكلتي يا حبيبتي؟|Did you eat?"],
+  ["nudge","🤗 حضن","🤗|Big hug from Baba!|حضن كبير من بابا!"],
+  ["nudge","⭐ شاطرة","⭐|I'm proud of you!|أنا فخور بيكي!"],
+  ["nudge","📚 وقت المذاكرة","📚|Time to study, my star!|يلا نذاكر يا نجمة!"],
+  ["nudge","❤️ بحبك","❤️|I love you!|بحبك!"],
+  ["nudge","🌙 تصبحي على خير","🌙|Good night, my star!|تصبحي على خير يا نجمتي!"],
+];
+function gate(msg){ $("#foot").hidden=true; $("#list").innerHTML=`<div class="gate"><span class="big">🔗</span><h2 style="margin:0">${msg}</h2><p style="color:var(--muted);margin:0">افتح منطقة الكبار 🔒 على تابلت بنتك، وبعدين "Classroom with Baba"، وابعت اللينك لنفسك وافتحه هنا.</p></div>`; }
+function fmt(t){ const d=new Date(t); return d.toLocaleTimeString("ar-EG",{hour:"numeric",minute:"2-digit"}); }
+function dayKey(t){ const d=new Date(t); return d.toDateString(); }
+function dayLab(t){ const d=new Date(t), n=new Date(); if(d.toDateString()===n.toDateString()) return "النهارده"; const y=new Date(); y.setDate(y.getDate()-1); if(d.toDateString()===y.toDateString()) return "امبارح"; return d.toLocaleDateString("ar-EG",{weekday:"long",day:"numeric",month:"short"}); }
+function bubble(m){
+  const mine=m.sender==="baba", p=String(m.body||"").split("|"), isNew=!mine&&m.id>C.seenUpto;
+  let inner="", lab=mine?"أنا":KID();
+  if(m.kind==="nudge"){ inner=`<span class="big">${esc(p[0])}</span><span>${esc(p[2]||p[1]||"")}</span>`; lab+= mine?" · نكزة":" بعتتلك نكزة 👋"; }
+  else if(m.kind==="ask"){ inner=`<span>❓ ${esc(p[0])}</span>`; lab+=" · سؤال"; }
+  else if(m.kind==="answer"){ inner=`<span style="white-space:pre-wrap">${esc(m.body)}</span>`; lab+=" ردت على سؤالك ✅"; }
+  else if(m.kind==="voice"){ inner = (m.has_audio===false&&!AUD[m.id]) ? `<span>🎙️ فويس قديم اتمسح</span>` : `<button class="play" data-play="${m.id}">▶️ شغّل${m.dur?` · ${m.dur}ث`:""}</button>`; lab+=" · فويس"; }
+  else inner=`<span style="white-space:pre-wrap" dir="auto">${esc(m.body)}</span>`;
+  return `<div class="b ${mine?"baba":"kid"} ${isNew?"new":""}"><span class="lab">${esc(lab)}</span>${inner}<span class="tm">${fmt(m.created_at)}${mine&&m.seen?" · ✓✓ شافتها":""}</span></div>`;
+}
+function draw(stick){
+  const L=$("#list"), atBottom = stick || (L.scrollHeight-L.scrollTop-L.clientHeight<80);
+  $("#ttl").textContent=`كلاس روم ${KID()}`;
+  if(!C.msgs.length){ L.innerHTML=`<div class="empty"><div style="font-size:3rem">💫</div>لسه مفيش رسايل.<br>ابعت لـ${esc(KID())} حضن أو اسألها عملت إيه النهارده.</div>`; return; }
+  let h="", last="";
+  for(const m of C.msgs){ const k=dayKey(m.created_at); if(k!==last){ h+=`<div class="day">${dayLab(m.created_at)}</div>`; last=k; } h+=bubble(m); }
+  L.innerHTML=h; if(atBottom) L.scrollTop=L.scrollHeight;
+}
+let busy=false, pt=null, fails=0;
+async function poll(first){
+  if(busy) return; busy=true;
+  try{
+    const r=await rpc("kc_list",{p_token:TOKEN,p_after:C.lastId}); fails=0;
+    if(r.role!=="baba"){ TOKEN=""; gate("اللينك ده مش لينك بابا"); return; }
+    C.name=r.kid_name||C.name;
+    const fresh=(r.msgs||[]).filter(m=>!C.msgs.some(x=>x.id===m.id));
+    if(fresh.length){ const kidNew=fresh.filter(m=>m.sender==="kid"&&m.id>C.seenUpto); C.msgs.push(...fresh); C.msgs.sort((a,b)=>a.id-b.id); C.lastId=Math.max(C.lastId,...fresh.map(m=>m.id)); csave(); draw(first); if(kidNew.length&&!first) alertNew(kidNew); }
+    else if(first) draw(true);
+    // refresh "seen" ticks on my last messages
+    if(!document.hidden) markSeen();
+    $("#sub").textContent="متصل ✅ · بيتحدث كل شوية";
+  }catch(e){ fails++; if(/not paired|bad token/.test(e.message)){ TOKEN=""; try{ localStorage.removeItem(TK); }catch(_){} gate("اللينك ده اتلغى أو اتغير"); return; } $("#sub").textContent= navigator.onLine===false?"مفيش نت 📶":"مش قادر يتصل، هيحاول تاني"; if(first) draw(true); }
+  finally{ busy=false; clearTimeout(pt); if(TOKEN) pt=setTimeout(poll, document.hidden? 30000 : Math.min(6000*(1+fails),60000)); }
+}
+async function refreshSeen(){ try{ const r=await rpc("kc_list",{p_token:TOKEN,p_after:Math.max(0,C.lastId-40)}); for(const m of r.msgs||[]){ const x=C.msgs.find(y=>y.id===m.id); if(x&&x.seen!==m.seen){ x.seen=m.seen; } } csave(); draw(); }catch(_){} }
+function markSeen(){ const top=Math.max(0,...C.msgs.filter(m=>m.sender==="kid").map(m=>m.id)); if(top>C.seenUpto){ C.seenUpto=top; csave(); rpc("kc_seen",{p_token:TOKEN,p_upto:top}).catch(()=>{}); setTimeout(()=>draw(),1500); } document.title="كلاس روم بابا"; }
+let SWR=null;
+async function alertNew(ms){
+  const m=ms[ms.length-1], p=String(m.body||"").split("|");
+  const txt = m.kind==="nudge" ? `${p[0]} ${p[2]||p[1]||""}` : m.kind==="voice" ? "🎙️ بعتتلك فويس" : m.kind==="answer" ? "✅ ردت: "+m.body : m.body;
+  if(document.hidden){ document.title=`(${ms.length}) ${KID()} بعتتلك`; try{ if(Notification.permission==="granted"&&SWR) SWR.showNotification(`💌 ${KID()}`,{body:txt.slice(0,120),icon:"icon-192.png",tag:"baba-cls",renotify:true,vibrate:[150,80,150]}); }catch(_){} }
+  else { try{ navigator.vibrate&&navigator.vibrate(120); }catch(_){} toast(`💌 ${KID()}: ${txt.slice(0,60)}`); }
+}
+async function send(kind,body,extra){
+  try{ const r=await rpc("kc_send",Object.assign({p_token:TOKEN,p_kind:kind,p_body:body||""},extra||{})); C.msgs.push({id:r.id,sender:"baba",kind,body:body||"",has_audio:kind==="voice",dur:extra&&extra.p_dur,created_at:new Date().toISOString(),seen:false}); C.lastId=Math.max(C.lastId,r.id); csave(); draw(true); return r.id; }
+  catch(e){ toast(navigator.onLine===false?"مفيش نت 📶":"ما اتبعتتش، جرب تاني: "+e.message); return 0; }
+}
+/* voice */
+const AUD={}; let NOW=null, REC=null;
+function pickMime(){ if(!window.MediaRecorder||!MediaRecorder.isTypeSupported) return ""; for(const m of ["audio/mp4;codecs=mp4a.40.2","audio/mp4","audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus"]) if(MediaRecorder.isTypeSupported(m)) return m; return ""; }
+async function recToggle(){
+  if(REC&&REC.state==="on"){ try{ REC.mr.stop(); }catch(_){} return; }
+  if(!navigator.mediaDevices||!window.MediaRecorder) return toast("الموبايل ده مش بيسجل من المتصفح، اكتب رسالة بدل كده");
+  let st; try{ st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}); }catch(e){ return toast(e&&e.name==="NotAllowedError"?"المايك مقفول: دوس على القفل 🔒 جنب العنوان واسمح بالمايك":"المايك ما اشتغلش"); }
+  const mime=pickMime(); let mr; try{ mr=new MediaRecorder(st,Object.assign({audioBitsPerSecond:32000},mime?{mimeType:mime}:{})); }catch(_){ mr=new MediaRecorder(st); }
+  const ch=[], t0=Date.now(); REC={mr,st,state:"on",t0};
+  mr.ondataavailable=e=>{ if(e.data&&e.data.size) ch.push(e.data); };
+  mr.onstop=()=>{ st.getTracks().forEach(x=>x.stop()); clearInterval(REC.tm); REC.dur=Math.max(1,Math.round((Date.now()-t0)/1000)); REC.blob=new Blob(ch,{type:(mr.mimeType||mime||"audio/webm").split(";")[0]}); REC.url=URL.createObjectURL(REC.blob); REC.state="done"; recUI(); };
+  try{ mr.start(500); }catch(_){ mr.start(); }
+  REC.tm=setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000); const l=$("#rs"); if(l) l.textContent=s+"ث"; if(s>=90) try{ mr.stop(); }catch(_){} },300);
+  recUI();
+}
+function recUI(){
+  const u=$("#recUI"), mic=$("#mic");
+  mic.classList.toggle("on",!!REC&&REC.state==="on"); mic.textContent=REC&&REC.state==="on"?"⏹️":"🎙️";
+  if(!REC){ u.innerHTML=""; return; }
+  if(REC.state==="on"){ u.innerHTML=`<div class="recbar">🔴 بيسجل… <b id="rs">0ث</b><span style="flex:1"></span>دوس ⏹️ عشان توقف</div>`; return; }
+  u.innerHTML=`<div class="recbar"><audio controls src="${REC.url}"></audio><button class="ib" id="rdel">🗑️</button><button class="ib" id="rsend" style="background:var(--star);color:#2a1d00;font-weight:800">ابعت 🎙️</button></div>`;
+  $("#rdel").onclick=()=>{ URL.revokeObjectURL(REC.url); REC=null; recUI(); };
+  $("#rsend").onclick=async e=>{ e.target.disabled=true; e.target.textContent="⏳"; const data=await new Promise(ok=>{ const fr=new FileReader(); fr.onload=()=>ok(String(fr.result).split(",")[1]||""); fr.readAsDataURL(REC.blob); }); if(data.length>1500000){ toast("الفويس طويل، خليه أقصر من دقيقة ونص"); e.target.disabled=false; e.target.textContent="ابعت 🎙️"; return; } const id=await send("voice","",{p_audio:data,p_mime:REC.blob.type||"audio/webm",p_dur:REC.dur}); if(id){ AUD[id]=REC.url; REC=null; recUI(); draw(true); } else { e.target.disabled=false; e.target.textContent="ابعت 🎙️"; } };
+}
+async function play(id,btn){
+  try{ if(NOW){ NOW.pause(); NOW=null; }
+    let url=AUD[id]; if(!url){ btn.textContent="⏳"; const r=await rpc("kc_audio",{p_token:TOKEN,p_id:+id}); if(!r||!r.audio){ btn.textContent="اتمسح"; return; } const bin=atob(r.audio), u8=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i); url=AUD[id]=URL.createObjectURL(new Blob([u8],{type:(r.mime||"audio/webm").split(";")[0]})); }
+    const a=NOW=new Audio(url); btn.textContent="🔊 شغال…"; a.onended=()=>btn.textContent="▶️ تاني"; await a.play();
+  }catch(e){ btn.textContent="▶️ شغّل"; toast("مش قادر يشغله على الموبايل ده"); }
+}
+/* wire */
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-play]"); if(b) play(b.dataset.play,b); const q=e.target.closest("[data-q]"); if(q){ const x=QUICK[+q.dataset.q]; send(x[0],x[2]).then(id=>id&&toast("وصلت ✅")); } });
+$("#snd").onclick=async()=>{ const t=$("#txt"), v=t.value.trim(); if(!v) return; $("#snd").disabled=true; if(await send("text",v.slice(0,500))){ t.value=""; t.style.height=""; } $("#snd").disabled=false; };
+$("#txt").addEventListener("input",e=>{ e.target.style.height="auto"; e.target.style.height=Math.min(120,e.target.scrollHeight)+"px"; });
+$("#mic").onclick=recToggle;
+$("#bell").onclick=async()=>{ try{ const p=await Notification.requestPermission(); toast(p==="granted"?"✅ هيجيلك تنبيه طول ما الصفحة مفتوحة":"التنبيهات مقفولة"); $("#bell").hidden=p==="granted"; }catch(_){} };
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ clearTimeout(pt); poll(); refreshSeen(); } });
+window.addEventListener("online",()=>{ clearTimeout(pt); poll(); });
+if(!TOKEN) gate("افتح اللينك اللي جاي من تابلت بنتك");
+else {
+  $("#foot").hidden=false;
+  $("#quick").innerHTML=QUICK.map((x,i)=>`<button data-q="${i}" class="${x[0]}">${x[1]}</button>`).join("");
+  try{ if("Notification" in window && Notification.permission==="default") $("#bell").hidden=false; }catch(_){}
+  if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").then(r=>{ SWR=r; }).catch(()=>{});
+  draw(true); poll(true);
+  setInterval(()=>{ if(!document.hidden) refreshSeen(); }, 45000);
+}
+</script>
+</body>
+</html>
