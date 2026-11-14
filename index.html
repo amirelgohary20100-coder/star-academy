@@ -449,7 +449,7 @@ th{color:var(--muted);font-weight:800;font-size:.8rem;letter-spacing:.06em;text-
   <header class="dock">
     <button class="me" id="meBtn" aria-label="Dress up"><span class="av" id="dockAv"></span><b id="dockName">Star Academy</b></button>
     <span class="spacer"></span>
-    <span class="pill" title="Stars"><span class="st">★</span><span id="dockStars">0</span></span>
+    <span class="pill" title="Stars to spend"><span class="st">★</span><span id="dockStars">0</span></span>
     <button class="iconbtn" id="soundBtn" aria-label="Sound on">🔊</button>
     <button class="iconbtn" id="parentBtn" aria-label="Grown-ups">🔒</button>
   </header>
@@ -1476,7 +1476,14 @@ function addStars(n, why){
     S.starsToSticker -= STARS_PER_STICKER; const left = STICKERS.filter(s=>!S.stickers.includes(s)); const s = left[0]; S.stickers.push(s); newSt.push(s); }
   return newSt;
 }
-const wallet = () => S.stars - S.spent;
+/*wallet-fix*/const wallet = () => Math.max(0, (S.stars||0) - (S.spent||0));
+function ownedCost(){ let t=0; try{
+  for(const id of Object.keys(S.base.owned||{})) if(S.base.owned[id]) for(const c of Object.values(HITEMS)){ const it=c[1].find(x=>x[0]===id); if(it){ t+=it[2]; break; } }
+  for(const k of Object.keys(S.owned||{})) if(S.owned[k]){ const i=k.indexOf(":"), g=WARDROBE[k.slice(0,i)], it=g&&g.items.find(x=>x[0]===k.slice(i+1)); if(it) t+=it[2]; }
+ }catch(e){} return t; }
+function fixWallet(){ const oc=ownedCost(); if(!(S.spent>=0) || S.spent>oc) S.spent=oc; }
+let buyAsk=null, buyAskT=0;
+function askBuy(id,cost){ if(buyAsk===id){ buyAsk=null; return true; } buyAsk=id; clearTimeout(buyAskT); buyAskT=setTimeout(()=>{buyAsk=null;},6000); sfx.tap(); speak(`Tap again to buy it for ${cost} stars.`); toast(`Tap again to buy for ★ ${cost} (you have ★ ${wallet()})`); return false; }
 
 /* ---------------- Views ---------------- */
 let view = {name:"home", subject:"math"};
@@ -1490,7 +1497,7 @@ const faceHTML = () => S.child.photo ? `<img src="${esc(S.child.photo)}" alt="" 
 function renderDock(){
   $("#dockName").textContent = S.child.name || "Star Academy";
   $("#dockAv").innerHTML = faceHTML();
-  $("#dockStars").textContent = S.stars;
+  fixWallet(); $("#dockStars").textContent = wallet();
   const sb=$("#soundBtn"); sb.textContent = S.sound?"🔊":"🔇"; sb.classList.toggle("off",!S.sound); sb.setAttribute("aria-label", S.sound?"Sound on, tap to mute":"Sound off, tap to turn on");
 }
 function navTabs(active){
@@ -1775,7 +1782,7 @@ function vBase(){
   const colorRow = (kind,cur) => HCOLORS.map(([c,n])=>`<button style="background:${c}" aria-label="${n}" aria-pressed="${cur===c}" data-b${kind}="${c}"></button>`).join("");
   const next = ROOM_AT.find(t=>S.stars<t);
   return `${navTabs("base")}
-  <div class="hello"><div><h1>My Star Home</h1><p>Tap or drag on the room to build. You have <b style="color:var(--star)">★ ${wallet()}</b> stars to spend.${next!==undefined?` Earn ${next-S.stars} more stars to open a new room!`:""}</p></div></div>
+  <div class="hello"><div><h1>My Star Home</h1><p>Tap or drag on the room to build. You have <b style="color:var(--star)">★ ${wallet()}</b> stars to spend. You earned ★ ${S.stars} and used ★ ${S.spent} on your home and clothes.${next!==undefined?` Earn ${next-S.stars} more stars to open a new room!`:""}</p></div></div>
   <div class="roomtabs">${ROOM_NAMES.map((n,k)=>`<button class="tab sm" data-broom="${k}" aria-current="${k===B.cur}">${S.stars>=ROOM_AT[k]?"":"🔒 "}${n}</button>`).join("")}</div>
   <div class="homewrap"><div class="room" id="room" aria-label="Room: tap to place the selected item">${grid}</div>
     <div class="pal"><div class="palrow">${Object.entries(HITEMS).map(([k,[l]])=>`<button class="tab sm" data-bcat="${k}" aria-current="${B.cat===k}">${l}</button>`).join("")}</div>
@@ -2006,7 +2013,7 @@ function vParent(){
   ${bizParentCard()}
   ${shopParentCard()}
   <div class="card"><h2>📈 Progress</h2>
-    <p style="margin:0">Total stars: <b>${S.stars}</b> · Stickers: <b>${S.stickers.length}/${STICKERS.length}</b>${recAcc!==null?` · Last ${recent.length} answers: <b>${recAcc}% right first time</b>`:""}</p>
+    <p style="margin:0">Total stars earned: <b>${S.stars}</b> · Used in My Home and Dress up: <b>${S.spent}</b> · Left to spend: <b>${wallet()}</b> · Stickers: <b>${S.stickers.length}/${STICKERS.length}</b>${recAcc!==null?` · Last ${recent.length} answers: <b>${recAcc}% right first time</b>`:""}</p>
     ${weak.length?`<p style="margin:0;color:var(--star)">Needs practice: ${weak.map(esc).join(", ")}</p>`:""}
     <div class="tbl"><table><thead><tr><th>Planet</th><th>Game</th><th>Level</th><th>Right first time</th><th>Best</th><th>Last played</th></tr></thead><tbody>
     ${rows.map(({u,id,k})=>{ const pct = k.attempts?Math.round(k.correct/k.attempts*100):0; return `<tr><td>${esc(u.title)}</td><td>${SKILLS[id].name}</td><td>${k.level}/3</td><td>${k.attempts?`<div style="display:flex;gap:8px;align-items:center"><div class="bar" style="flex:1"><i style="width:${pct}%"></i></div>${pct}% <span class="hint">(${k.attempts})</span></div>`:`<span class="hint">not yet</span>`}</td><td>${starsRow(Math.max(...k.best))}</td><td>${k.last?new Date(k.last).toLocaleDateString():"–"}</td></tr>`; }).join("")}
@@ -3817,14 +3824,14 @@ document.addEventListener("click", e=>{
   if(d.choice!==undefined){ const c=game.q.choices[+d.choice]; return answer(+d.choice, t); }
   if(d.pin) return pinKey(d.pin);
   if(d.bitem){ const [id,costS]=d.bitem.split("|"), cost=+costS, B=S.base;
-    if(cost>0 && !B.owned[id]){ if(wallet()<cost){ sfx.no(); speak(`You need ${cost-wallet()} more stars for that!`); return toast(`Need ${cost-wallet()} more ★`); } S.spent+=cost; B.owned[id]=true; sfx.win(); speak("Ta-da!"); } else sfx.tap();
+    if(cost>0 && !B.owned[id]){ if(wallet()<cost){ sfx.no(); speak(`You need ${cost-wallet()} more stars for that!`); return toast(`Need ${cost-wallet()} more ★`); } if(!askBuy(id,cost)) return; S.spent+=cost; B.owned[id]=true; sfx.win(); speak("Ta-da!"); } else sfx.tap();
     B.sel=id; save(); return render(); }
   if(d.bcat){ S.base.cat=d.bcat; sfx.tap(); save(); return render(); }
   if(d.bwall){ curRoom().wall=d.bwall; sfx.tap(); save(); return render(); }
   if(d.bfloor){ curRoom().floor=d.bfloor; sfx.tap(); save(); return render(); }
   if(d.broom!==undefined){ const k=+d.broom; if(S.stars<ROOM_AT[k]){ sfx.no(); speak("Collect more stars to open this room!"); return toast(`Earn ${ROOM_AT[k]-S.stars} more ★ to open this room`); } S.base.cur=k; sfx.tap(); save(); return render(); }
   if(d.wear){ const [slot,val,costS]=d.wear.split("|"); const cost=+costS; const key=slot+":"+val;
-    if(cost>0 && !S.owned[key]){ if(wallet()<cost){ sfx.no(); speak(`You need ${cost-wallet()} more stars for that!`); return toast(`Need ${cost-wallet()} more ★`); } S.spent+=cost; S.owned[key]=true; sfx.win(); speak("Ta-da!"); }
+    if(cost>0 && !S.owned[key]){ if(wallet()<cost){ sfx.no(); speak(`You need ${cost-wallet()} more stars for that!`); return toast(`Need ${cost-wallet()} more ★`); } if(!askBuy(key,cost)) return; S.spent+=cost; S.owned[key]=true; sfx.win(); speak("Ta-da!"); }
     else sfx.tap();
     S.avatar[slot]=val; save(); return render(); }
   if(d.hwdone){ const h=S.homework.find(x=>x.id===d.hwdone); if(h&&!h.done){ h.done=true; h.doneAt=Date.now(); const ns=addStars(h.stars); S.cheers.push(`Mama gave you ${h.stars} stars for your homework!${ns.length?" New sticker: "+ns.join(" "):""}`); save(); toast(`Gave ${h.stars} stars`); render(); } return; }
